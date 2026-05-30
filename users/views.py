@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.utils import timezone
@@ -12,6 +13,7 @@ from .forms import (
     OTPVerificationForm,
     ForgotPasswordForm,
     ResetPasswordForm,
+    PasswordChangeForm,
 )
 from .models import OTP
 
@@ -272,3 +274,19 @@ def logout_view(request):
         messages.info(request, 'Logged out successfully.')
         return redirect('/')
     return redirect('/')
+
+
+@login_required
+def change_password_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data['new_password']
+            request.user.set_password(new_password)
+            request.user.save()
+            update_session_auth_hash(request, request.user)  # Keeps the user logged in
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'change_password.html', {'form': form})

@@ -60,3 +60,34 @@ class OTPModelTest(TestCase):
         otp.attempts = max_attempts
         otp.save()
         self.assertTrue(otp.is_max_attempts_reached())
+
+
+class PasswordChangeFormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email='change@example.com',
+            password='oldpassword123'
+        )
+
+    def test_change_password_form_success(self):
+        """Verify that the PasswordChangeForm validates correct old password and matching new passwords."""
+        from users.forms import PasswordChangeForm
+        data = {
+            'old_password': 'oldpassword123',
+            'new_password': 'newpassword123',
+            'new_password_confirm': 'newpassword123'
+        }
+        form = PasswordChangeForm(user=self.user, data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_change_password_form_incorrect_old(self):
+        """Verify that PasswordChangeForm fails if the old password is wrong."""
+        from users.forms import PasswordChangeForm
+        data = {
+            'old_password': 'wrongpassword',
+            'new_password': 'newpassword123',
+            'new_password_confirm': 'newpassword123'
+        }
+        form = PasswordChangeForm(user=self.user, data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('old_password', form.errors)

@@ -127,3 +127,39 @@ class ResetPasswordForm(forms.Form):
             self.add_error('new_password_confirm', 'Passwords do not match.')
             raise ValidationError('Passwords do not match.')
         return cleaned_data
+
+
+class PasswordChangeForm(forms.Form):
+    old_password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter current password', 'class': 'formInput'}),
+    )
+    new_password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password', 'class': 'formInput'}),
+    )
+    new_password_confirm = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new password', 'class': 'formInput'}),
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        if not self.user.check_password(old_password):
+            raise ValidationError('Your current password is incorrect.')
+        return old_password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('new_password')
+        password_confirm = cleaned_data.get('new_password_confirm')
+
+        if password and password_confirm and password != password_confirm:
+            self.add_error('new_password_confirm', 'Passwords do not match.')
+            raise ValidationError('Passwords do not match.')
+        return cleaned_data
+
