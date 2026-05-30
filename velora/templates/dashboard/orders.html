@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Orders — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-.02em;">📦 My Orders</h1>
+      <a href="{% url 'product_list' %}" class="btn btn-outline">+ Browse More Products</a>
+    </div>
+
+    <!-- Status Filter Tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;overflow-x:auto;padding-bottom:4px;">
+      <a href="{% url 'order_list' %}"
+         style="padding:8px 16px;border-radius:var(--radius-sm);font-size:.82rem;font-weight:700;text-decoration:none;white-space:nowrap;
+                {% if not status_filter %}background:var(--sell);color:white;{% else %}background:var(--surface);color:var(--text-2);border:1px solid var(--border);{% endif %}">
+        All Orders
+      </a>
+      {% for val, label in status_choices %}
+      <a href="?status={{ val }}"
+         style="padding:8px 16px;border-radius:var(--radius-sm);font-size:.82rem;font-weight:700;text-decoration:none;white-space:nowrap;
+                {% if status_filter == val %}background:var(--sell);color:white;{% else %}background:var(--surface);color:var(--text-2);border:1px solid var(--border);{% endif %}">
+        {{ label }}
+      </a>
+      {% endfor %}
+    </div>
+
+    {% if orders %}
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      {% for order in orders %}
+
+      {% with first_item=order.items.first %}
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+
+        <!-- Order Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--surface-2);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:20px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:.7rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;">Order ID</div>
+              <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.9rem;color:var(--sell);">#{{ order.short_id }}</div>
+            </div>
+            <div>
+              <div style="font-size:.7rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;">Order Date</div>
+              <div style="font-weight:600;font-size:.88rem;">{{ order.created_at|date:"d M Y" }}</div>
+            </div>
+            <div>
+              <div style="font-size:.7rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;">Total</div>
+              <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.9rem;">₹{{ order.total|floatformat:0 }}</div>
+            </div>
+          </div>
+
+          <!-- Status Badge -->
+          <span class="badge {% if order.status == 'delivered' %}badge-buy{% elif order.status == 'shipped' or order.status == 'out_for_delivery' %}badge-swap{% elif order.status == 'cancelled' or order.status == 'return_requested' %}badge-error{% elif order.status == 'pending' %}badge-offer{% else %}badge-sell{% endif %}" style="font-size:.8rem;padding:6px 12px;">
+            {% if order.status == 'pending' %}📦{% elif order.status == 'confirmed' %}✅{% elif order.status == 'processing' %}📫{% elif order.status == 'shipped' %}🚚{% elif order.status == 'out_for_delivery' %}🛵{% elif order.status == 'delivered' %}🏠{% elif order.status == 'cancelled' %}❌{% else %}🔄{% endif %}
+            {{ order.get_status_display }}
+          </span>
+        </div>
+
+        <!-- Order Items Preview -->
+        <div style="padding:16px 20px;">
+          {% for item in order.items.all %}
+          <div style="display:flex;gap:14px;align-items:center;{% if not forloop.last %}padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--border);{% endif %}">
+            {% if item.image_url %}
+              <img src="{{ item.image_url }}" alt="{{ item.title }}"
+                   style="width:64px;height:64px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0;">
+            {% else %}
+              <div style="width:64px;height:64px;background:var(--surface-2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;">📦</div>
+            {% endif %}
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:.92rem;margin-bottom:2px;">{{ item.title|truncatechars:60 }}</div>
+              <div style="font-size:.78rem;color:var(--text-3);">Qty: {{ item.quantity }} · ₹{{ item.price|floatformat:0 }} each</div>
+            </div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--sell);flex-shrink:0;">₹{{ item.subtotal|floatformat:0 }}</div>
+          </div>
+          {% endfor %}
+
+          <!-- Delivery estimate + Actions -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;">
+            <div style="font-size:.82rem;color:{% if order.status == 'delivered' %}var(--buy){% else %}var(--text-2){% endif %};font-weight:600;">
+              {% if order.status == 'delivered' %}
+                ✅ Delivered
+              {% elif order.status == 'cancelled' %}
+                ❌ Order Cancelled
+              {% else %}
+                🚚 Est. Delivery: {{ order.estimated_delivery|date:"D, d M Y" }}
+              {% endif %}
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <a href="{% url 'order_detail' pk=order.pk %}" class="btn btn-sell btn-sm">
+                📍 Track Order
+              </a>
+              <a href="{% url 'order_detail' pk=order.pk %}" class="btn btn-outline btn-sm">
+                View Details
+              </a>
+              {% if order.is_cancellable %}
+                <form method="post" action="{% url 'cancel_order' pk=order.pk %}" style="display:inline;" onsubmit="return confirm('Cancel order #{{ order.short_id }}?')">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-ghost btn-sm" style="color:var(--error);">✕ Cancel</button>
+                </form>
+              {% endif %}
+              <form method="post" action="{% url 'reorder' pk=order.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-ghost btn-sm">🔄 Reorder</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:32px;flex-wrap:wrap;">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="btn btn-outline btn-sm">← Previous</a>
+      {% endif %}
+      <span style="display:flex;align-items:center;font-size:.85rem;color:var(--text-3);padding:0 12px;">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="btn btn-outline btn-sm">Next →</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- Empty Orders -->
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);">
+      <div style="font-size:5rem;margin-bottom:20px;">📦</div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:8px;">No orders yet</h2>
+      <p style="color:var(--text-3);margin-bottom:28px;">
+        {% if status_filter %}No orders with this status.{% else %}You haven't placed any orders yet.{% endif %}
+      </p>
+      <a href="{% url 'product_list' %}" class="btn btn-sell btn-lg">Browse Products</a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

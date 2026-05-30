@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
 
 
@@ -115,6 +116,13 @@ class Product(models.Model):
     def primary_image(self):
         return self.images.filter(is_primary=True).first() or self.images.first()
 
+    @property
+    def average_rating(self):
+        reviews = self.reviews.all()
+        if not reviews.exists():
+            return None
+        return round(sum(r.rating for r in reviews) / reviews.count(), 1)
+
 
 class ProductImage(models.Model):
     """Cloudinary-backed product image."""
@@ -161,3 +169,48 @@ class RecentlyViewed(models.Model):
 
     def __str__(self):
         return f"{self.user.email} viewed {self.product.title}"
+
+
+class Review(models.Model):
+    """Buyer review for a product listing."""
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='reviews_given',
+    )
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text='Rating from 1 (worst) to 5 (best)',
+    )
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'
+        unique_together = ('product', 'reviewer')
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return f"{self.reviewer.email} → {self.product.title} ({self.rating}★)"
+
+
+class SearchHistory(models.Model):
+    """Persisted search queries for logged-in users."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='search_history',
+    )
+    query = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Search History'
+        verbose_name_plural = 'Search Histories'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return f"{self.user.email}: '{self.query}'"

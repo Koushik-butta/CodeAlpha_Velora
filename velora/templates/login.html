@@ -1,167 +1,89 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Login — Velora Marketplace{% endblock %}
-{% block meta_description %}Log in to your Velora account to buy, sell and exchange products across India.{% endblock %}
+{% block title %}Log In — Velora{% endblock %}
 
 {% block content %}
 <div class="auth-page">
 
-  <!-- ===== LEFT PANEL ===== -->
+  <!-- LEFT PANEL -->
   <div class="auth-left">
-    <div class="auth-left__bg" aria-hidden="true"></div>
     <div class="auth-left__content">
-
-      <div class="auth-left__logo">
-        <div class="vnav__logo" style="width:44px;height:44px;font-size:1.3rem;" aria-hidden="true">V</div>
-        <div>
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.2rem;">Velora</div>
-          <div style="font-size:.7rem;font-weight:600;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;">Buy · Sell · Exchange</div>
+      <div style="margin-bottom:40px;">
+        <div class="vnav__logo" style="width:52px;height:52px;font-size:1.4rem;margin-bottom:20px;">V</div>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:2.4rem;font-weight:900;color:#fff;margin:0 0 12px;line-height:1.1;">Welcome back to<br/><span style="background:linear-gradient(135deg,#8B5CF6,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Velora</span></h1>
+        <p style="color:rgba(255,255,255,.6);font-size:1rem;line-height:1.6;margin:0;">India's premium marketplace for buying, selling, and exchanging products near you.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:40px;height:40px;border-radius:12px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">✅</div>
+          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Verified Sellers</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">Every seller is vetted for safety</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:40px;height:40px;border-radius:12px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🔄</div>
+          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Exchange Ready</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">Swap products without cash</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:40px;height:40px;border-radius:12px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">💰</div>
+          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Best Deals</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">Save big on pre-loved items</div></div>
         </div>
       </div>
-
-      <h1 class="auth-left__hero-title">
-        India's Most<br>
-        Trusted <span style="color:var(--sell);">Marketplace</span>
-      </h1>
-      <p class="auth-left__slogan hindi">आपका सामान, आपकी कीमत — Velora पर!</p>
-      <p class="auth-left__sub">Join 12,000+ verified sellers buying, selling and exchanging products across 320+ cities.</p>
-
-      <!-- Floating animated cards -->
-      <div class="auth-floating-cards" aria-hidden="true">
-        <div class="auth-float-card">
-          <div class="auth-float-icon" style="background:var(--buy-dim);">📱</div>
-          <div>
-            <div class="auth-float-title">iPhone 13 Pro — ₹62,000</div>
-            <div class="auth-float-sub">Hyderabad · Like New · <span style="color:var(--buy);">Just Sold ✓</span></div>
-          </div>
-        </div>
-        <div class="auth-float-card">
-          <div class="auth-float-icon" style="background:var(--swap-dim);">🏍️</div>
-          <div>
-            <div class="auth-float-title">Bike Exchange Request</div>
-            <div class="auth-float-sub">Royal Enfield ↔ KTM Duke · <span style="color:var(--swap);">Offer Sent</span></div>
-          </div>
-        </div>
-        <div class="auth-float-card">
-          <div class="auth-float-icon" style="background:var(--sell-dim);">💻</div>
-          <div>
-            <div class="auth-float-title">Dell XPS 15 — ₹89,000</div>
-            <div class="auth-float-sub">Bengaluru · Good · <span style="color:var(--sell);">New Listing ↑</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Auth stats -->
-      <div class="auth-stats">
-        <div>
-          <div class="auth-stat-val" style="color:var(--buy);">48K+</div>
-          <div class="auth-stat-lab">Products Listed</div>
-        </div>
-        <div>
-          <div class="auth-stat-val" style="color:var(--sell);">12K+</div>
-          <div class="auth-stat-lab">Verified Sellers</div>
-        </div>
-        <div>
-          <div class="auth-stat-val" style="color:var(--swap);">320+</div>
-          <div class="auth-stat-lab">Cities</div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ===== RIGHT PANEL ===== -->
+  <!-- RIGHT PANEL -->
   <div class="auth-right">
-    <div style="max-width:380px;width:100%;margin:0 auto;">
+    <div class="auth-right__header">
+      <h2 class="auth-right__title">Log In to Velora</h2>
+      <p style="color:var(--text-3);font-size:.9rem;margin:6px 0 0;">Don't have an account? <a href="{% url 'register' %}" style="color:var(--sell);font-weight:600;text-decoration:none;">Sign up free</a></p>
+    </div>
 
-      <div class="auth-right__header">
-        <h2 class="auth-right__title">Welcome Back 👋</h2>
-        <p class="auth-right__sub">Sign in to continue to your Velora account</p>
+    {% if error_message %}
+    <div class="alert alert-error" style="margin-bottom:20px;">{{ error_message }}</div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="id_username">Email Address</label>
+        <input class="form-input" type="email" id="id_username" name="username" placeholder="you@example.com" autocomplete="email" required value="{{ form.username.value|default:'' }}" />
+        {% if form.username.errors %}<div class="form-error">{{ form.username.errors.0 }}</div>{% endif %}
       </div>
-
-      <!-- Django messages -->
-      {% for message in messages %}
-        <div class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
-          {{ message }}
+      <div class="form-group">
+        <label class="form-label" for="id_password">
+          Password
+          <a href="{% url 'forgot_password' %}" style="float:right;color:var(--text-3);font-size:.82rem;font-weight:500;text-decoration:none;" tabindex="-1">Forgot password?</a>
+        </label>
+        <div style="position:relative;">
+          <input class="form-input" type="password" id="id_password" name="password" placeholder="Enter your password" autocomplete="current-password" required style="padding-right:48px;" />
+          <button type="button" onclick="togglePwd('id_password',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
-      {% endfor %}
-
-      <!-- Login form -->
-      <form method="post" action="{% url 'login' %}" id="loginForm" novalidate>
-        {% csrf_token %}
-
-        <div class="form-group">
-          <label class="form-label" for="id_username">Email Address</label>
-          <input
-            class="form-input {% if form.username.errors %}error{% endif %}"
-            type="email"
-            id="id_username"
-            name="username"
-            value="{{ form.username.value|default_if_none:'' }}"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          />
-          {% if form.username.errors %}
-            <span class="form-error">⚠ {{ form.username.errors|join:", " }}</span>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <label class="form-label" for="id_password" style="margin:0;">Password</label>
-            <a class="auth-link" href="{% url 'forgot_password' %}">Forgot password?</a>
-          </div>
-          <div style="position:relative;">
-            <input
-              class="form-input {% if form.password.errors %}error{% endif %}"
-              type="password"
-              id="id_password"
-              name="password"
-              placeholder="Enter your password"
-              autocomplete="current-password"
-              required
-              style="padding-right:48px;"
-            />
-            <button type="button" id="togglePwd" aria-label="Show/hide password" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-          {% if form.password.errors %}
-            <span class="form-error">⚠ {{ form.password.errors|join:", " }}</span>
-          {% endif %}
-        </div>
-
-        {% if form.non_field_errors %}
-          <div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>
-        {% endif %}
-
-        <button class="btn btn-sell btn-full btn-lg" type="submit" id="loginSubmitBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          Sign In to Velora
-        </button>
-
-      </form>
-
-      <div class="auth-right__footer">
-        Don't have an account?
-        <a href="{% url 'register' %}">Join Free →</a>
+        {% if form.password.errors %}<div class="form-error">{{ form.password.errors.0 }}</div>{% endif %}
       </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+        <input type="checkbox" id="remember_me" name="remember" style="width:16px;height:16px;accent-color:var(--sell);cursor:pointer;" />
+        <label for="remember_me" style="color:var(--text-3);font-size:.88rem;cursor:pointer;">Remember me for 30 days</label>
+      </div>
+      <button type="submit" class="btn btn-sell btn-full btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Log In
+      </button>
+    </form>
 
+    <div class="form-divider"><span>or</span></div>
+    <div style="text-align:center;">
+      <p style="color:var(--text-3);font-size:.88rem;margin:0;">New to Velora? <a href="{% url 'register' %}" class="btn btn-outline btn-sm" style="margin-left:8px;">Create Account</a></p>
     </div>
   </div>
 
 </div>
 
-{% endblock %}
-
-{% block extra_js %}
 <script>
-  // Password visibility toggle
-  const pwd = document.getElementById('id_password');
-  document.getElementById('togglePwd')?.addEventListener('click', () => {
-    pwd.type = pwd.type === 'password' ? 'text' : 'password';
-  });
+function togglePwd(id, btn) {
+  var inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
 </script>
 {% endblock %}

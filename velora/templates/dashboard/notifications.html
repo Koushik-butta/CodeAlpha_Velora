@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notifications — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">Notifications</h1>
+        <p style="color:var(--text-3);font-size:.88rem;margin:0;">Stay up to date with your orders, exchanges, and activity.</p>
+      </div>
+      {% if notifications %}
+      <form method="post" action="{% url 'mark_all_read' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-sm">Mark All Read</button>
+      </form>
+      {% endif %}
+    </div>
+
+    {% if notifications %}
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+      {% for notif in notifications %}
+      <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid var(--border);{% if not notif.is_read %}background:rgba(139,92,246,.04);{% endif %}transition:background .15s;">
+        <div style="width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+          {% if notif.notif_type == 'order' %}background:rgba(16,185,129,.12);
+          {% elif notif.notif_type == 'exchange' %}background:rgba(6,182,212,.12);
+          {% elif notif.notif_type == 'wishlist' %}background:rgba(239,68,68,.12);
+          {% else %}background:rgba(139,92,246,.12);{% endif %}">
+          {% if notif.notif_type == 'order' %}📦
+          {% elif notif.notif_type == 'exchange' %}🔄
+          {% elif notif.notif_type == 'wishlist' %}❤️
+          {% else %}🔔{% endif %}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:.9rem;font-weight:{% if not notif.is_read %}600{% else %}400{% endif %};color:var(--text-{% if not notif.is_read %}1{% else %}2{% endif %});">{{ notif.message }}</div>
+          <div style="color:var(--text-3);font-size:.78rem;margin-top:4px;">{{ notif.created_at|timesince }} ago</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          {% if not notif.is_read %}
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--sell);flex-shrink:0;"></span>
+          <form method="post" action="{% url 'mark_notification_read' notif.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost btn-sm" title="Mark as read">✓</button>
+          </form>
+          {% else %}
+          <span style="color:var(--text-3);font-size:.75rem;">Read</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;">
+      <div style="font-size:4rem;margin-bottom:16px;">🔔</div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-1);margin:0 0 10px;">All Caught Up!</h3>
+      <p style="color:var(--text-3);margin:0;">You have no notifications right now. Keep exploring Velora!</p>
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

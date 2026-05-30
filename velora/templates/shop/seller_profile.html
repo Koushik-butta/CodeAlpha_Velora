@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ seller.profile.full_name|default:seller.email }} — Seller Profile — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container">
+
+    <!-- Profile Header -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px;margin-bottom:28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 0% 0%,rgba(139,92,246,.08),transparent 60%);pointer-events:none;"></div>
+
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;position:relative;">
+
+        <!-- Avatar -->
+        <div style="width:88px;height:88px;border-radius:50%;flex-shrink:0;overflow:hidden;border:3px solid var(--sell);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">
+          {% if profile.avatar_url %}
+            <img src="{{ profile.avatar_url }}" alt="{{ profile.full_name }}" style="width:100%;height:100%;object-fit:cover;">
+          {% else %}
+            👤
+          {% endif %}
+        </div>
+
+        <!-- Info -->
+        <div style="flex:1;min-width:200px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+            <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.5rem;">
+              {{ profile.full_name|default:seller.email }}
+            </h1>
+            {% if profile.is_verified_seller %}
+              <span class="badge badge-buy">✓ Verified Seller</span>
+            {% endif %}
+          </div>
+
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+            {% if profile.city %}
+              <span style="font-size:.85rem;color:var(--text-3);">📍 {{ profile.city }}{% if profile.state %}, {{ profile.state }}{% endif %}</span>
+            {% endif %}
+            <span style="font-size:.85rem;color:var(--text-3);">📅 Joined {{ seller.date_joined|date:"M Y" }}</span>
+            <span style="font-size:.85rem;color:var(--text-3);">📦 {{ total_sold|default:0 }} Sold</span>
+          </div>
+
+          {% if profile.bio %}
+            <p style="color:var(--text-2);font-size:.88rem;max-width:500px;">{{ profile.bio }}</p>
+          {% endif %}
+        </div>
+
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex-shrink:0;">
+          <div style="text-align:center;padding:16px;background:var(--surface-2);border-radius:var(--radius-sm);min-width:80px;">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.4rem;color:var(--sell);">{{ products|length }}</div>
+            <div style="font-size:.72rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Listings</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--surface-2);border-radius:var(--radius-sm);">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.4rem;color:var(--buy);">{{ avg_rating|floatformat:1|default:"N/A" }}{% if avg_rating %}★{% endif %}</div>
+            <div style="font-size:.72rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Rating</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--surface-2);border-radius:var(--radius-sm);">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.4rem;color:var(--offer);">{{ profile.trade_score|default:0 }}</div>
+            <div style="font-size:.72rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Trade Score</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;">
+
+      <!-- Products Grid -->
+      <div>
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:20px;">
+          Active Listings ({{ products|length }})
+        </h2>
+
+        {% if products %}
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+          {% for product in products %}
+          <div class="pcard">
+            <div class="pcard__media">
+              <a href="{% url 'product_detail' product.slug %}">
+                {% if product.primary_image %}
+                  <img class="pcard__img" src="{{ product.primary_image.image_url }}" alt="{{ product.title }}" loading="lazy">
+                {% else %}
+                  <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"📦" }}</div>
+                {% endif %}
+              </a>
+              <div class="pcard__badges">
+                {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% else %}<span class="badge badge-swap">Exchange</span>{% endif %}
+                {% if product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
+              </div>
+            </div>
+            <div class="pcard__body">
+              <div class="pcard__title"><a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title|truncatechars:50 }}</a></div>
+              <div class="pcard__price">₹{{ product.price|floatformat:0 }}</div>
+              <div class="pcard__footer">
+                <span class="pcard__city">📍 {{ product.city }}</span>
+                <span class="pcard__condition">{{ product.get_condition_display }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:60px 20px;background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);">
+          <div style="font-size:3rem;margin-bottom:12px;">📦</div>
+          <p style="color:var(--text-3);">No active listings yet.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar: Reviews -->
+      <div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:16px;">
+            ⭐ Reviews ({{ total_reviews|default:0 }})
+          </h3>
+
+          {% if avg_rating %}
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:16px;background:var(--surface-2);border-radius:var(--radius-sm);">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2.5rem;color:var(--offer);">{{ avg_rating|floatformat:1 }}</div>
+            <div>
+              <div style="color:var(--offer);font-size:1.1rem;">
+                {% with avg_rating|floatformat:0 as stars %}
+                  {% for i in "12345" %}★{% endfor %}
+                {% endwith %}
+              </div>
+              <div style="font-size:.78rem;color:var(--text-3);">{{ total_reviews }} review{{ total_reviews|pluralize }}</div>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if reviews %}
+            {% for review in reviews %}
+            <div style="padding:14px 0;border-bottom:1px solid var(--border);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-weight:700;font-size:.85rem;">{{ review.reviewer.profile.full_name|default:review.reviewer.email }}</span>
+                <span style="color:var(--offer);font-size:.88rem;">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+              </div>
+              {% if review.comment %}<p style="font-size:.82rem;color:var(--text-2);margin:0;">{{ review.comment }}</p>{% endif %}
+              <span style="font-size:.72rem;color:var(--text-3);">{{ review.created_at|timesince }} ago</span>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p style="color:var(--text-3);font-size:.85rem;text-align:center;padding:20px 0;">No reviews yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

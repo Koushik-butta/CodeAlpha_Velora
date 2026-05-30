@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container">
+
+    <div style="margin-bottom:24px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-.02em;">Checkout</h1>
+      <!-- Progress Steps -->
+      <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.82rem;font-weight:600;">
+        <span style="color:var(--buy);">✓ Cart</span>
+        <span style="color:var(--border-2);">━━━</span>
+        <span style="color:var(--sell);font-weight:800;">📍 Address & Payment</span>
+        <span style="color:var(--border-2);">━━━</span>
+        <span style="color:var(--text-3);">🎉 Confirmation</span>
+      </div>
+    </div>
+
+    <form method="post" action="{% url 'place_order' %}" id="checkoutForm">
+      {% csrf_token %}
+      <input type="hidden" name="mode" value="{{ mode }}">
+
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;">
+
+        <!-- LEFT: Address + Payment -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <!-- ─── Delivery Address ─── -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:16px;">
+              📍 Select Delivery Address
+            </h2>
+
+            {% if addresses %}
+              {% for addr in addresses %}
+              <label style="display:flex;align-items:flex-start;gap:12px;padding:16px;border:1px solid var(--border{% if addr == selected_address or forloop.first %}-2{% endif %});border-radius:var(--radius-sm);margin-bottom:10px;cursor:pointer;background:var(--surface-2);transition:border-color .2s;" for="addr_{{ addr.pk }}">
+                <input type="radio" name="address_id" id="addr_{{ addr.pk }}" value="{{ addr.pk }}"
+                  {% if addr == selected_address or forloop.first %}checked{% endif %}
+                  style="margin-top:3px;accent-color:var(--sell);"
+                  onchange="this.closest('label').style.borderColor='var(--sell)'">
+                <div>
+                  <div style="font-weight:700;font-size:.95rem;margin-bottom:2px;">
+                    {{ addr.full_name }}
+                    <span class="badge badge-{{ addr.address_type }}" style="margin-left:6px;font-size:.7rem;text-transform:uppercase;">{{ addr.address_type }}</span>
+                    {% if addr.is_default %}<span class="badge badge-buy" style="margin-left:4px;font-size:.7rem;">Default</span>{% endif %}
+                  </div>
+                  <div style="font-size:.85rem;color:var(--text-2);line-height:1.6;">
+                    {{ addr.house_no }}{% if addr.house_no %}, {% endif %}{{ addr.street }}{% if addr.area %}, {{ addr.area }}{% endif %}
+                  </div>
+                  <div style="font-size:.85rem;color:var(--text-2);">{{ addr.city }}, {{ addr.state }} — {{ addr.pincode }}</div>
+                  <div style="font-size:.82rem;color:var(--text-3);margin-top:2px;">📞 {{ addr.phone }}</div>
+                </div>
+              </label>
+              {% endfor %}
+            {% endif %}
+
+            <!-- Add New Address Toggle -->
+            <button type="button" id="toggleAddrForm"
+              onclick="document.getElementById('newAddrSection').style.display=document.getElementById('newAddrSection').style.display==='none'?'block':'none'"
+              style="margin-top:4px;background:none;border:1px dashed var(--border-2);border-radius:var(--radius-sm);padding:12px 20px;cursor:pointer;color:var(--sell);font-weight:700;width:100%;font-size:.88rem;">
+              + Add New Address
+            </button>
+
+            <!-- New Address Form -->
+            <div id="newAddrSection" style="display:none;margin-top:16px;padding:20px;background:var(--surface-2);border-radius:var(--radius-sm);border:1px solid var(--border);">
+              <h3 style="font-size:.95rem;font-weight:700;margin-bottom:16px;">New Delivery Address</h3>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  {{ address_form.full_name }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone</label>
+                  {{ address_form.phone }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">House / Flat No.</label>
+                  {{ address_form.house_no }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Street</label>
+                  {{ address_form.street }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Area / Colony</label>
+                  {{ address_form.area }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">City</label>
+                  {{ address_form.city }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">State</label>
+                  {{ address_form.state }}
+                </div>
+                <div class="form-group">
+                  <label class="form-label">PIN Code</label>
+                  {{ address_form.pincode }}
+                </div>
+                <div class="form-group" style="grid-column:span 2;">
+                  <label class="form-label">Landmark (optional)</label>
+                  {{ address_form.landmark }}
+                </div>
+              </div>
+              <p style="font-size:.78rem;color:var(--text-3);margin-top:8px;">
+                Note: New address will be saved. After adding, please <a href="{% url 'dashboard_addresses' %}" style="color:var(--sell);">manage addresses</a> separately.
+              </p>
+            </div>
+
+            {% if not addresses %}
+              <div class="alert alert-warning" style="margin-top:12px;">
+                ⚠️ No saved addresses found. Please add an address above before placing your order.
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- ─── Payment Method ─── -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:16px;">
+              💳 Payment Method
+            </h2>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <!-- COD -->
+              <label style="display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--sell);border-radius:var(--radius-sm);cursor:pointer;background:var(--sell-dim);" for="pay_cod">
+                <input type="radio" name="payment_method" id="pay_cod" value="cod" checked style="accent-color:var(--sell);">
+                <span style="font-size:1.4rem;">💵</span>
+                <div>
+                  <div style="font-weight:700;font-size:.95rem;">Cash on Delivery</div>
+                  <div style="font-size:.78rem;color:var(--text-3);">Pay when your order arrives</div>
+                </div>
+                <span class="badge badge-buy" style="margin-left:auto;">Recommended</span>
+              </label>
+
+              <!-- UPI -->
+              <label style="display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface-2);" for="pay_upi">
+                <input type="radio" name="payment_method" id="pay_upi" value="upi" style="accent-color:var(--sell);">
+                <span style="font-size:1.4rem;">📱</span>
+                <div>
+                  <div style="font-weight:700;font-size:.95rem;">UPI Payment</div>
+                  <div style="font-size:.78rem;color:var(--text-3);">GPay, PhonePe, Paytm, BHIM</div>
+                </div>
+                <span class="badge badge-offer" style="margin-left:auto;">5% off</span>
+              </label>
+
+              <!-- Card -->
+              <label style="display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface-2);" for="pay_card">
+                <input type="radio" name="payment_method" id="pay_card" value="card" style="accent-color:var(--sell);">
+                <span style="font-size:1.4rem;">💳</span>
+                <div>
+                  <div style="font-weight:700;font-size:.95rem;">Debit / Credit Card</div>
+                  <div style="font-size:.78rem;color:var(--text-3);">Visa, Mastercard, RuPay</div>
+                </div>
+              </label>
+
+              <!-- Net Banking -->
+              <label style="display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface-2);" for="pay_nb">
+                <input type="radio" name="payment_method" id="pay_nb" value="netbanking" style="accent-color:var(--sell);">
+                <span style="font-size:1.4rem;">🏦</span>
+                <div>
+                  <div style="font-weight:700;font-size:.95rem;">Net Banking</div>
+                  <div style="font-size:.78rem;color:var(--text-3);">SBI, HDFC, ICICI, Axis + more</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Order Summary -->
+        <div style="position:sticky;top:80px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:16px;">Order Summary</h2>
+
+            <!-- Items -->
+            <div style="margin-bottom:16px;">
+              {% for item in checkout_items %}
+              <div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                {% if item.is_dict %}
+                  {% if item.product.primary_image %}
+                    <img src="{{ item.product.primary_image.image_url }}" alt="{{ item.product.title }}"
+                         style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+                  {% else %}
+                    <div style="width:48px;height:48px;background:var(--surface-2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">{{ item.product.category.icon|default:"📦" }}</div>
+                  {% endif %}
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:.85rem;font-weight:600;">{{ item.product.title|truncatechars:40 }}</div>
+                    <div style="font-size:.78rem;color:var(--text-3);">Qty: {{ item.quantity }}</div>
+                  </div>
+                  <div style="font-weight:700;font-size:.9rem;flex-shrink:0;">₹{{ item.subtotal|floatformat:0 }}</div>
+                {% else %}
+                  {% if item.product.primary_image %}
+                    <img src="{{ item.product.primary_image.image_url }}" alt="{{ item.product.title }}"
+                         style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+                  {% else %}
+                    <div style="width:48px;height:48px;background:var(--surface-2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">{{ item.product.category.icon|default:"📦" }}</div>
+                  {% endif %}
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:.85rem;font-weight:600;">{{ item.product.title|truncatechars:40 }}</div>
+                    <div style="font-size:.78rem;color:var(--text-3);">Qty: {{ item.quantity }}</div>
+                  </div>
+                  <div style="font-weight:700;font-size:.9rem;flex-shrink:0;">₹{{ item.subtotal|floatformat:0 }}</div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- Pricing -->
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;font-size:.9rem;">
+                <span style="color:var(--text-2);">Subtotal</span>
+                <span style="font-weight:600;">₹{{ subtotal|floatformat:0 }}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:.9rem;">
+                <span style="color:var(--text-2);">Delivery</span>
+                <span style="font-weight:600;color:{% if delivery_charge == 0 %}var(--buy){% else %}var(--text-1){% endif %};">
+                  {% if delivery_charge == 0 %}FREE{% else %}₹{{ delivery_charge }}{% endif %}
+                </span>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--border);">
+              <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;font-family:'Plus Jakarta Sans',sans-serif;">
+                <span>Total</span>
+                <span style="color:var(--sell);">₹{{ total|floatformat:0 }}</span>
+              </div>
+            </div>
+
+            <!-- Estimated Delivery -->
+            <div style="background:var(--buy-dim);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px;">
+              <div style="font-size:.8rem;font-weight:700;color:var(--buy);margin-bottom:2px;">🚚 Estimated Delivery</div>
+              <div style="font-size:.9rem;font-weight:600;">{{ estimated_delivery|date:"D, d M Y" }}</div>
+            </div>
+
+            <!-- Place Order Button -->
+            <button type="submit" class="btn btn-sell btn-full btn-lg" id="placeOrderBtn">
+              🛍️ Place Order — ₹{{ total|floatformat:0 }}
+            </button>
+
+            <p style="font-size:.75rem;color:var(--text-3);text-align:center;margin-top:10px;">
+              🔒 Your order is secured. By placing this order you agree to our <a href="#" style="color:var(--sell);">Terms of Service</a>.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+// Highlight selected address
+document.querySelectorAll('input[name="address_id"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    document.querySelectorAll('label[for^="addr_"]').forEach(l => {
+      l.style.borderColor = 'var(--border)';
+    });
+    document.querySelector('label[for="' + this.id + '"]').style.borderColor = 'var(--sell)';
+  });
+});
+
+// Highlight selected payment
+document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    document.querySelectorAll('input[name="payment_method"]').forEach(r => {
+      r.closest('label').style.borderColor = 'var(--border)';
+      r.closest('label').style.background = 'var(--surface-2)';
+    });
+    this.closest('label').style.borderColor = 'var(--sell)';
+    this.closest('label').style.background = 'var(--sell-dim)';
+  });
+});
+
+// Disable double-submit
+document.getElementById('checkoutForm').addEventListener('submit', function() {
+  document.getElementById('placeOrderBtn').disabled = true;
+  document.getElementById('placeOrderBtn').textContent = 'Placing Order...';
+});
+</script>
+{% endblock %}

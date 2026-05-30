@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account Settings — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="margin-bottom:24px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">Account Settings</h1>
+      <p style="color:var(--text-3);font-size:.88rem;margin:0;">Update your profile and account preferences.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
+
+      <!-- Avatar / Quick Info -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;text-align:center;">
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--sell),var(--swap));display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;color:#fff;margin:0 auto 16px;">
+          {{ user.email|first|upper }}
+        </div>
+        <div style="font-weight:700;color:var(--text-1);font-size:1rem;margin-bottom:4px;">{{ user.profile.full_name|default:"No name set" }}</div>
+        <div style="color:var(--text-3);font-size:.82rem;margin-bottom:16px;">{{ user.email }}</div>
+        {% if user.profile.is_verified %}
+        <span class="badge badge-success">✔ Verified Seller</span>
+        {% else %}
+        <span class="badge badge-error">Not Verified</span>
+        {% endif %}
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+          <div style="color:var(--text-3);font-size:.78rem;margin-bottom:8px;">Trade Score</div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:900;color:var(--gold);">{{ user.profile.trade_score|default:0 }}</div>
+        </div>
+        <div style="margin-top:16px;">
+          <a href="{% url 'change_password' %}" class="btn btn-outline btn-sm btn-full">Change Password</a>
+        </div>
+      </div>
+
+      <!-- Settings Form -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin:0 0 24px;">Profile Information</h2>
+
+        <form method="post" action="{% url 'dashboard_settings' %}" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          {% if profile_form.non_field_errors %}
+          <div class="alert alert-error" style="margin-bottom:16px;">
+            {% for error in profile_form.non_field_errors %}{{ error }}{% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" name="full_name" placeholder="Your full name" value="{{ profile_form.full_name.value|default:'' }}" />
+            {% if profile_form.full_name.errors %}<div class="form-error">{{ profile_form.full_name.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" type="email" value="{{ user.email }}" disabled style="opacity:.6;cursor:not-allowed;" />
+            <div class="form-hint">Email cannot be changed. Contact support if needed.</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input class="form-input" type="tel" name="phone" placeholder="10-digit mobile" value="{{ profile_form.phone.value|default:'' }}" />
+              {% if profile_form.phone.errors %}<div class="form-error">{{ profile_form.phone.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input class="form-input" type="text" name="city" placeholder="Your city" value="{{ profile_form.city.value|default:'' }}" />
+              {% if profile_form.city.errors %}<div class="form-error">{{ profile_form.city.errors.0 }}</div>{% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Bio <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+            <textarea class="form-input" name="bio" placeholder="A short bio about yourself as a seller..." rows="3" style="resize:vertical;">{{ profile_form.bio.value|default:'' }}</textarea>
+            {% if profile_form.bio.errors %}<div class="form-error">{{ profile_form.bio.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">UPI ID <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+            <input class="form-input" type="text" name="upi_id" placeholder="yourname@upi" value="{{ profile_form.upi_id.value|default:'' }}" />
+          </div>
+
+          <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:8px;">
+            <button type="submit" class="btn btn-sell">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Danger Zone -->
+    <div style="background:var(--surface);border:1px solid rgba(239,68,68,.2);border-radius:18px;padding:24px;margin-top:24px;">
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--error);margin:0 0 8px;">Danger Zone</h3>
+      <p style="color:var(--text-3);font-size:.85rem;margin:0 0 16px;">These actions are irreversible. Please be certain before proceeding.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.08);color:var(--error);border:1px solid rgba(239,68,68,.2);">Log Out of All Devices</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

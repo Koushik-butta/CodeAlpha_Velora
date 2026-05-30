@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if query %}"{{ query }}" — {% endif %}Search Results — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container">
+
+    <!-- Search Bar -->
+    <div style="margin-bottom:28px;">
+      <form method="get" action="{% url 'search' %}">
+        <div style="display:flex;gap:10px;max-width:620px;">
+          <input type="text" name="q" value="{{ query }}"
+            placeholder="Search products, brands, categories..."
+            style="flex:1;padding:14px 18px;background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius-sm);color:var(--text-1);font-size:.95rem;outline:none;"
+            autofocus>
+          <button type="submit" class="btn btn-sell" style="padding:14px 24px;">🔍 Search</button>
+        </div>
+      </form>
+    </div>
+
+    {% if query %}
+    <div style="margin-bottom:20px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:-.02em;">
+        {% if total_count %}
+          <span style="color:var(--sell);">{{ total_count }}</span> result{{ total_count|pluralize }} for
+        {% else %}
+          No results for
+        {% endif %}
+        "<span style="color:var(--text-1);">{{ query }}</span>"
+      </h1>
+    </div>
+
+    {% if products %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;">
+      {% for product in products %}
+      <div class="pcard">
+        <div class="pcard__media">
+          <a href="{% url 'product_detail' product.slug %}">
+            {% if product.primary_image %}
+              <img class="pcard__img" src="{{ product.primary_image.image_url }}" alt="{{ product.title }}" loading="lazy">
+            {% else %}
+              <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"🔍" }}</div>
+            {% endif %}
+          </a>
+          <div class="pcard__badges">
+            {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% else %}<span class="badge badge-swap">Exchange</span>{% endif %}
+            {% if product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
+          </div>
+          {% if user.is_authenticated %}
+          <button class="pcard__wish" onclick="toggleWishlist('{{ product.pk }}', this)"
+            style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1rem;">♡</button>
+          {% endif %}
+        </div>
+        <div class="pcard__body">
+          <div class="pcard__title">
+            <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title|truncatechars:55 }}</a>
+          </div>
+          <div class="pcard__price">₹{{ product.price|floatformat:0 }}</div>
+          <div class="pcard__footer">
+            <span class="pcard__city">📍 {{ product.city }}</span>
+            <span class="pcard__condition">{{ product.get_condition_display }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:32px;">
+      {% if page_obj.has_previous %}<a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">← Prev</a>{% endif %}
+      <span style="display:flex;align-items:center;font-size:.85rem;color:var(--text-3);padding:0 12px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">Next →</a>{% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);">
+      <div style="font-size:4rem;margin-bottom:16px;">🔍</div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:8px;">No Results Found</h2>
+      <p style="color:var(--text-3);margin-bottom:24px;">We couldn't find any products matching "<strong>{{ query }}</strong>".</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="{% url 'product_list' %}" class="btn btn-sell">Browse All Products</a>
+        <a href="{% url 'search' %}" class="btn btn-outline">Clear Search</a>
+      </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- No query: show recent / popular -->
+    <div style="text-align:center;padding:60px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);">
+      <div style="font-size:4rem;margin-bottom:16px;">🔎</div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:8px;">Search Velora Marketplace</h2>
+      <p style="color:var(--text-3);margin-bottom:24px;">Search across thousands of products listed by users across India.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="{% url 'search' %}?q=mobile" class="btn btn-ghost btn-sm">📱 Mobile</a>
+        <a href="{% url 'search' %}?q=laptop" class="btn btn-ghost btn-sm">💻 Laptop</a>
+        <a href="{% url 'search' %}?q=bike" class="btn btn-ghost btn-sm">🏍️ Bike</a>
+        <a href="{% url 'search' %}?q=furniture" class="btn btn-ghost btn-sm">🛋️ Furniture</a>
+        <a href="{% url 'search' %}?q=camera" class="btn btn-ghost btn-sm">📷 Camera</a>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+function toggleWishlist(pk, btn) {
+  fetch('{% url "toggle_wishlist" "00000000-0000-0000-0000-000000000000" %}'.replace('00000000-0000-0000-0000-000000000000', pk), {
+    method: 'POST',
+    headers: { 'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/json' }
+  }).then(r => r.json()).then(data => {
+    btn.textContent = data.in_wishlist ? '♥' : '♡';
+    btn.style.color = data.in_wishlist ? 'var(--error)' : '#fff';
+  }).catch(console.error);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Products — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">My Products</h1>
+        <p style="color:var(--text-3);font-size:.88rem;margin:0;">Manage your listings — edit, mark sold, or delete.</p>
+      </div>
+      <a href="{% url 'sell_product' %}" class="btn btn-sell">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        New Listing
+      </a>
+    </div>
+
+    {% if products %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
+      {% for product in products %}
+      <div class="pcard" style="position:relative;">
+        {% if product.is_sold %}
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:5;display:flex;align-items:center;justify-content:center;border-radius:inherit;">
+          <span style="background:var(--error);color:#fff;font-weight:800;font-size:1rem;padding:10px 22px;border-radius:100px;letter-spacing:.05em;">SOLD</span>
+        </div>
+        {% endif %}
+        <div class="pcard__media">
+          {% if product.primary_image %}
+          <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" />
+          {% else %}
+          <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--surface-2);">{{ product.category.icon|default:"🛒" }}</div>
+          {% endif %}
+          <div class="pcard__badges">
+            {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
+            {% if not product.is_active %}<span class="badge badge-error">Draft</span>{% endif %}
+          </div>
+        </div>
+        <div class="pcard__body">
+          <div class="pcard__title">{{ product.title }}</div>
+          <div class="pcard__price">₹{{ product.price|floatformat:0 }}</div>
+          <div class="pcard__footer">
+            <span class="pcard__city">📍 {{ product.city }}</span>
+            <span class="pcard__condition">
+              {% if product.condition == 'new' %}New{% elif product.condition == 'like_new' %}Like New{% elif product.condition == 'good' %}Good{% elif product.condition == 'fair' %}Fair{% else %}Poor{% endif %}
+            </span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);">
+          <a href="{% url 'product_detail' product.slug %}" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;">View</a>
+          <a href="{% url 'edit_product' product.slug %}" class="btn btn-outline btn-sm" style="flex:1;justify-content:center;">Edit</a>
+          {% if not product.is_sold %}
+          <form method="post" action="{% url 'mark_sold' product.slug %}" style="flex:1;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-offer btn-sm btn-full">Mark Sold</button>
+          </form>
+          {% endif %}
+          <form method="post" action="{% url 'delete_product' product.slug %}" style="flex:0;" onsubmit="return confirm('Delete this product?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.12);color:var(--error);border:1px solid rgba(239,68,68,.2);padding:0 10px;">🗑</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="pagination" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:32px;">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">&laquo; Prev</a>
+      {% endif %}
+      <span style="color:var(--text-3);font-size:.88rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">Next &raquo;</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;">
+      <div style="font-size:4rem;margin-bottom:16px;">📦</div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-1);margin:0 0 10px;">No Products Yet</h3>
+      <p style="color:var(--text-3);margin:0 0 24px;">Start selling by listing your first product. It only takes 2 minutes!</p>
+      <a href="{% url 'sell_product' %}" class="btn btn-sell btn-lg">List Your First Product</a>
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

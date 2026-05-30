@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if query %}{{ query }} — {% endif %}{% if selected_category %}{{ selected_category }} — {% endif %}Browse Products — Velora{% endblock %}
+
+{% block content %}
+<div style="background:var(--bg);min-height:80vh;padding:32px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:start;">
+
+      <!-- SIDEBAR FILTERS -->
+      <aside style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;position:sticky;top:calc(var(--nav-h) + 16px);">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--text-1);margin:0 0 20px;">Filters</h2>
+
+        <form method="get" action="{% url 'product_list' %}" id="filterForm">
+          <!-- Search -->
+          <div class="form-group">
+            <label class="form-label">Search</label>
+            <input class="form-input" type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}" />
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-input" name="category">
+              <option value="">All Categories</option>
+              {% for cat in categories %}
+              <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>{{ cat.icon|default:"" }} {{ cat.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Listing Type -->
+          <div class="form-group">
+            <label class="form-label">Listing Type</label>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
+                <input type="radio" name="type" value="" {% if not listing_type %}checked{% endif %} style="accent-color:var(--sell);" /> All Types
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
+                <input type="radio" name="type" value="buy" {% if listing_type == 'buy' %}checked{% endif %} style="accent-color:var(--buy);" /> 🛒 Buy
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
+                <input type="radio" name="type" value="sell" {% if listing_type == 'sell' %}checked{% endif %} style="accent-color:var(--sell);" /> 💰 Sell
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
+                <input type="radio" name="type" value="exchange" {% if listing_type == 'exchange' %}checked{% endif %} style="accent-color:var(--swap);" /> 🔄 Exchange
+              </label>
+            </div>
+          </div>
+
+          <!-- Condition -->
+          <div class="form-group">
+            <label class="form-label">Condition</label>
+            <select class="form-input" name="condition">
+              <option value="">Any Condition</option>
+              <option value="new" {% if request.GET.condition == 'new' %}selected{% endif %}>New</option>
+              <option value="like_new" {% if request.GET.condition == 'like_new' %}selected{% endif %}>Like New</option>
+              <option value="good" {% if request.GET.condition == 'good' %}selected{% endif %}>Good</option>
+              <option value="fair" {% if request.GET.condition == 'fair' %}selected{% endif %}>Fair</option>
+              <option value="poor" {% if request.GET.condition == 'poor' %}selected{% endif %}>Poor</option>
+            </select>
+          </div>
+
+          <!-- Price Range -->
+          <div class="form-group">
+            <label class="form-label">Price Range (₹)</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <input class="form-input" type="number" name="min_price" placeholder="Min" value="{{ request.GET.min_price|default:'' }}" min="0" />
+              <input class="form-input" type="number" name="max_price" placeholder="Max" value="{{ request.GET.max_price|default:'' }}" min="0" />
+            </div>
+          </div>
+
+          <!-- City -->
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input class="form-input" type="text" name="city" placeholder="e.g. Hyderabad" value="{{ request.GET.city|default:'' }}" />
+          </div>
+
+          <button type="submit" class="btn btn-sell btn-full" style="margin-top:4px;">Apply Filters</button>
+          <a href="{% url 'product_list' %}" class="btn btn-ghost btn-full btn-sm" style="margin-top:8px;">Clear All</a>
+        </form>
+      </aside>
+
+      <!-- PRODUCTS GRID -->
+      <div>
+        <!-- Header bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div style="color:var(--text-3);font-size:.88rem;">
+            {% if page_obj %}
+            <strong style="color:var(--text-1);">{{ page_obj.paginator.count }}</strong> product{{ page_obj.paginator.count|pluralize }} found
+            {% endif %}
+            {% if query %} for "<strong style="color:var(--sell);">{{ query }}</strong>"{% endif %}
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <label style="color:var(--text-3);font-size:.85rem;white-space:nowrap;">Sort by:</label>
+            <select class="form-input" style="padding:8px 12px;font-size:.85rem;" onchange="document.getElementById('filterForm').submit()" name="sort" form="filterForm">
+              <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Newest First</option>
+              <option value="price" {% if sort == 'price' %}selected{% endif %}>Price: Low to High</option>
+              <option value="-price" {% if sort == '-price' %}selected{% endif %}>Price: High to Low</option>
+              <option value="-views_count" {% if sort == '-views_count' %}selected{% endif %}>Most Viewed</option>
+            </select>
+          </div>
+        </div>
+
+        {% if products %}
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;">
+          {% for product in products %}
+          <div class="pcard">
+            <div class="pcard__media">
+              <a href="{% url 'product_detail' product.slug %}">
+                {% if product.primary_image %}
+                <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" />
+                {% else %}
+                <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"🛒" }}</div>
+                {% endif %}
+              </a>
+              <div class="pcard__badges">
+                {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
+                {% if product.is_featured %}<span class="badge badge-gold">Featured</span>{% endif %}
+                {% if product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
+              </div>
+              {% if user.is_authenticated %}
+              <button class="pcard__wish" onclick="toggleWishlist({{ product.pk }}, this)" title="Add to Wishlist" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1rem;transition:background .2s;">♡</button>
+              {% endif %}
+            </div>
+            <div class="pcard__body">
+              <div class="pcard__title"><a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title }}</a></div>
+              <div class="pcard__price">₹{{ product.price|floatformat:0 }}</div>
+              <div class="pcard__footer">
+                <span class="pcard__city">📍 {{ product.city }}</span>
+                <span class="pcard__condition">
+                  {% if product.condition == 'new' %}New{% elif product.condition == 'like_new' %}Like New{% elif product.condition == 'good' %}Good{% elif product.condition == 'fair' %}Fair{% else %}Poor{% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:36px;">
+          {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">&laquo; Prev</a>{% endif %}
+          <span style="color:var(--text-3);font-size:.88rem;padding:0 8px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">Next &raquo;</a>{% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div style="text-align:center;padding:80px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;">
+          <div style="font-size:4rem;margin-bottom:16px;">🔍</div>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-1);margin:0 0 10px;">No Products Found</h3>
+          <p style="color:var(--text-3);margin:0 0 24px;">Try adjusting your filters or search query.</p>
+          <a href="{% url 'product_list' %}" class="btn btn-outline">Clear Filters</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleWishlist(pk, btn) {
+  var csrfToken = '{{ csrf_token }}';
+  fetch('/products/wishlist/' + pk + '/toggle/', {
+    method: 'POST',
+    headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }
+  }).then(function(res) { return res.json(); }).then(function(data) {
+    btn.textContent = data.in_wishlist ? '♥' : '♡';
+    btn.style.color = data.in_wishlist ? 'var(--error)' : '#fff';
+  }).catch(function() {});
+}
+</script>
+
+<style>
+@media (max-width: 768px) {
+  .container > div[style*="grid-template-columns: 260px"] {
+    grid-template-columns: 1fr !important;
+  }
+  aside[style*="sticky"] { position: static !important; }
+}
+</style>
+{% endblock %}

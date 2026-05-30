@@ -2,6 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
+from users.models import Profile
+from cart.models import Address
+
 User = get_user_model()
 
 
@@ -90,7 +93,30 @@ class ForgotPasswordForm(forms.Form):
         return email
 
 
+class SetNewPasswordForm(forms.Form):
+    """Used in the token-based reset flow (uidb64/token URL args)."""
+    new_password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password', 'class': 'formInput'}),
+    )
+    new_password_confirm = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new password', 'class': 'formInput'}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('new_password')
+        password_confirm = cleaned_data.get('new_password_confirm')
+
+        if password and password_confirm and password != password_confirm:
+            self.add_error('new_password_confirm', 'Passwords do not match.')
+            raise ValidationError('Passwords do not match.')
+        return cleaned_data
+
+
 class ResetPasswordForm(forms.Form):
+    """Legacy OTP-based form kept for backwards compatibility."""
     otp_code = forms.CharField(
         max_length=6,
         min_length=6,
@@ -163,3 +189,67 @@ class PasswordChangeForm(forms.Form):
             raise ValidationError('Passwords do not match.')
         return cleaned_data
 
+
+class ProfileSettingsForm(forms.ModelForm):
+    """Form for updating the user's Profile model fields."""
+
+    full_name = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Your full name', 'class': 'formInput'}),
+    )
+    phone = forms.CharField(
+        max_length=32,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Phone number', 'class': 'formInput'}),
+    )
+    city = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'City', 'class': 'formInput'}),
+    )
+    state = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'State', 'class': 'formInput'}),
+    )
+    bio = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Tell buyers a bit about yourself…',
+            'class': 'formInput',
+            'rows': 4,
+        }),
+    )
+    website = forms.URLField(
+        required=False,
+        widget=forms.URLInput(attrs={'placeholder': 'https://your-website.com', 'class': 'formInput'}),
+    )
+
+    class Meta:
+        model = Profile
+        fields = ('full_name', 'phone', 'city', 'state', 'bio', 'website')
+
+
+class AddressForm(forms.ModelForm):
+    """Form for creating/editing a delivery Address."""
+
+    class Meta:
+        model = Address
+        fields = (
+            'full_name', 'phone', 'house_no', 'street', 'area',
+            'city', 'state', 'pincode', 'landmark', 'address_type', 'is_default',
+        )
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Full name'}),
+            'phone': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Phone number'}),
+            'house_no': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'House / Flat / Block No.'}),
+            'street': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Street / Road'}),
+            'area': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Area / Colony'}),
+            'city': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'City'}),
+            'state': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'State'}),
+            'pincode': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Pincode'}),
+            'landmark': forms.TextInput(attrs={'class': 'formInput', 'placeholder': 'Nearby landmark (optional)'}),
+            'address_type': forms.Select(attrs={'class': 'formInput'}),
+            'is_default': forms.CheckboxInput(attrs={'class': 'formCheckbox'}),
+        }

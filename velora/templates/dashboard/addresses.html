@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Addresses — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="margin-bottom:24px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">Saved Addresses</h1>
+      <p style="color:var(--text-3);font-size:.88rem;margin:0;">Manage your delivery addresses.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+
+      <!-- Address List -->
+      <div>
+        {% if addresses %}
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          {% for addr in addresses %}
+          <div style="background:var(--surface);border:1px solid {% if addr.is_default %}rgba(16,185,129,.4){% else %}var(--border){% endif %};border-radius:16px;padding:20px;position:relative;">
+            {% if addr.is_default %}
+            <span class="badge badge-success" style="position:absolute;top:14px;right:14px;font-size:.68rem;">Default</span>
+            {% endif %}
+            <div style="font-weight:700;color:var(--text-1);font-size:.95rem;margin-bottom:6px;">{{ addr.full_name }}</div>
+            <div style="color:var(--text-3);font-size:.85rem;line-height:1.6;">
+              {{ addr.address_line1 }}{% if addr.address_line2 %}, {{ addr.address_line2 }}{% endif %}<br/>
+              {{ addr.city }}, {{ addr.state }} — {{ addr.pincode }}<br/>
+              📞 {{ addr.phone }}
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+              <a href="{% url 'edit_address' addr.pk %}" class="btn btn-outline btn-sm">Edit</a>
+              {% if not addr.is_default %}
+              <form method="post" action="{% url 'set_default_address' addr.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-buy btn-sm">Set Default</button>
+              </form>
+              {% endif %}
+              <form method="post" action="{% url 'delete_address' addr.pk %}" onsubmit="return confirm('Delete this address?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.12);color:var(--error);border:1px solid rgba(239,68,68,.2);">Delete</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:16px;">
+          <div style="font-size:3rem;margin-bottom:12px;">📍</div>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin:0 0 8px;">No Addresses Saved</h3>
+          <p style="color:var(--text-3);font-size:.85rem;margin:0;">Add an address to make checkout faster.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Add Address Form -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin:0 0 20px;">Add New Address</h2>
+
+        <form method="post" action="{% url 'add_address' %}" novalidate>
+          {% csrf_token %}
+
+          {% if address_form.non_field_errors %}
+          <div class="alert alert-error" style="margin-bottom:16px;">
+            {% for error in address_form.non_field_errors %}{{ error }}{% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" name="full_name" placeholder="Recipient's full name" value="{{ address_form.full_name.value|default:'' }}" required />
+            {% if address_form.full_name.errors %}<div class="form-error">{{ address_form.full_name.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input class="form-input" type="tel" name="phone" placeholder="10-digit mobile number" value="{{ address_form.phone.value|default:'' }}" required />
+            {% if address_form.phone.errors %}<div class="form-error">{{ address_form.phone.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Address Line 1</label>
+            <input class="form-input" type="text" name="address_line1" placeholder="House no., Building, Street" value="{{ address_form.address_line1.value|default:'' }}" required />
+            {% if address_form.address_line1.errors %}<div class="form-error">{{ address_form.address_line1.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Address Line 2 <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+            <input class="form-input" type="text" name="address_line2" placeholder="Locality, Area, Landmark" value="{{ address_form.address_line2.value|default:'' }}" />
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input class="form-input" type="text" name="city" placeholder="City" value="{{ address_form.city.value|default:'' }}" required />
+              {% if address_form.city.errors %}<div class="form-error">{{ address_form.city.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pincode</label>
+              <input class="form-input" type="text" name="pincode" placeholder="6-digit PIN" value="{{ address_form.pincode.value|default:'' }}" required maxlength="6" />
+              {% if address_form.pincode.errors %}<div class="form-error">{{ address_form.pincode.errors.0 }}</div>{% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">State</label>
+            <input class="form-input" type="text" name="state" placeholder="State" value="{{ address_form.state.value|default:'' }}" required />
+            {% if address_form.state.errors %}<div class="form-error">{{ address_form.state.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <input type="checkbox" id="is_default" name="is_default" style="width:16px;height:16px;accent-color:var(--buy);cursor:pointer;" {% if address_form.is_default.value %}checked{% endif %} />
+            <label for="is_default" style="color:var(--text-2);font-size:.88rem;cursor:pointer;">Set as default address</label>
+          </div>
+
+          <button type="submit" class="btn btn-sell btn-full">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Save Address
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

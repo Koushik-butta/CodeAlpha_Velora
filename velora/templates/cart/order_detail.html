@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order #{{ order.short_id }} — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container" style="max-width:800px;">
+
+    <!-- Back + Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <a href="{% url 'order_list' %}" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-3);font-weight:600;margin-bottom:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          My Orders
+        </a>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-.02em;">
+          Order <span style="color:var(--sell);">#{{ order.short_id }}</span>
+        </h1>
+        <p style="color:var(--text-3);font-size:.85rem;margin-top:4px;">
+          Placed on {{ order.created_at|date:"D, d M Y" }} at {{ order.created_at|date:"g:i A" }}
+        </p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        {% if order.is_cancellable %}
+        <form method="post" action="{% url 'cancel_order' pk=order.pk %}" onsubmit="return confirm('Cancel this order?')">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-ghost" style="color:var(--error);border-color:var(--error);">
+            ✕ Cancel Order
+          </button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'reorder' pk=order.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline">🔄 Reorder</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ─── Status Badge ─── -->
+    <div style="margin-bottom:24px;">
+      {% if is_cancelled %}
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius-sm);padding:10px 16px;">
+          <span style="font-size:1.2rem;">❌</span>
+          <span style="font-weight:800;color:var(--error);">Order Cancelled</span>
+        </div>
+      {% elif order.status == 'return_requested' %}
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:10px 16px;">
+          <span style="font-size:1.2rem;">🔄</span>
+          <span style="font-weight:800;color:var(--offer);">Return Requested — Under Review</span>
+        </div>
+      {% elif order.status == 'delivered' %}
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.3);border-radius:var(--radius-sm);padding:10px 16px;">
+          <span style="font-size:1.2rem;">✅</span>
+          <span style="font-weight:800;color:var(--buy);">Delivered on {{ order.delivered_at|date:"d M Y"|default:"N/A" }}</span>
+        </div>
+      {% else %}
+        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--sell-dim);border:1px solid rgba(139,92,246,.3);border-radius:var(--radius-sm);padding:10px 16px;">
+          <span style="font-size:1.2rem;">📦</span>
+          <span style="font-weight:800;color:var(--sell);">{{ order.get_status_display }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- ─── Visual Progress Tracker ─── -->
+    {% if not is_cancelled %}
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:24px;">Delivery Progress</h2>
+
+      <div style="position:relative;">
+        <!-- Background track -->
+        <div style="position:absolute;top:20px;left:8%;right:8%;height:3px;background:var(--border-2);border-radius:2px;z-index:0;"></div>
+        <!-- Progress fill -->
+        <div style="position:absolute;top:20px;left:8%;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--buy),var(--sell));z-index:1;transition:width .5s;width:{{ order.status_progress_pct }}%;"></div>
+
+        <!-- Steps -->
+        <div style="display:flex;justify-content:space-between;position:relative;z-index:2;">
+          {% for step in progress_steps %}
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;">
+            <div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;transition:all .3s;
+              {% if step.state == 'active' %}background:var(--sell);color:white;box-shadow:0 0 20px rgba(139,92,246,.6);border:3px solid white;
+              {% elif step.state == 'completed' %}background:var(--buy);color:white;
+              {% else %}background:var(--surface-2);border:2px solid var(--border-2);color:var(--text-3);{% endif %}">
+              {% if step.state == 'completed' %}✓{% else %}{{ step.icon }}{% endif %}
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:.7rem;font-weight:{% if step.state != 'pending' %}800{% else %}500{% endif %};color:{% if step.state != 'pending' %}var(--text-1){% else %}var(--text-3){% endif %};">{{ step.label }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Estimated Delivery -->
+      <div style="margin-top:20px;padding:12px;background:var(--buy-dim);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:.85rem;color:var(--buy);font-weight:600;">🚚 Estimated Delivery</span>
+        <span style="font-weight:800;font-size:.95rem;">{{ estimated_delivery|date:"D, d M Y" }}</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;">
+
+      <!-- LEFT: Items + Returns -->
+      <div>
+        <!-- Order Items -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.95rem;">Ordered Items</h2>
+          </div>
+
+          {% for item in order_items %}
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 20px;border-bottom:1px solid var(--border);">
+            {% if item.image_url %}
+              <img src="{{ item.image_url }}" alt="{{ item.title }}"
+                   style="width:70px;height:70px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0;">
+            {% else %}
+              <div style="width:70px;height:70px;background:var(--surface-2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">📦</div>
+            {% endif %}
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;margin-bottom:4px;">{{ item.title }}</div>
+              {% if item.seller %}
+                <div style="font-size:.78rem;color:var(--text-3);">Sold by: {{ item.seller.profile.full_name|default:item.seller.email }}</div>
+              {% endif %}
+              <div style="font-size:.82rem;color:var(--text-2);margin-top:2px;">Qty: {{ item.quantity }}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;color:var(--sell);">₹{{ item.subtotal|floatformat:0 }}</div>
+              <div style="font-size:.72rem;color:var(--text-3);">₹{{ item.price|floatformat:0 }} each</div>
+              {% if order.is_returnable %}
+                <a href="{% url 'return_request' order_pk=order.pk item_pk=item.pk %}"
+                   style="display:inline-block;margin-top:8px;font-size:.75rem;color:var(--swap);font-weight:700;">↩ Return / Replace</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Return Requests -->
+        {% if return_requests %}
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:16px;">Return Requests</h2>
+          {% for ret in return_requests %}
+          <div style="padding:12px;background:var(--surface-2);border-radius:var(--radius-sm);margin-bottom:10px;border-left:3px solid var(--offer);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-weight:700;font-size:.88rem;">{{ ret.get_request_type_display }}</span>
+              <span class="badge {% if ret.status == 'pending' %}badge-offer{% elif ret.status == 'approved' %}badge-buy{% elif ret.status == 'rejected' %}badge-error{% else %}badge-swap{% endif %}">{{ ret.get_status_display }}</span>
+            </div>
+            <div style="font-size:.8rem;color:var(--text-3);">Reason: {{ ret.get_reason_display }}</div>
+            {% if ret.description %}
+              <div style="font-size:.78rem;color:var(--text-2);margin-top:4px;">{{ ret.description }}</div>
+            {% endif %}
+            <div style="font-size:.72rem;color:var(--text-3);margin-top:6px;">{{ ret.created_at|timesince }} ago</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- RIGHT: Summary -->
+      <div>
+        <!-- Payment & Pricing -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:.88rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Payment Details</h3>
+          <div style="font-weight:700;margin-bottom:8px;font-size:.9rem;">{{ order.get_payment_method_display }}</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:.85rem;">
+            <span style="color:var(--text-2);">Items</span>
+            <span>₹{{ order.subtotal|floatformat:0 }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:.85rem;">
+            <span style="color:var(--text-2);">Delivery</span>
+            <span>{% if order.delivery_charge == 0 %}FREE{% else %}₹{{ order.delivery_charge|floatformat:0 }}{% endif %}</span>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:8px 0;">
+          <div style="display:flex;justify-content:space-between;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif;">
+            <span>Total</span>
+            <span style="color:var(--sell);">₹{{ order.total|floatformat:0 }}</span>
+          </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+          <h3 style="font-size:.88rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">📍 Delivery Address</h3>
+          {% if order.address %}
+            <div style="font-weight:700;margin-bottom:4px;">{{ order.address.full_name }}</div>
+            <div style="font-size:.82rem;color:var(--text-2);line-height:1.7;">
+              {{ order.address.house_no }}{% if order.address.house_no %}, {% endif %}{{ order.address.street }}<br>
+              {% if order.address.area %}{{ order.address.area }}<br>{% endif %}
+              {{ order.address.city }}, {{ order.address.state }}<br>
+              PIN: {{ order.address.pincode }}
+            </div>
+            <div style="font-size:.78rem;color:var(--text-3);margin-top:6px;">📞 {{ order.address.phone }}</div>
+          {% else %}
+            <div style="font-size:.82rem;color:var(--text-2);white-space:pre-line;">{{ order.address_snapshot }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Wishlist — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">My Wishlist</h1>
+        <p style="color:var(--text-3);font-size:.88rem;margin:0;">Products you've saved for later.</p>
+      </div>
+      <a href="{% url 'product_list' %}" class="btn btn-outline btn-sm">Browse More</a>
+    </div>
+
+    {% if wishlist_items %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;">
+      {% for item in wishlist_items %}
+      <div class="pcard">
+        <div class="pcard__media">
+          <a href="{% url 'product_detail' item.product.slug %}">
+            {% if item.product.primary_image %}
+            <img class="pcard__img" src="{{ item.product.primary_image.url }}" alt="{{ item.product.title }}" loading="lazy" />
+            {% else %}
+            <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--surface-2);">{{ item.product.category.icon|default:"🛒" }}</div>
+            {% endif %}
+          </a>
+          <div class="pcard__badges">
+            {% if item.product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif item.product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif item.product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
+            {% if item.product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
+          </div>
+          <form method="post" action="{% url 'toggle_wishlist' item.product.pk %}" style="position:absolute;top:10px;right:10px;">
+            {% csrf_token %}
+            <button type="submit" title="Remove from Wishlist" style="background:rgba(239,68,68,.8);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </form>
+        </div>
+        <div class="pcard__body">
+          <div class="pcard__title"><a href="{% url 'product_detail' item.product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ item.product.title }}</a></div>
+          <div class="pcard__price">₹{{ item.product.price|floatformat:0 }}</div>
+          <div class="pcard__footer">
+            <span class="pcard__city">📍 {{ item.product.city }}</span>
+            <span class="pcard__condition">
+              {% if item.product.condition == 'new' %}New{% elif item.product.condition == 'like_new' %}Like New{% elif item.product.condition == 'good' %}Good{% elif item.product.condition == 'fair' %}Fair{% else %}Poor{% endif %}
+            </span>
+          </div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid var(--border);">
+          <a href="{% url 'product_detail' item.product.slug %}" class="btn btn-buy btn-sm btn-full">View Product</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;">
+      <div style="font-size:4rem;margin-bottom:16px;">❤️</div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-1);margin:0 0 10px;">Your Wishlist is Empty</h3>
+      <p style="color:var(--text-3);margin:0 0 24px;">Save products you love by clicking the heart button.</p>
+      <a href="{% url 'product_list' %}" class="btn btn-sell btn-lg">Discover Products</a>
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}
