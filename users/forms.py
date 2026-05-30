@@ -1,0 +1,129 @@
+from django import forms
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+
+User = get_user_model()
+
+
+class RegistrationForm(forms.ModelForm):
+    full_name = forms.CharField(
+        max_length=255,
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your full name', 'class': 'formInput'}),
+    )
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address', 'class': 'formInput'}),
+    )
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Create a password', 'class': 'formInput'}),
+    )
+    password_confirm = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password', 'class': 'formInput'}),
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip().lower()
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('A user with this email address already exists.')
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_confirm = cleaned_data.get('password_confirm')
+
+        if password and password_confirm and password != password_confirm:
+            self.add_error('password_confirm', 'Passwords do not match.')
+            raise ValidationError('Passwords do not match.')
+        return cleaned_data
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address', 'class': 'formInput'}),
+    )
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password', 'class': 'formInput'}),
+    )
+
+
+class OTPVerificationForm(forms.Form):
+    otp_code = forms.CharField(
+        max_length=6,
+        min_length=6,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'placeholder': '••••••',
+            'class': 'formInput text-center',
+            'style': 'letter-spacing: 0.5em; font-size: 1.5rem; text-align: center;',
+            'autocomplete': 'off',
+            'maxlength': '6'
+        }),
+    )
+
+    def clean_otp_code(self):
+        code = self.cleaned_data.get('otp_code', '').strip()
+        if not code.isdigit():
+            raise ValidationError('OTP code must contain digits only.')
+        return code
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your registered email', 'class': 'formInput'}),
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip().lower()
+        if not User.objects.filter(email=email).exists():
+            raise ValidationError('No account found with this email address.')
+        return email
+
+
+class ResetPasswordForm(forms.Form):
+    otp_code = forms.CharField(
+        max_length=6,
+        min_length=6,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'placeholder': '••••••',
+            'class': 'formInput text-center',
+            'style': 'letter-spacing: 0.5em; font-size: 1.5rem; text-align: center;',
+            'autocomplete': 'off',
+            'maxlength': '6'
+        }),
+    )
+    new_password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password', 'class': 'formInput'}),
+    )
+    new_password_confirm = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new password', 'class': 'formInput'}),
+    )
+
+    def clean_otp_code(self):
+        code = self.cleaned_data.get('otp_code', '').strip()
+        if not code.isdigit():
+            raise ValidationError('OTP code must contain digits only.')
+        return code
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('new_password')
+        password_confirm = cleaned_data.get('new_password_confirm')
+
+        if password and password_confirm and password != password_confirm:
+            self.add_error('new_password_confirm', 'Passwords do not match.')
+            raise ValidationError('Passwords do not match.')
+        return cleaned_data

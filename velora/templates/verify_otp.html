@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Velora | Verify OTP{% endblock %}
+
+{% block content %}
+<div class="authContainer">
+    <article class="authCard" data-reveal>
+        <h1 class="authCard__title">Verification Required</h1>
+        <p class="authCard__subtitle">We've sent a 6-digit verification code to <br><strong style="color: var(--text)">{{ email }}</strong></p>
+
+        {% if error_message %}
+            <div class="formError">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            <div class="formGroup">
+                <label for="{{ form.otp_code.id_for_label }}" class="formLabel" style="text-align: center; display: block; margin-bottom: 12px;">Verification Code</label>
+                {{ form.otp_code }}
+                {% if form.otp_code.errors %}
+                    <span style="color: #f87171; font-size: 0.8rem; margin-top: 4px; text-align: center; display: block;">{{ form.otp_code.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="vbtn vbtn--neon vbtn--wide" style="margin-top: 15px;">
+                Verify Code
+            </button>
+        </form>
+
+        <div class="authCard__footer">
+            Didn't receive the code? <a href="?resend=1" class="formLink" style="display: inline-block; text-align: center; width: auto; margin-left: 5px;">Resend Code</a>
+        </div>
+    </article>
+</div>
+{% endblock %}

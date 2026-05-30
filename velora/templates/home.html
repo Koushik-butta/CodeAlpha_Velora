@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <section class="hero" aria-label="Velora hero">
+            <div class="container">
+                <div class="hero__frame" data-reveal>
+                    <div class="hero__glow" aria-hidden="true"></div>
+
+                    <div class="hero__copy">
+                        <div class="hero__kicker">
+                            <span class="chip chip--pulse">Exchange-ready marketplace</span>
+                            <span class="chip">Premium listings · Trusted swaps</span>
+                        </div>
+
+                        <h1 class="hero__title">
+                            Buy, Sell &amp; Swap — <span class="t-neon">without friction</span>.
+                        </h1>
+
+                        <p class="hero__subtitle">
+                            Velora is a modern exchange-first marketplace. List your gear, discover premium finds, and propose a swap with optional cash adjustment — all in one flow.
+                        </p>
+
+                        <div class="hero__actions">
+                            <a class="vbtn vbtn--neon vbtn--lg" href="#swap">Start Swapping</a>
+                            <a class="vbtn vbtn--ghost vbtn--lg" href="#featured">Explore Products</a>
+                        </div>
+
+                        <div class="hero__micro">
+                            <div class="microCard">
+                                <span class="microCard__label">Condition-first listings</span>
+                                <span class="microCard__value">Verified badges</span>
+                            </div>
+                            <div class="microCard">
+                                <span class="microCard__label">Swap offers</span>
+                                <span class="microCard__value">1-click propose</span>
+                            </div>
+                            <div class="microCard">
+                                <span class="microCard__label">Secure checkout</span>
+                                <span class="microCard__value">Neon-smooth UX</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero__canvas" aria-hidden="true">
+                        <div class="orbit orbit--1"></div>
+                        <div class="orbit orbit--2"></div>
+                        <div class="orbit orbit--3"></div>
+
+                        <div class="glassStack">
+                            <div class="glassStack__card glassStack__card--top">
+                                <div class="glassStack__row">
+                                    <span class="badge badge--cond">Like New</span>
+                                    <span class="badge badge--neon">Swap</span>
+                                </div>
+                                <div class="glassStack__title">Arc Wireless Headset</div>
+                                <div class="glassStack__meta">
+                                    <span>$210</span>
+                                    <span class="dot"></span>
+                                    <span>Cash top-up: $25</span>
+                                </div>
+                            </div>
+                            <div class="glassStack__card glassStack__card--mid"></div>
+                            <div class="glassStack__card glassStack__card--base"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="featured" aria-label="Featured products">
+            <div class="container">
+                <div class="sectionHead" data-reveal>
+                    <div>
+                        <h2 class="h2">Featured Products</h2>
+                        <p class="sub">Premium picks with clear condition badges and swap-ready options.</p>
+                    </div>
+                    <a class="linkNeon" href="#">Browse all →</a>
+                </div>
+
+                <div class="productGrid">
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--a">
+                            <span class="badge badge--cond">New</span>
+                            <span class="badge badge--neon">Buy</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Electronics</span>
+                                <span class="price">$849</span>
+                            </div>
+                            <h3 class="pCard__title">Phantom X</h3>
+                            <p class="pCard__desc">Ultra-slim flagship with battery tuned for all-night focus.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Quick view</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--b">
+                            <span class="badge badge--cond">Like New</span>
+                            <span class="badge badge--neon">Swap</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Gadgets</span>
+                                <span class="price">$199</span>
+                            </div>
+                            <h3 class="pCard__title">Obsidian Wireless</h3>
+                            <p class="pCard__desc">Noise-cancelling soundstage built for deep work.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Offer swap</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--c">
+                            <span class="badge badge--cond">Good</span>
+                            <span class="badge badge--neon">Swap</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Sports</span>
+                                <span class="price">$279</span>
+                            </div>
+                            <h3 class="pCard__title">Luna Watch</h3>
+                            <p class="pCard__desc">Smart tracking with a noir case and crisp OLED.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Quick view</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--d">
+                            <span class="badge badge--cond">Fair</span>
+                            <span class="badge badge--neon">Buy</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Fashion</span>
+                                <span class="price">$59</span>
+                            </div>
+                            <h3 class="pCard__title">Aero Jacket</h3>
+                            <p class="pCard__desc">Minimal silhouette with premium lining and edge detail.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Quick view</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--e">
+                            <span class="badge badge--cond">Good</span>
+                            <span class="badge badge--neon">Swap</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Books</span>
+                                <span class="price">$18</span>
+                            </div>
+                            <h3 class="pCard__title">The Neon Atlas</h3>
+                            <p class="pCard__desc">A design-focused read with modern product thinking.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Offer swap</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="pCard" data-reveal>
+                        <div class="pCard__media pCard__media--f">
+                            <span class="badge badge--cond">Like New</span>
+                            <span class="badge badge--neon">Buy</span>
+                        </div>
+                        <div class="pCard__body">
+                            <div class="pCard__top">
+                                <span class="meta">Electronics</span>
+                                <span class="price">$329</span>
+                            </div>
+                            <h3 class="pCard__title">Edge Camera</h3>
+                            <p class="pCard__desc">Crisp shots with stabilized focus and premium optics.</p>
+                            <div class="pCard__actions">
+                                <button class="vbtn vbtn--ghost vbtn--sm" type="button">Quick view</button>
+                                <button class="vbtn vbtn--neon vbtn--sm" type="button">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--swap" id="swap" aria-label="Swap marketplace">
+            <div class="container">
+                <div class="swapGrid">
+                    <div class="swapIntro" data-reveal>
+                        <h2 class="h2">Swap Marketplace</h2>
+                        <p class="sub">
+                            Velora makes exchanging products feel like a premium checkout. Propose a swap, add an optional cash top-up, and track the status in one timeline.
+                        </p>
+                        <div class="swapIntro__cta">
+                            <a class="vbtn vbtn--neon" href="#">Go to Swap</a>
+                            <a class="vbtn vbtn--ghost" href="#">How it works</a>
+                        </div>
+                    </div>
+
+                    <ol class="timeline" aria-label="Swap timeline">
+                        <li class="tStep" data-reveal>
+                            <div class="tStep__icon">1</div>
+                            <div class="tStep__card">
+                                <div class="tStep__title">Pick your target</div>
+                                <div class="tStep__desc">Browse listings with clear condition badges and value signals.</div>
+                            </div>
+                        </li>
+                        <li class="tStep" data-reveal>
+                            <div class="tStep__icon">2</div>
+                            <div class="tStep__card">
+                                <div class="tStep__title">Propose a swap</div>
+                                <div class="tStep__desc">Offer an item from your uploads and optionally add cash adjustment.</div>
+                            </div>
+                        </li>
+                        <li class="tStep" data-reveal>
+                            <div class="tStep__icon">3</div>
+                            <div class="tStep__card">
+                                <div class="tStep__title">Track the decision</div>
+                                <div class="tStep__desc">Get a clean status flow: pending → accepted/rejected → completed.</div>
+                            </div>
+                        </li>
+                        <li class="tStep" data-reveal>
+                            <div class="tStep__icon">4</div>
+                            <div class="tStep__card">
+                                <div class="tStep__title">Complete securely</div>
+                                <div class="tStep__desc">If there’s a cash top-up, complete it through a protected checkout.</div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="categories" aria-label="Categories">
+            <div class="container">
+                <div class="sectionHead" data-reveal>
+                    <div>
+                        <h2 class="h2">Categories</h2>
+                        <p class="sub">Discover by vibe — each category is curated for fast browsing.</p>
+                    </div>
+                </div>
+
+                <div class="catGrid">
+                    <a class="catCard" href="#" data-reveal>
+                        <span class="catCard__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M7 6.5a3.5 3.5 0 0 1 3.5-3.5h3A3.5 3.5 0 0 1 17 6.5v11A3.5 3.5 0 0 1 13.5 21h-3A3.5 3.5 0 0 1 7 17.5v-11Z" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="M10 6h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="catCard__title">Electronics</span>
+                        <span class="catCard__meta">Phones · Cameras · Audio</span>
+                    </a>
+
+                    <a class="catCard" href="#" data-reveal>
+                        <span class="catCard__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M7 7.5c0-2 1.6-3.5 3.6-3.5h2.8c2 0 3.6 1.5 3.6 3.5v1.2c0 1.4-.8 2.6-2 3.2l-2.3 1.1a3.8 3.8 0 0 0-2.1 3.4V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M7 20h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="catCard__title">Fashion</span>
+                        <span class="catCard__meta">Jackets · Sneakers · Streetwear</span>
+                    </a>
+
+                    <a class="catCard" href="#" data-reveal>
+                        <span class="catCard__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M6 5.5A2.5 2.5 0 0 1 8.5 3h10A2.5 2.5 0 0 1 21 5.5v13A2.5 2.5 0 0 1 18.5 21h-10A2.5 2.5 0 0 1 6 18.5v-13Z" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="M9 7h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M9 11h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M9 15h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="catCard__title">Books</span>
+                        <span class="catCard__meta">Design · Business · Tech</span>
+                    </a>
+
+                    <a class="catCard" href="#" data-reveal>
+                        <span class="catCard__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 13.5c1.6-2 3.7-3 6.2-3H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M6 18.5c1.3-1.4 2.8-2.1 4.5-2.1H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M14.5 6.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </span>
+                        <span class="catCard__title">Sports</span>
+                        <span class="catCard__meta">Watches · Gear · Outdoors</span>
+                    </a>
+
+                    <a class="catCard" href="#" data-reveal>
+                        <span class="catCard__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M9 4h6a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="M8 20h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M12 13v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="catCard__title">Gadgets</span>
+                        <span class="catCard__meta">Accessories · Audio · Smart</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--trust" aria-label="Trust metrics">
+            <div class="container">
+                <div class="trustCard" data-reveal>
+                    <div class="trustCard__copy">
+                        <h2 class="h2">Built for trust at scale</h2>
+                        <p class="sub">Premium UI is the baseline. Velora adds clarity: condition, swap states, and clean checkout.</p>
+                    </div>
+                    <div class="trustStats" role="list">
+                        <div class="stat" role="listitem">
+                            <div class="stat__value" data-counter data-to="14820">0</div>
+                            <div class="stat__label">Active users</div>
+                        </div>
+                        <div class="stat" role="listitem">
+                            <div class="stat__value" data-counter data-to="3125">0</div>
+                            <div class="stat__label">Successful swaps</div>
+                        </div>
+                        <div class="stat" role="listitem">
+                            <div class="stat__value" data-counter data-to="52840">0</div>
+                            <div class="stat__label">Products listed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

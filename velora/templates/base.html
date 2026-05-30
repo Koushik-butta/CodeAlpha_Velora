@@ -1,0 +1,365 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en" data-theme="dark">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+
+    <meta name="theme-color" content="#f4f2fa" media="(prefers-color-scheme: light)" />
+
+    <title>{% block title %}Velora | Buy, Sell & Swap{% endblock %}</title>
+
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script>
+
+        (function () {
+
+            var stored = localStorage.getItem('velora-theme');
+
+            var theme = stored === 'light' || stored === 'dark'
+
+                ? stored
+
+                : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+            document.documentElement.setAttribute('data-theme', theme);
+
+            var meta = document.querySelector('meta[name="theme-color"]:not([media])');
+
+            if (!meta) {
+
+                meta = document.createElement('meta');
+
+                meta.name = 'theme-color';
+
+                document.head.appendChild(meta);
+
+            }
+
+            meta.content = theme === 'light' ? '#f4f2fa' : '#0a0a0a';
+
+        })();
+
+    </script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    {% block extra_head %}{% endblock %}
+
+</head>
+
+<body>
+
+    <div class="velora-bg" aria-hidden="true">
+
+        <div class="bg-orb bg-orb--a"></div>
+
+        <div class="bg-orb bg-orb--b"></div>
+
+        <div class="bg-orb bg-orb--c"></div>
+
+        <div class="bg-grid"></div>
+
+    </div>
+
+
+
+    <header class="vnav" id="vnav">
+
+        <div class="container">
+
+            <div class="vnav__inner">
+
+                <a class="vnav__brand" href="/" aria-label="Velora Home">
+
+                    <span class="vlogo" aria-hidden="true">
+
+                        <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="36" height="36" alt="" />
+
+                    </span>
+
+                    <span class="vnav__brandWordmark">
+
+                        <span class="vnav__brandText">Velora</span>
+
+                        <span class="vnav__brandTag">Buy · Sell · Swap</span>
+
+                    </span>
+
+                </a>
+
+
+
+                <nav class="vnav__links" aria-label="Primary">
+
+                    <a class="vnav__link is-active" href="#">Home</a>
+
+                    <a class="vnav__link" href="#">Explore</a>
+
+                    <a class="vnav__link" href="#">Swap</a>
+
+                    <a class="vnav__link" href="#categories">Categories</a>
+
+                    <a class="vnav__link" href="#">My Uploads</a>
+
+                </nav>
+
+
+
+                <div class="vnav__actions">
+
+                    <button class="themeToggle" id="themeToggle" type="button" aria-label="Toggle dark or light theme" title="Toggle theme">
+
+                        <span class="themeToggle__icon" aria-hidden="true">
+
+                            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+
+                            </svg>
+
+                            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+
+                            </svg>
+
+                        </span>
+
+                    </button>
+
+                    {% if user.is_authenticated %}
+                        <span class="vnav__userEmail" title="{{ user.email }}">{{ user.email }}</span>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="vbtn vbtn--ghost vnav__authBtn">Logout</button>
+                        </form>
+                    {% else %}
+                        <a class="vbtn vbtn--ghost vnav__authBtn" href="{% url 'login' %}">Login</a>
+                        <a class="vbtn vbtn--neon vnav__authBtn" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+
+                    <button class="vnav__burger" id="navToggle" type="button" aria-controls="navDrawer" aria-expanded="false">
+
+                        <span class="vnav__burgerLines" aria-hidden="true"></span>
+
+                        <span class="sr-only">Open menu</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="vdrawer" id="navDrawer" aria-hidden="true">
+
+            <div class="vdrawer__panel">
+
+                <div class="vdrawer__top">
+
+                    <a class="vdrawer__brandMini" href="/" aria-label="Velora Home">
+
+                        <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="30" height="30" alt="" />
+
+                        <span>Velora</span>
+
+                    </a>
+
+                    <button class="vdrawer__close" id="navClose" type="button" aria-label="Close menu">✕</button>
+
+                </div>
+
+                <div class="vdrawer__links">
+
+                    <a class="vdrawer__link" href="#">Home</a>
+
+                    <a class="vdrawer__link" href="#">Explore</a>
+
+                    <a class="vdrawer__link" href="#">Swap</a>
+
+                    <a class="vdrawer__link" href="#categories">Categories</a>
+
+                    <a class="vdrawer__link" href="#">My Uploads</a>
+
+                </div>
+
+                <div class="vdrawer__themeRow">
+
+                    <span class="vdrawer__themeLabel">Appearance</span>
+
+                    <button class="themeToggle" id="themeToggleDrawer" type="button" aria-label="Toggle theme">
+
+                        <span class="themeToggle__icon" aria-hidden="true">
+
+                            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+
+                            </svg>
+
+                            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+
+                            </svg>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+                <div class="vdrawer__cta">
+                    {% if user.is_authenticated %}
+                        <div class="vdrawer__themeRow" style="justify-content: center; margin-bottom: 10px;">
+                            <span class="vnav__userEmail" style="max-width: 100%;">{{ user.email }}</span>
+                        </div>
+                        <form action="{% url 'logout' %}" method="post" style="display: block; width: 100%;">
+                            {% csrf_token %}
+                            <button type="submit" class="vbtn vbtn--ghost vbtn--wide">Logout</button>
+                        </form>
+                    {% else %}
+                        <a class="vbtn vbtn--ghost vbtn--wide" href="{% url 'login' %}">Login</a>
+                        <a class="vbtn vbtn--neon vbtn--wide" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="page">
+        <div class="container">
+            {% if messages %}
+                <div class="messages" style="margin-bottom: 20px;">
+                    {% for message in messages %}
+                        <div class="{% if message.tags == 'error' %}formError{% elif message.tags == 'success' %}formSuccess{% elif message.tags == 'warning' %}formWarning{% else %}formSuccess{% endif %}" style="margin-bottom: 10px;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+
+
+
+        <footer class="footer">
+
+            <div class="container">
+
+                <div class="footer__grid">
+
+                    <div class="footer__brand">
+
+                        <div class="footer__brandRow">
+
+                            <span class="vlogo vlogo--sm" aria-hidden="true">
+
+                                <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="30" height="30" alt="" />
+
+                            </span>
+
+                            <span class="footer__name">Velora</span>
+
+                        </div>
+
+                        <p class="footer__tagline">A premium marketplace to buy, sell, and swap — with neon-smooth UX.</p>
+
+                        <div class="footer__mini">© <span id="year"></span> Velora. All rights reserved.</div>
+
+                    </div>
+
+
+
+                    <div class="footer__col">
+
+                        <div class="footer__title">Product</div>
+
+                        <a class="footer__link" href="#">Explore</a>
+
+                        <a class="footer__link" href="#swap">Swap</a>
+
+                        <a class="footer__link" href="#categories">Categories</a>
+
+                        <a class="footer__link" href="#">My Uploads</a>
+
+                    </div>
+
+
+
+                    <div class="footer__col">
+
+                        <div class="footer__title">Company</div>
+
+                        <a class="footer__link" href="#">About</a>
+
+                        <a class="footer__link" href="#">Trust & Safety</a>
+
+                        <a class="footer__link" href="#">Privacy</a>
+
+                        <a class="footer__link" href="#">Terms</a>
+
+                    </div>
+
+
+
+                    <div class="footer__col">
+
+                        <div class="footer__title">Get started</div>
+
+                        <a class="footer__link" href="#">Login</a>
+
+                        <a class="footer__link" href="#">Register</a>
+
+                        <a class="footer__link" href="#">Contact</a>
+
+                        <a class="footer__link" href="#">Support</a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+
+    <script src="{% static 'css/js/script.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>
+
