@@ -53,7 +53,7 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    """Extended profile and notification preferences."""
+    """Extended profile and marketplace identity."""
 
     user = models.OneToOneField(
         User,
@@ -64,10 +64,19 @@ class Profile(models.Model):
     phone = models.CharField(max_length=32, blank=True)
     address_line = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
-    country = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True, default='India')
     avatar_url = models.URLField(max_length=500, blank=True)
     avatar_public_id = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True, help_text='Short bio visible on seller profile')
+    website = models.URLField(max_length=300, blank=True)
+    # Marketplace reputation
+    trade_score = models.IntegerField(default=0, help_text='Velora Trade Score — earned through successful deals')
+    is_verified_seller = models.BooleanField(default=False, help_text='Manually verified by Velora team')
+    total_sales = models.PositiveIntegerField(default=0)
+    total_exchanges = models.PositiveIntegerField(default=0)
+    # Notification preferences
     notify_email = models.BooleanField(default=True)
     notify_swap_updates = models.BooleanField(default=True)
     notify_marketing = models.BooleanField(default=False)

@@ -1,365 +1,302 @@
 {% load static %}
-
 <!DOCTYPE html>
-
 <html lang="en" data-theme="dark">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="{% block meta_description %}Velora — India's premium marketplace to Buy, Sell & Exchange products. Discover great deals on mobiles, laptops, bikes, fashion and more.{% endblock %}" />
+  <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)" />
+  <title>{% block title %}Velora — Buy, Sell & Exchange in India{% endblock %}</title>
 
-    <meta charset="UTF-8" />
+  <!-- Preconnect fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Inline theme init (prevent flash) -->
+  <script>
+    (function(){
+      var s = localStorage.getItem('velora_theme');
+      var p = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', s || p);
+    })();
+  </script>
 
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
-
-    <meta name="theme-color" content="#f4f2fa" media="(prefers-color-scheme: light)" />
-
-    <title>{% block title %}Velora | Buy, Sell & Swap{% endblock %}</title>
-
-    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-    <script>
-
-        (function () {
-
-            var stored = localStorage.getItem('velora-theme');
-
-            var theme = stored === 'light' || stored === 'dark'
-
-                ? stored
-
-                : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-
-            document.documentElement.setAttribute('data-theme', theme);
-
-            var meta = document.querySelector('meta[name="theme-color"]:not([media])');
-
-            if (!meta) {
-
-                meta = document.createElement('meta');
-
-                meta.name = 'theme-color';
-
-                document.head.appendChild(meta);
-
-            }
-
-            meta.content = theme === 'light' ? '#f4f2fa' : '#0a0a0a';
-
-        })();
-
-    </script>
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
-    {% block extra_head %}{% endblock %}
-
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  {% block extra_head %}{% endblock %}
 </head>
-
 <body>
 
-    <div class="velora-bg" aria-hidden="true">
+<!-- ===== NAVBAR ===== -->
+<header class="vnav" id="vnav">
+  <div class="container">
+    <div class="vnav__inner">
 
-        <div class="bg-orb bg-orb--a"></div>
+      <!-- Brand -->
+      <a class="vnav__brand" href="/" aria-label="Velora — Home">
+        <div class="vnav__logo" aria-hidden="true">V</div>
+        <div class="vnav__wordmark">
+          <span class="vnav__name">Velora</span>
+          <span class="vnav__tagline">Buy · Sell · Exchange</span>
+        </div>
+      </a>
 
-        <div class="bg-orb bg-orb--b"></div>
+      <!-- Desktop nav links -->
+      <nav class="vnav__links" aria-label="Primary navigation">
+        <a class="vnav__link vnav__link--buy" href="/products/?type=buy">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Buy
+        </a>
+        <a class="vnav__link vnav__link--sell" href="/products/sell/">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Sell
+        </a>
+        <a class="vnav__link vnav__link--swap" href="/exchange/">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          Exchange
+        </a>
+        <a class="vnav__link" href="/products/">Explore</a>
+        <a class="vnav__link" href="/deals/">
+          <span class="badge badge-hot" style="font-size:.6rem;padding:2px 7px;">HOT</span>
+          Deals
+        </a>
+      </nav>
 
-        <div class="bg-orb bg-orb--c"></div>
+      <!-- Actions -->
+      <div class="vnav__actions">
 
-        <div class="bg-grid"></div>
+        <!-- Theme toggle -->
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+
+        {% if user.is_authenticated %}
+          <!-- Cart -->
+          <a class="vnav__icon-btn" href="/cart/" aria-label="Cart" title="My Cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </a>
+          <!-- Notifications -->
+          <a class="vnav__icon-btn" href="/dashboard/notifications/" aria-label="Notifications" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </a>
+          <!-- User dropdown -->
+          <div class="vnav__user" id="userDropdownTrigger" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
+            <div class="vnav__avatar" aria-hidden="true">
+              {{ user.email|first|upper }}
+            </div>
+            <span class="vnav__user-email">{{ user.email }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <!-- Dropdown -->
+            <div class="user-dropdown" id="userDropdownMenu" role="menu">
+              <a class="user-dropdown__item" href="/dashboard/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></rect></svg>
+                Dashboard
+              </a>
+              <a class="user-dropdown__item" href="/dashboard/orders/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                My Orders
+              </a>
+              <a class="user-dropdown__item" href="/dashboard/exchanges/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                My Exchanges
+              </a>
+              <a class="user-dropdown__item" href="/dashboard/wishlist/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                Wishlist
+              </a>
+              <div class="user-dropdown__divider"></div>
+              <a class="user-dropdown__item" href="/dashboard/settings/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Settings
+              </a>
+              <a class="user-dropdown__item" href="/change-password/" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Change Password
+              </a>
+              <div class="user-dropdown__divider"></div>
+              <form action="{% url 'logout' %}" method="post" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="user-dropdown__item user-dropdown__logout" style="width:100%;border:none;background:none;text-align:left;" role="menuitem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  Log Out
+                </button>
+              </form>
+            </div>
+          </div>
+
+        {% else %}
+          <a class="btn btn-outline btn-sm" href="{% url 'login' %}" id="navLoginBtn">Log In</a>
+          <a class="btn btn-sell btn-sm" href="{% url 'register' %}" id="navRegisterBtn">Join Free</a>
+        {% endif %}
+
+        <!-- Hamburger -->
+        <button class="vnav__burger" id="vBurger" type="button" aria-controls="vDrawer" aria-expanded="false" aria-label="Open navigation menu">
+          <span class="vnav__burger-line"></span>
+          <span class="vnav__burger-line"></span>
+          <span class="vnav__burger-line"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ===== MOBILE DRAWER ===== -->
+<div class="vdrawer-overlay" id="vDrawerOverlay" aria-hidden="true"></div>
+<aside class="vdrawer" id="vDrawer" aria-label="Mobile navigation" role="dialog">
+  <div class="vdrawer__head">
+    <a class="vnav__brand" href="/" aria-label="Velora — Home">
+      <div class="vnav__logo" aria-hidden="true" style="width:30px;height:30px;font-size:.9rem;">V</div>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1rem;">Velora</span>
+    </a>
+    <button class="vdrawer__close" id="vDrawerClose" type="button" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <nav class="vdrawer__links">
+    <a class="vdrawer__link vdrawer__link--buy" href="/products/?type=buy">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Buy
+    </a>
+    <a class="vdrawer__link vdrawer__link--sell" href="/products/sell/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Sell
+    </a>
+    <a class="vdrawer__link vdrawer__link--swap" href="/exchange/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+      Exchange
+    </a>
+    <a class="vdrawer__link" href="/products/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Explore
+    </a>
+    <a class="vdrawer__link" href="/deals/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Hot Deals
+    </a>
+    {% if user.is_authenticated %}
+    <a class="vdrawer__link" href="/dashboard/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    {% endif %}
+  </nav>
+  <div class="vdrawer__footer">
+    <!-- Theme toggle in drawer -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 4px 12px;">
+      <span style="font-size:.82rem;font-weight:600;color:var(--text-3);">Appearance</span>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+    {% if user.is_authenticated %}
+      <span style="font-size:.82rem;color:var(--text-3);padding:4px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">{{ user.email }}</span>
+      <form action="{% url 'logout' %}" method="post" style="margin:0;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-full">Log Out</button>
+      </form>
+    {% else %}
+      <a class="btn btn-outline btn-full" href="{% url 'login' %}">Log In</a>
+      <a class="btn btn-sell btn-full" href="{% url 'register' %}">Join Free — It's Free!</a>
+    {% endif %}
+  </div>
+</aside>
+
+<!-- ===== TOAST MESSAGES ===== -->
+{% if messages %}
+<div id="toast-container" style="position:fixed;top:calc(var(--nav-h) + 12px);right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:360px;width:calc(100vw - 32px);">
+  {% for message in messages %}
+  <div class="toast-msg alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}" style="box-shadow:var(--shadow-lg);transition:opacity .3s,transform .3s;">
+    <span style="flex:1">{{ message }}</span>
+    <button class="toast-close" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;margin-left:8px;opacity:.7;" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="page-wrap">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+
+      <!-- Brand col -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div class="vnav__logo" style="width:32px;height:32px;font-size:.9rem;" aria-hidden="true">V</div>
+          <span class="footer__brand-name">Velora</span>
+        </div>
+        <p class="footer__tagline">India's premium marketplace to Buy, Sell &amp; Exchange. Get the best deal near you.</p>
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <span class="badge badge-buy">Trusted</span>
+          <span class="badge badge-gold">Premium</span>
+          <span class="badge badge-swap">Verified</span>
+        </div>
+      </div>
+
+      <!-- Marketplace -->
+      <div>
+        <div class="footer__col-title">Marketplace</div>
+        <a class="footer__link" href="/products/">Browse All</a>
+        <a class="footer__link" href="/products/?type=buy">Buy Products</a>
+        <a class="footer__link" href="/products/sell/">Sell Something</a>
+        <a class="footer__link" href="/exchange/">Exchange &amp; Swap</a>
+        <a class="footer__link" href="/deals/">Hot Deals</a>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <div class="footer__col-title">Top Categories</div>
+        <a class="footer__link" href="/products/?category=mobiles">📱 Mobiles</a>
+        <a class="footer__link" href="/products/?category=laptops">💻 Laptops</a>
+        <a class="footer__link" href="/products/?category=bikes">🏍️ Bikes</a>
+        <a class="footer__link" href="/products/?category=fashion">👗 Fashion</a>
+        <a class="footer__link" href="/products/?category=gadgets">🎧 Gadgets</a>
+      </div>
+
+      <!-- Support -->
+      <div>
+        <div class="footer__col-title">Support</div>
+        <a class="footer__link" href="/help/">Help Center</a>
+        <a class="footer__link" href="/trust/">Trust &amp; Safety</a>
+        <a class="footer__link" href="/privacy/">Privacy Policy</a>
+        <a class="footer__link" href="/terms/">Terms of Service</a>
+        <a class="footer__link" href="/contact/">Contact Us</a>
+      </div>
+
+      <!-- Cities -->
+      <div>
+        <div class="footer__col-title">Top Cities</div>
+        <a class="footer__link" href="/products/?city=hyderabad">🏙️ Hyderabad</a>
+        <a class="footer__link" href="/products/?city=bengaluru">🌿 Bengaluru</a>
+        <a class="footer__link" href="/products/?city=mumbai">🌊 Mumbai</a>
+        <a class="footer__link" href="/products/?city=delhi">🏛️ Delhi</a>
+        <a class="footer__link" href="/products/?city=chennai">☀️ Chennai</a>
+      </div>
 
     </div>
 
-
-
-    <header class="vnav" id="vnav">
-
-        <div class="container">
-
-            <div class="vnav__inner">
-
-                <a class="vnav__brand" href="/" aria-label="Velora Home">
-
-                    <span class="vlogo" aria-hidden="true">
-
-                        <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="36" height="36" alt="" />
-
-                    </span>
-
-                    <span class="vnav__brandWordmark">
-
-                        <span class="vnav__brandText">Velora</span>
-
-                        <span class="vnav__brandTag">Buy · Sell · Swap</span>
-
-                    </span>
-
-                </a>
-
-
-
-                <nav class="vnav__links" aria-label="Primary">
-
-                    <a class="vnav__link is-active" href="#">Home</a>
-
-                    <a class="vnav__link" href="#">Explore</a>
-
-                    <a class="vnav__link" href="#">Swap</a>
-
-                    <a class="vnav__link" href="#categories">Categories</a>
-
-                    <a class="vnav__link" href="#">My Uploads</a>
-
-                </nav>
-
-
-
-                <div class="vnav__actions">
-
-                    <button class="themeToggle" id="themeToggle" type="button" aria-label="Toggle dark or light theme" title="Toggle theme">
-
-                        <span class="themeToggle__icon" aria-hidden="true">
-
-                            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-
-                            </svg>
-
-                            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
-
-                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-
-                            </svg>
-
-                        </span>
-
-                    </button>
-
-                    {% if user.is_authenticated %}
-                        <span class="vnav__userEmail" title="{{ user.email }}">{{ user.email }}</span>
-                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="vbtn vbtn--ghost vnav__authBtn">Logout</button>
-                        </form>
-                    {% else %}
-                        <a class="vbtn vbtn--ghost vnav__authBtn" href="{% url 'login' %}">Login</a>
-                        <a class="vbtn vbtn--neon vnav__authBtn" href="{% url 'register' %}">Register</a>
-                    {% endif %}
-
-                    <button class="vnav__burger" id="navToggle" type="button" aria-controls="navDrawer" aria-expanded="false">
-
-                        <span class="vnav__burgerLines" aria-hidden="true"></span>
-
-                        <span class="sr-only">Open menu</span>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="vdrawer" id="navDrawer" aria-hidden="true">
-
-            <div class="vdrawer__panel">
-
-                <div class="vdrawer__top">
-
-                    <a class="vdrawer__brandMini" href="/" aria-label="Velora Home">
-
-                        <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="30" height="30" alt="" />
-
-                        <span>Velora</span>
-
-                    </a>
-
-                    <button class="vdrawer__close" id="navClose" type="button" aria-label="Close menu">✕</button>
-
-                </div>
-
-                <div class="vdrawer__links">
-
-                    <a class="vdrawer__link" href="#">Home</a>
-
-                    <a class="vdrawer__link" href="#">Explore</a>
-
-                    <a class="vdrawer__link" href="#">Swap</a>
-
-                    <a class="vdrawer__link" href="#categories">Categories</a>
-
-                    <a class="vdrawer__link" href="#">My Uploads</a>
-
-                </div>
-
-                <div class="vdrawer__themeRow">
-
-                    <span class="vdrawer__themeLabel">Appearance</span>
-
-                    <button class="themeToggle" id="themeToggleDrawer" type="button" aria-label="Toggle theme">
-
-                        <span class="themeToggle__icon" aria-hidden="true">
-
-                            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-
-                            </svg>
-
-                            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
-
-                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-
-                            </svg>
-
-                        </span>
-
-                    </button>
-
-                </div>
-
-                <div class="vdrawer__cta">
-                    {% if user.is_authenticated %}
-                        <div class="vdrawer__themeRow" style="justify-content: center; margin-bottom: 10px;">
-                            <span class="vnav__userEmail" style="max-width: 100%;">{{ user.email }}</span>
-                        </div>
-                        <form action="{% url 'logout' %}" method="post" style="display: block; width: 100%;">
-                            {% csrf_token %}
-                            <button type="submit" class="vbtn vbtn--ghost vbtn--wide">Logout</button>
-                        </form>
-                    {% else %}
-                        <a class="vbtn vbtn--ghost vbtn--wide" href="{% url 'login' %}">Login</a>
-                        <a class="vbtn vbtn--neon vbtn--wide" href="{% url 'register' %}">Register</a>
-                    {% endif %}
-                </div>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <main class="page">
-        <div class="container">
-            {% if messages %}
-                <div class="messages" style="margin-bottom: 20px;">
-                    {% for message in messages %}
-                        <div class="{% if message.tags == 'error' %}formError{% elif message.tags == 'success' %}formSuccess{% elif message.tags == 'warning' %}formWarning{% else %}formSuccess{% endif %}" style="margin-bottom: 10px;">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        {% block content %}{% endblock %}
-
-
-
-        <footer class="footer">
-
-            <div class="container">
-
-                <div class="footer__grid">
-
-                    <div class="footer__brand">
-
-                        <div class="footer__brandRow">
-
-                            <span class="vlogo vlogo--sm" aria-hidden="true">
-
-                                <img class="vlogo__img" src="{% static 'img/velora-logo.svg' %}" width="30" height="30" alt="" />
-
-                            </span>
-
-                            <span class="footer__name">Velora</span>
-
-                        </div>
-
-                        <p class="footer__tagline">A premium marketplace to buy, sell, and swap — with neon-smooth UX.</p>
-
-                        <div class="footer__mini">© <span id="year"></span> Velora. All rights reserved.</div>
-
-                    </div>
-
-
-
-                    <div class="footer__col">
-
-                        <div class="footer__title">Product</div>
-
-                        <a class="footer__link" href="#">Explore</a>
-
-                        <a class="footer__link" href="#swap">Swap</a>
-
-                        <a class="footer__link" href="#categories">Categories</a>
-
-                        <a class="footer__link" href="#">My Uploads</a>
-
-                    </div>
-
-
-
-                    <div class="footer__col">
-
-                        <div class="footer__title">Company</div>
-
-                        <a class="footer__link" href="#">About</a>
-
-                        <a class="footer__link" href="#">Trust & Safety</a>
-
-                        <a class="footer__link" href="#">Privacy</a>
-
-                        <a class="footer__link" href="#">Terms</a>
-
-                    </div>
-
-
-
-                    <div class="footer__col">
-
-                        <div class="footer__title">Get started</div>
-
-                        <a class="footer__link" href="#">Login</a>
-
-                        <a class="footer__link" href="#">Register</a>
-
-                        <a class="footer__link" href="#">Contact</a>
-
-                        <a class="footer__link" href="#">Support</a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </footer>
-
-    </main>
-
-
-
-    <script src="{% static 'css/js/script.js' %}"></script>
-
-    {% block extra_js %}{% endblock %}
-
+    <div class="footer__bottom">
+      <div class="footer__copy">© <span id="footerYear"></span> Velora Technologies Pvt. Ltd. All rights reserved.</div>
+      <div class="footer__made">
+        <span class="footer__flag">🇮🇳</span>
+        Made with <span>♥</span> in India
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="{% static 'css/js/script.js' %}"></script>
+<script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+{% block extra_js %}{% endblock %}
 </body>
-
 </html>
-
