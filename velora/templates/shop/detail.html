@@ -177,7 +177,11 @@
           <!-- Action buttons -->
           {% if user.is_authenticated %}
             {% if user == product.seller %}
-            <!-- Own product: show Edit/Delete/Mark Sold -->
+            <!-- Own product: show Edit/Delete/Mark Sold & Seller Banner -->
+            <div class="alert alert-info" style="margin-bottom:15px; font-size:0.85rem; padding: 10px 12px; border-radius: 8px; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); color: #2563eb; display: flex; align-items: center; gap: 8px; font-weight: 500; line-height: 1.4;">
+              <span>ℹ️</span>
+              <span>You listed this product. You can manage it using the options below. (Buyers will see "Buy Now" and "Add to Cart" options here).</span>
+            </div>
             <div style="display:flex;flex-direction:column;gap:10px;">
               <a href="{% url 'edit_product' product.slug %}" class="btn btn-outline btn-full">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -210,13 +214,9 @@
                       Add to Cart
                     </button>
                   </form>
-                  <form method="post" action="{% url 'add_to_cart' product.pk %}" style="flex:1; margin:0;">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{% url 'checkout' %}" />
-                    <button type="submit" class="btn btn-sell btn-full" style="padding:10px 12px; font-size:0.85rem; font-weight:700;">
-                      ⚡ Buy Now
-                    </button>
-                  </form>
+                  <a href="{% url 'buy_now' product.pk %}" class="btn btn-sell btn-full" style="flex:1; padding:10px 12px; font-size:0.85rem; font-weight:700; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+                    ⚡ Buy Now
+                  </a>
                 </div>
                 {% endif %}
               </div>
@@ -239,10 +239,36 @@
             {% endif %}
             {% endif %}
           {% else %}
-          <!-- Not logged in -->
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <a href="{% url 'login' %}" class="btn btn-sell btn-full">Log in to Purchase</a>
-            <a href="{% url 'register' %}" class="btn btn-outline btn-full">Create Free Account</a>
+          <!-- Guest / Not logged in: Show Buy CTAs that redirect to Login -->
+          {% if not product.is_sold %}
+            {% if product.listing_type != 'exchange' %}
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;">
+              <div style="display:flex; gap:10px;">
+                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-buy btn-full" style="flex:1; padding:10px 12px; font-size:0.85rem; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+                  Add to Cart
+                </a>
+                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-sell btn-full" style="flex:1; padding:10px 12px; font-size:0.85rem; font-weight:700; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+                  ⚡ Buy Now
+                </a>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if product.exchange_available or product.listing_type == 'exchange' %}
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-swap btn-full" style="margin-bottom:10px; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+              Request Exchange
+            </a>
+            {% endif %}
+
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline btn-full" style="text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; margin-bottom:10px;">
+              ♡ Add to Wishlist
+            </a>
+          {% else %}
+            <div class="alert alert-error">This product has been sold.</div>
+          {% endif %}
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:15px;border-top:1px solid var(--border);padding-top:15px;">
+            <a href="{% url 'register' %}" class="btn btn-outline btn-full" style="text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:0.82rem; padding:8px 12px;">Create Free Account</a>
           </div>
           {% endif %}
         </div>

@@ -23,6 +23,7 @@ from cart.models import Address, Order
 from shop.models import Product, Wishlist, RecentlyViewed, Category
 from swap.models import ExchangeRequest
 from notifications.models import Notification
+from core.integrations import upload_image
 
 try:
     from core.integrations.brevo import BrevoClient
@@ -393,9 +394,8 @@ def settings_view(request):
             avatar_file = request.FILES.get('avatar')
             if avatar_file:
                 try:
-                    import cloudinary.uploader
-                    result = cloudinary.uploader.upload(avatar_file, folder='velora/avatars')
-                    profile.avatar_url = result['secure_url']
+                    result = upload_image(avatar_file, folder='velora/avatars')
+                    profile.avatar_url = result['url']
                     profile.avatar_public_id = result['public_id']
                 except Exception:
                     messages.warning(request, 'Avatar upload failed, but other settings were saved.')

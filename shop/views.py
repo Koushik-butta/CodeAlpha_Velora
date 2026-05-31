@@ -16,25 +16,10 @@ from notifications.models import Notification
 
 User = get_user_model()
 
-try:
-    import cloudinary
-    import cloudinary.uploader
-    from pathlib import Path
-    import environ
-    
-    # Load .env directly to ensure keys are populated as strings
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    env = environ.Env()
-    environ.Env.read_env(BASE_DIR / '.env')
-    
-    cloudinary.config(
-        cloud_name=env('CLOUDINARY_CLOUD_NAME', default=''),
-        api_key=str(env('CLOUDINARY_API_KEY', default='')),
-        api_secret=env('CLOUDINARY_API_SECRET', default='')
-    )
-    CLOUDINARY_AVAILABLE = True
-except ImportError:
-    CLOUDINARY_AVAILABLE = False
+from django.conf import settings
+from core.integrations import upload_image
+
+CLOUDINARY_AVAILABLE = bool(settings.CLOUDINARY_STORAGE.get('CLOUD_NAME'))
 
 
 # ──────────────────────────────────────────────────────────────
@@ -217,11 +202,11 @@ def sell_product_view(request):
                 public_id = ''
                 if CLOUDINARY_AVAILABLE:
                     try:
-                        result = cloudinary.uploader.upload(
+                        result = upload_image(
                             image_file,
                             folder='velora/products',
                         )
-                        image_url = result['secure_url']
+                        image_url = result['url']
                         public_id = result['public_id']
                     except Exception as e:
                         messages.warning(request, f'Failed to upload image "{image_file.name}" to Cloudinary: {str(e)}')
@@ -272,11 +257,11 @@ def edit_product_view(request, slug):
             for idx, image_file in enumerate(new_images[: max(0, 5 - existing_count)]):
                 if CLOUDINARY_AVAILABLE:
                     try:
-                        result = cloudinary.uploader.upload(
+                        result = upload_image(
                             image_file,
                             folder='velora/products',
                         )
-                        image_url = result['secure_url']
+                        image_url = result['url']
                         public_id = result['public_id']
                     except Exception as e:
                         messages.warning(request, f'Failed to upload image "{image_file.name}" to Cloudinary: {str(e)}')
