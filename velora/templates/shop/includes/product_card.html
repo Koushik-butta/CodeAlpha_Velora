@@ -1,0 +1,45 @@
+<div class="pcard">
+  <div class="pcard__media">
+    <a href="{% url 'product_detail' product.slug %}">
+      {% if product.primary_image %}
+        <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" />
+      {% else %}
+        <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"🛒" }}</div>
+      {% endif %}
+    </a>
+    <div class="pcard__badges">
+      {% if product.listing_type == 'buy' %}
+        <span class="badge badge-buy">Buy</span>
+      {% elif product.listing_type == 'sell' %}
+        <span class="badge badge-sell">Sell</span>
+      {% elif product.listing_type == 'exchange' %}
+        <span class="badge badge-swap">Exchange</span>
+      {% endif %}
+      {% if product.is_featured %}
+        <span class="badge badge-gold">Featured</span>
+      {% endif %}
+      {% if product.discount_percent > 0 %}
+        <span class="badge badge-success" style="background:#128807;">{{ product.discount_percent }}% OFF</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="pcard__body">
+    <div class="pcard__title">
+      <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title|truncatechars:55 }}</a>
+    </div>
+    <div class="pcard__price">
+      {% if product.listing_type == 'exchange' and not product.price %}
+        Exchange Only
+      {% else %}
+        ₹{{ product.price|floatformat:0 }}
+        {% if product.original_price and product.original_price > product.price %}
+          <span class="pcard__price-old" style="text-decoration:line-through;color:var(--text-3);font-size:.8rem;margin-left:6px;font-weight:normal;">₹{{ product.original_price|floatformat:0 }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="pcard__footer">
+      <span class="pcard__city">📍 {{ product.city }}</span>
+      <span class="pcard__condition">{{ product.get_condition_display }}</span>
+    </div>
+  </div>
+</div>

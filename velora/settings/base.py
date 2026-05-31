@@ -9,6 +9,9 @@ import environ
 # Project root (parent of velora package)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+# Load environment variables from .env
+environ.Env.read_env(BASE_DIR / '.env')
+
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shop.context_processors.velora_global_context',
             ],
         },
     },
@@ -125,7 +129,7 @@ STORAGES = {
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME', default=''),
-    'API_KEY': env('CLOUDINARY_API_KEY', default=''),
+    'API_KEY': str(env('CLOUDINARY_API_KEY', default='')),
     'API_SECRET': env('CLOUDINARY_API_SECRET', default=''),
 }
 
@@ -137,8 +141,8 @@ BREVO_SENDER_NAME = env('BREVO_SENDER_NAME', default='Velora')
 OTP_EXPIRY_MINUTES = env.int('OTP_EXPIRY_MINUTES')
 OTP_MAX_ATTEMPTS = env.int('OTP_MAX_ATTEMPTS')
 
-LOGIN_URL = 'admin:login'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

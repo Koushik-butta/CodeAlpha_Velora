@@ -4,164 +4,396 @@
 {% block title %}{% if edit_mode %}Edit {{ product.title }}{% else %}Sell a Product{% endif %} — Velora{% endblock %}
 
 {% block content %}
-<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
-  <div class="container" style="max-width:780px;">
+<style>
+.stepper-steps {
+  position: relative;
+  z-index: 1;
+}
+.step-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.step-node__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text-3);
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.step-node.active .step-node__dot {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
+}
+.step-node.completed .step-node__dot {
+  background: var(--buy);
+  border-color: var(--buy);
+  color: #fff;
+}
+.step-node__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+  text-align: center;
+}
+.step-node.active .step-node__label {
+  color: var(--primary);
+}
+.step-node.completed .step-node__label {
+  color: var(--buy);
+}
 
-    <div style="margin-bottom:28px;">
-      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:-.02em;">
-        {% if edit_mode %}✏️ Edit Listing{% else %}💰 List a Product{% endif %}
+.sell-step-panel {
+  display: none;
+}
+.sell-step-panel.active {
+  display: block;
+  animation: stepFadeIn 0.35s ease;
+}
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#id_images {
+  display: none !important;
+}
+.dropzone-active {
+  border-color: var(--primary) !important;
+  background: var(--surface-3) !important;
+}
+.preview-card {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  position: relative;
+}
+.preview-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.preview-card .remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  padding: 0;
+  transition: transform 0.2s;
+}
+.preview-card .remove-btn:hover {
+  transform: scale(1.15);
+}
+.preview-card .primary-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.65);
+  text-align: center;
+  font-size: .62rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 2px;
+}
+</style>
+
+<div style="min-height:calc(100vh - var(--nav-h)); background:var(--bg); padding:32px 0 64px;">
+  <div class="container" style="max-width:760px;">
+
+    <!-- Heading -->
+    <div style="margin-bottom:28px; text-align: center;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:2rem; letter-spacing:-.02em; color:var(--text-1);">
+        {% if edit_mode %}✏️ Edit Listing{% else %}💰 Sell a Product{% endif %}
       </h1>
-      <p style="color:var(--text-3);margin-top:6px;">
-        {% if edit_mode %}Update your product details below.{% else %}Fill in the details and start selling in minutes.{% endif %}
+      <p style="color:var(--text-3); margin-top:6px; font-size:0.95rem;">
+        {% if edit_mode %}Update your listing details using our step-by-step wizard.{% else %}List your item in India's tricolor marketplace.{% endif %}
       </p>
     </div>
 
+    <!-- Stepper Progress Bar -->
+    <div class="stepper-progress card-white" style="margin-bottom: 32px; padding: 24px 16px;">
+      <div class="stepper-progress__bar" style="position: relative; height: 5px; background: var(--border); border-radius: 3px; margin: 0 40px 16px;">
+        <div id="stepperProgressBar" style="position: absolute; height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary) 0%, var(--buy) 100%); transition: width 0.3s ease; border-radius: 3px;"></div>
+      </div>
+      <div class="stepper-steps" style="display: flex; justify-content: space-between;">
+        <div class="step-node active" data-step="1">
+          <div class="step-node__dot">1</div>
+          <div class="step-node__label">Details</div>
+        </div>
+        <div class="step-node" data-step="2">
+          <div class="step-node__dot">2</div>
+          <div class="step-node__label">Pricing</div>
+        </div>
+        <div class="step-node" data-step="3">
+          <div class="step-node__dot">3</div>
+          <div class="step-node__label">Location</div>
+        </div>
+        <div class="step-node" data-step="4">
+          <div class="step-node__dot">4</div>
+          <div class="step-node__label">Photos</div>
+        </div>
+        <div class="step-node" data-step="5">
+          <div class="step-node__dot">5</div>
+          <div class="step-node__label">Review</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form container -->
     <form method="post" enctype="multipart/form-data" id="sellForm">
       {% csrf_token %}
 
-      <!-- Section 1: Basic Info -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-          📝 Basic Information
-        </h2>
+      <!-- Step 1: Basic Info -->
+      <div class="sell-step-panel active" data-step="1">
+        <div class="card-white" style="padding: 28px; margin-bottom: 24px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:20px; display:flex; align-items:center; gap:8px;">
+            <span>📝</span> Step 1: Basic Details
+          </h2>
 
-        <div class="form-group">
-          <label class="form-label" for="id_title">Product Title <span style="color:var(--error);">*</span></label>
-          {{ form.title }}
-          <span class="form-hint">Be specific — e.g. "iPhone 13 Pro Max 256GB Space Grey (Like New)"</span>
-          {% if form.title.errors %}<div class="form-error">{{ form.title.errors.0 }}</div>{% endif %}
-        </div>
+          <div class="form-group">
+            <label class="form-label" for="id_title">Product Title <span style="color:var(--error);">*</span></label>
+            {{ form.title }}
+            <span class="form-hint">E.g. iPhone 14 Pro Max 256GB Deep Purple (Like New)</span>
+            {% if form.title.errors %}<div class="form-error">{{ form.title.errors.0 }}</div>{% endif %}
+          </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group">
-            <label class="form-label">Category <span style="color:var(--error);">*</span></label>
-            {{ form.category }}
-            {% if form.category.errors %}<div class="form-error">{{ form.category.errors.0 }}</div>{% endif %}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Listing Type <span style="color:var(--error);">*</span></label>
-            {{ form.listing_type }}
-            {% if form.listing_type.errors %}<div class="form-error">{{ form.listing_type.errors.0 }}</div>{% endif %}
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group">
-            <label class="form-label">Brand</label>
-            {{ form.brand }}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Model</label>
-            {{ form.model_name }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Description <span style="color:var(--error);">*</span></label>
-          {{ form.description }}
-          <span class="form-hint">Describe condition, usage history, any flaws, accessories included.</span>
-          {% if form.description.errors %}<div class="form-error">{{ form.description.errors.0 }}</div>{% endif %}
-        </div>
-      </div>
-
-      <!-- Section 2: Pricing & Condition -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;margin-bottom:20px;">💰 Pricing & Condition</h2>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group">
-            <label class="form-label">Selling Price (₹) <span style="color:var(--error);">*</span></label>
-            {{ form.price }}
-            {% if form.price.errors %}<div class="form-error">{{ form.price.errors.0 }}</div>{% endif %}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Original / MRP Price (₹)</label>
-            {{ form.original_price }}
-            <span class="form-hint">Shows discount % to buyers</span>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group">
-            <label class="form-label">Condition <span style="color:var(--error);">*</span></label>
-            {{ form.condition }}
-            {% if form.condition.errors %}<div class="form-error">{{ form.condition.errors.0 }}</div>{% endif %}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Return Policy</label>
-            {{ form.return_policy }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Section 3: Location -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;margin-bottom:20px;">📍 Location</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group">
-            <label class="form-label">City <span style="color:var(--error);">*</span></label>
-            {{ form.city }}
-            {% if form.city.errors %}<div class="form-error">{{ form.city.errors.0 }}</div>{% endif %}
-          </div>
-          <div class="form-group">
-            <label class="form-label">State <span style="color:var(--error);">*</span></label>
-            {{ form.state }}
-            {% if form.state.errors %}<div class="form-error">{{ form.state.errors.0 }}</div>{% endif %}
-          </div>
-        </div>
-      </div>
-
-      <!-- Section 4: Images -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;margin-bottom:8px;">📸 Product Images</h2>
-        <p style="color:var(--text-3);font-size:.85rem;margin-bottom:20px;">Upload up to 5 images. Clear, bright photos increase buyer interest.</p>
-
-        <!-- Image Preview Area -->
-        <div id="imagePreviewArea" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;min-height:80px;">
-          {% if edit_mode and product %}
-            {% for img in product.images.all %}
-            <div style="aspect-ratio:1;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);position:relative;">
-              <img src="{{ img.image_url }}" alt="Image" style="width:100%;height:100%;object-fit:cover;">
-              {% if img.is_primary %}<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);text-align:center;font-size:.6rem;font-weight:700;color:var(--buy);padding:2px;">PRIMARY</div>{% endif %}
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Category <span style="color:var(--error);">*</span></label>
+              {{ form.category }}
+              {% if form.category.errors %}<div class="form-error">{{ form.category.errors.0 }}</div>{% endif %}
             </div>
-            {% endfor %}
-          {% endif %}
-        </div>
+            <div class="form-group">
+              <label class="form-label">Listing Type <span style="color:var(--error);">*</span></label>
+              {{ form.listing_type }}
+              {% if form.listing_type.errors %}<div class="form-error">{{ form.listing_type.errors.0 }}</div>{% endif %}
+            </div>
+          </div>
 
-        <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed var(--border-2);border-radius:var(--radius-sm);padding:32px;cursor:pointer;background:var(--surface-2);transition:border-color .2s;" for="id_images"
-          ondragover="this.style.borderColor='var(--sell)'" ondragleave="this.style.borderColor='var(--border-2)'">
-          <span style="font-size:2.5rem;margin-bottom:8px;">📁</span>
-          <span style="font-weight:700;color:var(--text-1);margin-bottom:4px;">Click to upload or drag & drop</span>
-          <span style="font-size:.8rem;color:var(--text-3);">JPG, PNG, WEBP · Max 5 images · Max 10MB each</span>
-          {{ form.images }}
-        </label>
-        {% if form.images.errors %}<div class="form-error" style="margin-top:8px;">{{ form.images.errors.0 }}</div>{% endif %}
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Brand</label>
+              {{ form.brand }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Model Name</label>
+              {{ form.model_name }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description <span style="color:var(--error);">*</span></label>
+            {{ form.description }}
+            <span class="form-hint">Describe condition, usage period, reasons for selling, and accessories.</span>
+            {% if form.description.errors %}<div class="form-error">{{ form.description.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
       </div>
 
-      <!-- Section 5: Exchange Options -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-bottom:24px;">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;margin-bottom:16px;">🔄 Exchange Options</h2>
-        <label style="display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px;">
-          {{ form.exchange_available }}
-          <span style="font-weight:600;font-size:.95rem;">Open to exchange / swap offers</span>
-        </label>
-        <div class="form-group" id="exchangeForGroup" style="{% if not form.initial.exchange_available %}display:none;{% endif %}">
-          <label class="form-label">What are you looking for in exchange?</label>
-          {{ form.exchange_for }}
+      <!-- Step 2: Pricing & Condition -->
+      <div class="sell-step-panel" data-step="2">
+        <div class="card-white" style="padding: 28px; margin-bottom: 24px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:20px; display:flex; align-items:center; gap:8px;">
+            <span>💰</span> Step 2: Price & Condition
+          </h2>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Selling Price (₹) <span style="color:var(--error);">*</span></label>
+              {{ form.price }}
+              {% if form.price.errors %}<div class="form-error">{{ form.price.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Original Price / MRP (₹)</label>
+              {{ form.original_price }}
+              <span class="form-hint">Shows discount percentages to buyers</span>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Condition <span style="color:var(--error);">*</span></label>
+              {{ form.condition }}
+              {% if form.condition.errors %}<div class="form-error">{{ form.condition.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Return Policy</label>
+              {{ form.return_policy }}
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
-      <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;">
-        {% if edit_mode %}
-          <a href="{% url 'product_detail' slug=product.slug %}" class="btn btn-ghost">Cancel</a>
-          <button type="submit" name="draft" value="1" class="btn btn-outline">Save Draft</button>
-          <button type="submit" name="publish" value="1" class="btn btn-sell btn-lg">✅ Update Listing</button>
-        {% else %}
-          <a href="{% url 'dashboard' %}" class="btn btn-ghost">Cancel</a>
-          <button type="submit" name="draft" value="1" class="btn btn-outline">💾 Save Draft</button>
-          <button type="submit" name="publish" value="1" class="btn btn-sell btn-lg">🚀 Publish Listing</button>
-        {% endif %}
+      <!-- Step 3: Location -->
+      <div class="sell-step-panel" data-step="3">
+        <div class="card-white" style="padding: 28px; margin-bottom: 24px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:20px; display:flex; align-items:center; gap:8px;">
+            <span>📍</span> Step 3: Location Details
+          </h2>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">City <span style="color:var(--error);">*</span></label>
+              {{ form.city }}
+              {% if form.city.errors %}<div class="form-error">{{ form.city.errors.0 }}</div>{% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label">State <span style="color:var(--error);">*</span></label>
+              {{ form.state }}
+              {% if form.state.errors %}<div class="form-error">{{ form.state.errors.0 }}</div>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Images & Photo Management -->
+      <div class="sell-step-panel" data-step="4">
+        <div class="card-white" style="padding: 28px; margin-bottom: 24px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+            <span>📸</span> Step 4: Product Photos
+          </h2>
+          <p style="color:var(--text-3); font-size:.85rem; margin-bottom:20px;">Upload up to 5 clear, bright images to build trust with buyers.</p>
+
+          <!-- Previews -->
+          <div id="imagePreviewArea" style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; min-height:80px;">
+            {% if edit_mode and product %}
+              {% for img in product.images.all %}
+              <div class="preview-card" data-existing="1">
+                <img src="{{ img.image_url }}" alt="Uploaded Image">
+                {% if img.is_primary %}<div class="primary-tag">PRIMARY</div>{% endif %}
+              </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <!-- Drag and drop zone -->
+          <div id="dropzone" style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:2.5px dashed var(--border); border-radius:var(--radius-lg); padding:36px 20px; cursor:pointer; background:var(--surface-2); transition:all 0.2s;">
+            <span style="font-size:2.8rem; margin-bottom:10px;">📁</span>
+            <span style="font-weight:700; color:var(--text-1); margin-bottom:4px; font-size:0.95rem;">Select files or drag them here</span>
+            <span style="font-size:.8rem; color:var(--text-3);">Supports JPG, PNG, WEBP · Max 5 images · Max 10MB each</span>
+            <div style="display:none !important;">
+              {{ form.images }}
+            </div>
+          </div>
+          {% if form.images.errors %}<div class="form-error" style="margin-top:8px;">{{ form.images.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+
+      <!-- Step 5: Review & Submit -->
+      <div class="sell-step-panel" data-step="5">
+        
+        <!-- Summary Card -->
+        <div class="card-saffron" style="padding: 28px; margin-bottom: 24px; border-top: 3px solid var(--primary) !important;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:20px; display:flex; align-items:center; gap:8px;">
+            <span>🔍</span> Step 5: Review Details
+          </h2>
+
+          <div style="display:flex; flex-direction:column; gap:16px; font-size:0.9rem; line-height:1.6;">
+            <div>
+              <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Product Title</strong>
+              <div id="revTitle" style="font-weight:700; font-size:1.1rem; color:var(--text-1);"></div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top: 1px solid var(--border); padding-top: 12px;">
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Category</strong>
+                <div id="revCategory" style="font-weight:600;"></div>
+              </div>
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Listing Type</strong>
+                <div id="revType" style="font-weight:600; text-transform:capitalize;"></div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top: 1px solid var(--border); padding-top: 12px;">
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Selling Price</strong>
+                <div id="revPrice" style="font-weight:700; color:var(--primary); font-size:1.1rem;"></div>
+              </div>
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Condition</strong>
+                <div id="revCondition" style="font-weight:600; text-transform:capitalize;"></div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top: 1px solid var(--border); padding-top: 12px;">
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Location</strong>
+                <div id="revLocation" style="font-weight:600;"></div>
+              </div>
+              <div>
+                <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Brand & Model</strong>
+                <div id="revBrandModel" style="font-weight:600;"></div>
+              </div>
+            </div>
+
+            <div style="border-top: 1px solid var(--border); padding-top: 12px;">
+              <strong style="color:var(--text-3); font-size:0.8rem; text-transform:uppercase;">Description</strong>
+              <div id="revDescription" style="white-space:pre-wrap; color:var(--text-2); font-size:0.85rem; margin-top:4px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exchange Options Card (Integrated in Step 5) -->
+        <div class="card-green" style="padding: 28px; margin-bottom: 24px; border-top: 3px solid var(--buy) !important;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1rem; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+            <span>🔄</span> Exchange Options
+          </h2>
+          <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:16px;">
+            {{ form.exchange_available }}
+            <span style="font-weight:700; font-size:.95rem; color:var(--text-1);">Open to Exchange Swap offers</span>
+          </label>
+          <div class="form-group" id="exchangeForGroup" style="{% if not form.initial.exchange_available %}display:none;{% endif %}">
+            <label class="form-label" style="font-weight:600; font-size:0.85rem; margin-bottom:6px;">What item or category are you looking for in exchange?</label>
+            {{ form.exchange_for }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:28px;">
+        <button type="button" class="btn btn-outline" id="prevBtn" style="display:none; padding:10px 20px;">&larr; Back</button>
+        <div style="margin-left:auto; display:flex; gap:12px;">
+          <button type="button" class="btn btn-sell" id="nextBtn" style="padding:10px 24px; font-weight:700;">Continue &rarr;</button>
+          
+          <div id="submitBtnGroup" style="display:none; gap:12px;">
+            <button type="submit" name="draft" value="1" class="btn btn-outline" style="padding:10px 20px;">Save Draft</button>
+            {% if edit_mode %}
+              <button type="submit" name="publish" value="1" class="btn btn-sell" style="padding:10px 24px; font-weight:700;">✅ Save &amp; Publish</button>
+            {% else %}
+              <button type="submit" name="publish" value="1" class="btn btn-sell" style="padding:10px 24px; font-weight:700;">🚀 Publish Listing</button>
+            {% endif %}
+          </div>
+        </div>
       </div>
 
     </form>
@@ -169,7 +401,7 @@
 </div>
 
 <script>
-// Show/hide exchange_for textarea
+// Toggle exchange_for field
 const exchangeCheckbox = document.getElementById('id_exchange_available');
 const exchangeGroup = document.getElementById('exchangeForGroup');
 if (exchangeCheckbox) {
@@ -178,32 +410,256 @@ if (exchangeCheckbox) {
   });
 }
 
-// Image preview
+// Stepper Logic
+let currentStep = 1;
+const totalSteps = 5;
+
+const steps = document.querySelectorAll('.sell-step-panel');
+const nodes = document.querySelectorAll('.step-node');
+const progressBar = document.getElementById('stepperProgressBar');
+
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const submitBtnGroup = document.getElementById('submitBtnGroup');
+
+function updateStepUI() {
+  // Hide all step panels
+  steps.forEach(step => step.classList.remove('active'));
+  // Show current step panel
+  const activePanel = document.querySelector(`.sell-step-panel[data-step="${currentStep}"]`);
+  if (activePanel) activePanel.classList.add('active');
+
+  // Update nodes classes
+  nodes.forEach(node => {
+    const stepNum = parseInt(node.getAttribute('data-step'));
+    node.classList.remove('active', 'completed');
+    if (stepNum === currentStep) {
+      node.classList.add('active');
+    } else if (stepNum < currentStep) {
+      node.classList.add('completed');
+    }
+  });
+
+  // Update progress bar width
+  const progressPct = ((currentStep - 1) / (totalSteps - 1)) * 100;
+  progressBar.style.width = `${progressPct}%`;
+
+  // Toggle prev button visibility
+  prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+
+  // Toggle next and submit buttons
+  if (currentStep === totalSteps) {
+    nextBtn.style.display = 'none';
+    submitBtnGroup.style.display = 'flex';
+    populateReviewSummary();
+  } else {
+    nextBtn.style.display = 'block';
+    submitBtnGroup.style.display = 'none';
+  }
+
+  // Scroll to top of stepper
+  window.scrollTo({ top: 120, behavior: 'smooth' });
+}
+
+function validateCurrentStep() {
+  if (currentStep === 1) {
+    const title = document.getElementById('id_title');
+    const category = document.getElementById('id_category');
+    const listingType = document.getElementById('id_listing_type');
+    const description = document.getElementById('id_description');
+
+    if (!title.value.trim()) { title.focus(); alert('Please provide a product title.'); return false; }
+    if (!category.value) { category.focus(); alert('Please select a category.'); return false; }
+    if (!listingType.value) { listingType.focus(); alert('Please select a listing type.'); return false; }
+    if (!description.value.trim()) { description.focus(); alert('Please write a product description.'); return false; }
+  } else if (currentStep === 2) {
+    const price = document.getElementById('id_price');
+    const condition = document.getElementById('id_condition');
+
+    if (!price.value || parseFloat(price.value) <= 0) { price.focus(); alert('Please enter a valid price greater than 0.'); return false; }
+    if (!condition.value) { condition.focus(); alert('Please select the item condition.'); return false; }
+  } else if (currentStep === 3) {
+    const city = document.getElementById('id_city');
+    const state = document.getElementById('id_state');
+
+    if (!city.value.trim()) { city.focus(); alert('Please specify a city.'); return false; }
+    if (!state.value.trim()) { state.focus(); alert('Please specify a state.'); return false; }
+  }
+  return true;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (validateCurrentStep()) {
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateStepUI();
+    }
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentStep > 1) {
+    currentStep--;
+    updateStepUI();
+  }
+});
+
+// Sync nodes click if they are completed or less than current
+nodes.forEach(node => {
+  node.addEventListener('click', () => {
+    const stepNum = parseInt(node.getAttribute('data-step'));
+    if (stepNum < currentStep) {
+      currentStep = stepNum;
+      updateStepUI();
+    } else if (stepNum > currentStep) {
+      // Validate up to stepNum
+      let valid = true;
+      while (currentStep < stepNum) {
+        if (!validateCurrentStep()) {
+          valid = false;
+          break;
+        }
+        currentStep++;
+      }
+      updateStepUI();
+    }
+  });
+});
+
+function populateReviewSummary() {
+  document.getElementById('revTitle').textContent = document.getElementById('id_title').value;
+  
+  const categorySelect = document.getElementById('id_category');
+  document.getElementById('revCategory').textContent = categorySelect.options[categorySelect.selectedIndex].text;
+
+  const typeSelect = document.getElementById('id_listing_type');
+  document.getElementById('revType').textContent = typeSelect.options[typeSelect.selectedIndex].text;
+
+  document.getElementById('revPrice').textContent = '₹' + parseFloat(document.getElementById('id_price').value).toLocaleString('en-IN');
+
+  const condSelect = document.getElementById('id_condition');
+  document.getElementById('revCondition').textContent = condSelect.options[condSelect.selectedIndex].text;
+
+  const city = document.getElementById('id_city').value;
+  const state = document.getElementById('id_state').value;
+  document.getElementById('revLocation').textContent = `${city}, ${state}`;
+
+  const brand = document.getElementById('id_brand').value;
+  const model = document.getElementById('id_model_name').value;
+  document.getElementById('revBrandModel').textContent = (brand || model) ? `${brand} ${model}` : 'Not Specified';
+
+  document.getElementById('revDescription').textContent = document.getElementById('id_description').value;
+}
+
+// Dropzone file upload handler
+const dropzone = document.getElementById('dropzone');
 const imageInput = document.getElementById('id_images');
 const previewArea = document.getElementById('imagePreviewArea');
+const sellForm = document.getElementById('sellForm');
 
-if (imageInput) {
-  imageInput.addEventListener('change', function() {
-    // Clear existing previews (keep only edit-mode existing images)
-    const existingPreviews = previewArea.querySelectorAll('[data-new]');
-    existingPreviews.forEach(el => el.remove());
+let selectedFiles = [];
 
-    const files = Array.from(this.files).slice(0, 5);
-    files.forEach((file, idx) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const div = document.createElement('div');
-        div.setAttribute('data-new', '1');
-        div.style.cssText = 'aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--sell);position:relative;';
-        div.innerHTML = `
-          <img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">
-          ${idx === 0 ? '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);text-align:center;font-size:.6rem;font-weight:700;color:var(--buy);padding:2px;">PRIMARY</div>' : ''}
-        `;
-        previewArea.appendChild(div);
-      };
-      reader.readAsDataURL(file);
-    });
+dropzone.addEventListener('click', () => imageInput.click());
+
+dropzone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropzone.classList.add('dropzone-active');
+});
+
+dropzone.addEventListener('dragleave', () => {
+  dropzone.classList.remove('dropzone-active');
+});
+
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('dropzone-active');
+  if (e.dataTransfer.files) {
+    handleFiles(e.dataTransfer.files);
+  }
+});
+
+imageInput.addEventListener('change', () => {
+  if (imageInput.files) {
+    handleFiles(imageInput.files);
+  }
+});
+
+function handleFiles(files) {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  const maxSizeBytes = 10 * 1024 * 1024; // 10MB
+
+  const incomingFiles = Array.from(files);
+  const existingCount = previewArea.querySelectorAll('.preview-card[data-existing]').length;
+
+  if (existingCount + selectedFiles.length + incomingFiles.length > 5) {
+    alert(`You can upload a maximum of ${5 - existingCount} additional images.`);
+    return;
+  }
+
+  incomingFiles.forEach(file => {
+    if (!allowedTypes.includes(file.type)) {
+      alert(`Invalid format: ${file.name}. Only JPG, PNG, and WEBP are supported.`);
+      return;
+    }
+    if (file.size > maxSizeBytes) {
+      alert(`File too large: ${file.name}. Maximum size is 10MB.`);
+      return;
+    }
+    selectedFiles.push(file);
+  });
+
+  renderPreviews();
+}
+
+function renderPreviews() {
+  const newPreviews = previewArea.querySelectorAll('.preview-card:not([data-existing])');
+  newPreviews.forEach(el => el.remove());
+
+  selectedFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const card = document.createElement('div');
+      card.className = 'preview-card';
+      
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      card.appendChild(img);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.innerHTML = '×';
+      removeBtn.addEventListener('click', () => removeFile(index));
+      card.appendChild(removeBtn);
+
+      const existingCount = previewArea.querySelectorAll('[data-existing]').length;
+      if (existingCount === 0 && index === 0) {
+        const tag = document.createElement('div');
+        tag.className = 'primary-tag';
+        tag.innerHTML = 'PRIMARY';
+        card.appendChild(tag);
+      }
+
+      previewArea.appendChild(card);
+    };
+    reader.readAsDataURL(file);
   });
 }
+
+function removeFile(index) {
+  selectedFiles.splice(index, 1);
+  renderPreviews();
+}
+
+sellForm.addEventListener('submit', (e) => {
+  if (selectedFiles.length > 0) {
+    const dt = new DataTransfer();
+    selectedFiles.forEach(file => dt.items.add(file));
+    imageInput.files = dt.files;
+  }
+});
+
+// Initialize UI
+updateStepUI();
 </script>
 {% endblock %}

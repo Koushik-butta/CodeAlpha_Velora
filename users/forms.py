@@ -228,7 +228,10 @@ class ProfileSettingsForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('full_name', 'phone', 'city', 'state', 'bio', 'website')
+        fields = ('full_name', 'phone', 'city', 'state', 'bio', 'website', 'theme')
+        widgets = {
+            'theme': forms.Select(attrs={'class': 'formInput'}),
+        }
 
 
 class AddressForm(forms.ModelForm):

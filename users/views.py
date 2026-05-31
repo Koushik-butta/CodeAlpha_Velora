@@ -16,11 +16,11 @@ from users.forms import (
     SetNewPasswordForm,
     PasswordChangeForm,
     ProfileSettingsForm,
-    AddressForm,
 )
+from cart.forms import AddressForm
 from users.models import Profile
 from cart.models import Address, Order
-from shop.models import Product, Wishlist, RecentlyViewed
+from shop.models import Product, Wishlist, RecentlyViewed, Category
 from swap.models import ExchangeRequest
 from notifications.models import Notification
 
@@ -130,7 +130,7 @@ def forgot_password_view(request):
             html_content = (
                 f'<p>Hi {user.profile.full_name or user.email},</p>'
                 f'<p>We received a request to reset your Velora password.</p>'
-                f'<p><a href="{reset_link}" style="background:#8B5CF6;color:#fff;'
+                f'<p><a href="{reset_link}" style="background:#F97316;color:#fff;'
                 f'padding:12px 24px;border-radius:6px;text-decoration:none;">Reset Password</a></p>'
                 f'<p>Or copy this link: {reset_link}</p>'
                 f'<p>This link expires in 24 hours. If you did not request this, ignore this email.</p>'
@@ -211,25 +211,77 @@ def change_password_view(request):
 @login_required
 def dashboard_view(request):
     user = request.user
-    listings_count = Product.objects.filter(seller=user, is_active=True).count()
-    orders_count = Order.objects.filter(buyer=user).count()
-    exchanges_count = ExchangeRequest.objects.filter(
-        requester=user
-    ).count() + ExchangeRequest.objects.filter(target_user=user).count()
-    wishlist_count = Wishlist.objects.filter(user=user).count()
 
-    recent_orders = Order.objects.filter(buyer=user).select_related('address').order_by('-created_at')[:5]
-    recent_exchanges = ExchangeRequest.objects.filter(
-        requester=user
-    ).union(
-        ExchangeRequest.objects.filter(target_user=user)
+    listings_count = Product.objects.filter(
+        seller=user,
+        is_active=True
+    ).count()
+
+    orders_count = Order.objects.filter(
+        buyer=user
+    ).count()
+
+    exchanges_count = (
+        ExchangeRequest.objects.filter(
+            requester=user
+        ).count()
+        +
+        ExchangeRequest.objects.filter(
+            target_user=user
+        ).count()
+    )
+
+    wishlist_count = Wishlist.objects.filter(
+        user=user
+    ).count()
+
+    recent_orders = Order.objects.filter(
+        buyer=user
     ).order_by('-created_at')[:5]
 
-    wishlist_items = Wishlist.objects.filter(user=user).select_related('product').order_by('-added_at')[:6]
-    recently_viewed = RecentlyViewed.objects.filter(user=user).select_related('product').order_by('-viewed_at')[:6]
-    recent_products = Product.objects.filter(seller=user, is_active=True).order_by('-created_at')[:6]
+    recent_exchanges = ExchangeRequest.objects.filter(
+        requester=user
+    ).order_by('-created_at')[:5]
 
-    notifications = Notification.objects.filter(user=user, is_read=False).order_by('-created_at')[:5]
+    wishlist_items = Wishlist.objects.filter(
+        user=user
+    )[:6]
+
+    recently_viewed = RecentlyViewed.objects.filter(
+        user=user
+    )[:6]
+
+    recent_products = Product.objects.filter(
+        seller=user,
+        is_active=True
+    )[:6]
+
+    notifications = Notification.objects.filter(
+        user=user,
+        is_read=False
+    ).order_by('-created_at')[:5]
+
+    # Categories using the classmethod helper
+    categories = Category.get_all_active()
+
+    # Recommended Products (featured or random active products)
+    recommended_products = Product.objects.filter(
+        is_active=True, is_sold=False, is_featured=True
+    ).select_related('seller', 'category').prefetch_related('images')[:8]
+    if not recommended_products.exists():
+        recommended_products = Product.objects.filter(
+            is_active=True, is_sold=False
+        ).select_related('seller', 'category').prefetch_related('images').order_by('?')[:8]
+
+    # Trending Products (ordered by wishlist/views)
+    trending_products = Product.objects.filter(
+        is_active=True, is_sold=False
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-wishlist_count', '-views_count')[:8]
+
+    # Recently Uploaded Products
+    recently_uploaded = Product.objects.filter(
+        is_active=True, is_sold=False
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-created_at')[:8]
 
     return render(request, 'dashboard/home.html', {
         'listings_count': listings_count,
@@ -242,8 +294,14 @@ def dashboard_view(request):
         'recently_viewed': recently_viewed,
         'recent_products': recent_products,
         'notifications': notifications,
+        'categories': categories,
+        'recommended_products': recommended_products,
+        'trending_products': trending_products,
+        'recently_uploaded': recently_uploaded,
     })
+    
 
+   
 
 @login_required
 def my_products_view(request):
@@ -264,23 +322,16 @@ def wishlist_view(request):
     return render(request, 'dashboard/wishlist.html', {'wishlist_items': wishlist_items})
 
 
-@login_required
-def order_list_view(request):
-    orders_qs = Order.objects.filter(buyer=request.user).order_by('-created_at')
-    paginator = Paginator(orders_qs, 12)
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'dashboard/orders.html', {
-        'orders': page_obj.object_list,
-        'page_obj': page_obj,
-    })
 
 
 @login_required
 def addresses_view(request):
     addresses = Address.objects.filter(user=request.user).order_by('-is_default', '-created_at')
-    return render(request, 'dashboard/addresses.html', {'addresses': addresses})
+    return render(request, 'dashboard/addresses.html', {
+        'addresses': addresses,
+        'address_form': AddressForm(),
+    })
 
 
 @login_required

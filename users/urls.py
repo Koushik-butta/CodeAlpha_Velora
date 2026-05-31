@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from cart import views as cart_views
 
 urlpatterns = [
     # ── Auth ──────────────────────────────────────────────────
@@ -14,7 +15,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('dashboard/my-products/', views.my_products_view, name='dashboard_my_products'),
     path('dashboard/wishlist/', views.wishlist_view, name='dashboard_wishlist'),
-    path('dashboard/orders/', views.order_list_view, name='order_list'),
+    path('dashboard/orders/', cart_views.order_list_view, name='dashboard_orders'),
     path('dashboard/exchanges/', views.dashboard_exchanges_view, name='dashboard_exchanges'),
     path('dashboard/settings/', views.settings_view, name='dashboard_settings'),
     path('dashboard/notifications/', views.notifications_view, name='dashboard_notifications'),

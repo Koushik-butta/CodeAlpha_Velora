@@ -17,7 +17,21 @@ from notifications.models import Notification
 User = get_user_model()
 
 try:
+    import cloudinary
     import cloudinary.uploader
+    from pathlib import Path
+    import environ
+    
+    # Load .env directly to ensure keys are populated as strings
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    env = environ.Env()
+    environ.Env.read_env(BASE_DIR / '.env')
+    
+    cloudinary.config(
+        cloud_name=env('CLOUDINARY_CLOUD_NAME', default=''),
+        api_key=str(env('CLOUDINARY_API_KEY', default='')),
+        api_secret=env('CLOUDINARY_API_SECRET', default='')
+    )
     CLOUDINARY_AVAILABLE = True
 except ImportError:
     CLOUDINARY_AVAILABLE = False
@@ -32,7 +46,7 @@ def home_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
 
-    categories = Category.objects.filter(is_active=True).order_by('order')
+    categories = Category.get_all_active()
     featured_products = Product.objects.filter(
         is_active=True, is_sold=False
     ).select_related('category').prefetch_related('images')[:8]
@@ -58,7 +72,7 @@ def product_list_view(request):
         'category', 'seller'
     ).prefetch_related('images')
 
-    categories = Category.objects.filter(is_active=True).order_by('order')
+    categories = Category.get_all_active()
 
     # ── Filters ────────────────────────────────────────────────
     query = request.GET.get('q', '').strip()
@@ -187,7 +201,7 @@ def product_detail_view(request, slug):
 @login_required
 def sell_product_view(request):
     """Create a new product listing with Cloudinary image uploads."""
-    categories = Category.objects.filter(is_active=True).order_by('order')
+    categories = Category.get_all_active()
     form = ProductForm(request.POST or None, request.FILES or None)
 
     if request.method == 'POST':
@@ -209,10 +223,11 @@ def sell_product_view(request):
                         )
                         image_url = result['secure_url']
                         public_id = result['public_id']
-                    except Exception:
+                    except Exception as e:
+                        messages.warning(request, f'Failed to upload image "{image_file.name}" to Cloudinary: {str(e)}')
                         continue
                 else:
-                    # Fallback: skip silently
+                    messages.warning(request, 'Cloudinary storage setup is not available. Please verify settings.')
                     continue
 
                 ProductImage.objects.create(
@@ -244,7 +259,7 @@ def sell_product_view(request):
 def edit_product_view(request, slug):
     """Edit an existing product listing owned by the current user."""
     product = get_object_or_404(Product, slug=slug, seller=request.user)
-    categories = Category.objects.filter(is_active=True).order_by('order')
+    categories = Category.get_all_active()
     form = ProductForm(request.POST or None, request.FILES or None, instance=product)
 
     if request.method == 'POST':
@@ -263,9 +278,11 @@ def edit_product_view(request, slug):
                         )
                         image_url = result['secure_url']
                         public_id = result['public_id']
-                    except Exception:
+                    except Exception as e:
+                        messages.warning(request, f'Failed to upload image "{image_file.name}" to Cloudinary: {str(e)}')
                         continue
                 else:
+                    messages.warning(request, 'Cloudinary storage setup is not available. Please verify settings.')
                     continue
 
                 is_primary = existing_count == 0 and idx == 0
@@ -499,3 +516,55 @@ def add_review_view(request, slug):
             return redirect('product_detail', slug=slug)
 
     return redirect('product_detail', slug=slug)
+
+
+from django.db.models import F
+
+def deals_view(request):
+    """Deals page showing discounted, trending, viewed, recommended products and new arrivals."""
+    # 1. Recently discounted products (original_price > price)
+    discounted_products = Product.objects.filter(
+        is_active=True,
+        is_sold=False,
+        original_price__isnull=False,
+        original_price__gt=F('price')
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-updated_at')[:8]
+
+    # 2. Trending products (ordered by wishlist count / views)
+    trending_products = Product.objects.filter(
+        is_active=True,
+        is_sold=False
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-wishlist_count', '-views_count')[:8]
+
+    # 3. Most viewed products
+    most_viewed_products = Product.objects.filter(
+        is_active=True,
+        is_sold=False
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-views_count')[:8]
+
+    # 4. Recommended products (Featured products or random)
+    recommended_products = Product.objects.filter(
+        is_active=True,
+        is_sold=False,
+        is_featured=True
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-created_at')[:8]
+
+    if not recommended_products.exists():
+        recommended_products = Product.objects.filter(
+            is_active=True,
+            is_sold=False
+        ).select_related('seller', 'category').prefetch_related('images').order_by('?')[:8]
+
+    # 5. New arrivals
+    new_arrivals = Product.objects.filter(
+        is_active=True,
+        is_sold=False
+    ).select_related('seller', 'category').prefetch_related('images').order_by('-created_at')[:8]
+
+    return render(request, 'shop/deals.html', {
+        'discounted_products': discounted_products,
+        'trending_products': trending_products,
+        'most_viewed_products': most_viewed_products,
+        'recommended_products': recommended_products,
+        'new_arrivals': new_arrivals,
+    })

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}🔥 Hot Deals — Velora{% endblock %}
+
+{% block content %}
+<!-- Top Tricolor patriotic bar (already in base.html, but let's make the header feel premium) -->
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container">
+
+    <!-- Deals Hero Header -->
+    <div style="text-align:center;margin-bottom:48px;padding:48px 24px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);position:relative;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.08),transparent 70%);pointer-events:none;"></div>
+      <div style="position:relative;z-index:2;">
+        <span class="badge badge-sell" style="font-size:.8rem;margin-bottom:12px;display:inline-block;background:var(--primary);color:#fff;border:none;">🔥 FESTIVAL DEALS & STEALS</span>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2.2rem;letter-spacing:-.03em;margin:0 0 10px;color:var(--text-1);">Velora Hot Deals</h1>
+        <p style="color:var(--text-2);max-width:560px;margin:0 auto;font-size:.95rem;line-height:1.6;">
+          Handpicked premium offers, massive discounts, and trending swaps active right now across India.
+        </p>
+      </div>
+    </div>
+
+    <!-- 1. Recently Discounted Section -->
+    {% if discounted_products %}
+    <div style="margin-bottom:48px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin:0;display:flex;align-items:center;gap:8px;">
+          🏷️ Massive Price Drops <span class="badge badge-success" style="font-size:0.7rem;">Top Discounts</span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;">
+        {% for product in discounted_products %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 2. Trending Deals Section -->
+    {% if trending_products %}
+    <div style="margin-bottom:48px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin:0;display:flex;align-items:center;gap:8px;">
+          ⚡ Trending Exchanges & Sales <span class="badge badge-primary" style="font-size:0.7rem;background:var(--primary);">Popular</span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;">
+        {% for product in trending_products %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 3. Most Viewed Products Section -->
+    {% if most_viewed_products %}
+    <div style="margin-bottom:48px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin:0;display:flex;align-items:center;gap:8px;">
+          👀 Most Viewed Items <span class="badge badge-swap" style="font-size:0.7rem;background:var(--swap);">Hot Traffic</span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;">
+        {% for product in most_viewed_products %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 4. Recommended for You Section -->
+    {% if recommended_products %}
+    <div style="margin-bottom:48px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin:0;display:flex;align-items:center;gap:8px;">
+          🎯 Recommended For You <span class="badge badge-gold" style="font-size:0.7rem;background:var(--gold);">Featured</span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;">
+        {% for product in recommended_products %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 5. New Arrivals Section -->
+    {% if new_arrivals %}
+    <div style="margin-bottom:48px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin:0;display:flex;align-items:center;gap:8px;">
+          🆕 Newly Listed Arrivals <span class="badge badge-offer" style="font-size:0.7rem;background:var(--offer);">Fresh</span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;">
+        {% for product in new_arrivals %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Empty State Fallback -->
+    {% if not discounted_products and not trending_products and not most_viewed_products and not recommended_products and not new_arrivals %}
+    <div style="text-align:center;padding:80px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);">
+      <div style="font-size:5rem;margin-bottom:20px;">🏷️</div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:8px;">No Deals Active Right Now</h2>
+      <p style="color:var(--text-3);margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto;">
+        Check back later! Sellers are listing new products for sale and exchange every minute.
+      </p>
+      <a href="{% url 'sell_product' %}" class="btn btn-sell btn-lg">List a Product</a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

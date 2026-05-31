@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ action }} Address — Velora Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+  {% include "includes/sidebar.html" %}
+
+  <main class="dashboard-main">
+    <div style="margin-bottom:24px;">
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-1);margin:0 0 4px;">{{ action }} Address</h1>
+      <p style="color:var(--text-3);font-size:.88rem;margin:0;">Provide your correct delivery information below.</p>
+    </div>
+
+    <div style="max-width: 600px; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:28px;">
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error" style="margin-bottom:16px;">
+          {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" name="full_name" placeholder="Recipient's full name" value="{{ form.full_name.value|default:'' }}" required />
+          {% if form.full_name.errors %}<div class="form-error">{{ form.full_name.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-input" type="tel" name="phone" placeholder="10-digit mobile number" value="{{ form.phone.value|default:'' }}" required />
+          {% if form.phone.errors %}<div class="form-error">{{ form.phone.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">House / Flat / Block No.</label>
+            <input class="form-input" type="text" name="house_no" placeholder="House No." value="{{ form.house_no.value|default:'' }}" required />
+            {% if form.house_no.errors %}<div class="form-error">{{ form.house_no.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">Street / Road / Lane</label>
+            <input class="form-input" type="text" name="street" placeholder="Street name" value="{{ form.street.value|default:'' }}" required />
+            {% if form.street.errors %}<div class="form-error">{{ form.street.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Area / Colony / Locality</label>
+          <input class="form-input" type="text" name="area" placeholder="Area / Locality" value="{{ form.area.value|default:'' }}" required />
+          {% if form.area.errors %}<div class="form-error">{{ form.area.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input class="form-input" type="text" name="city" placeholder="City" value="{{ form.city.value|default:'' }}" required />
+            {% if form.city.errors %}<div class="form-error">{{ form.city.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pincode</label>
+            <input class="form-input" type="text" name="pincode" placeholder="6-digit PIN code" value="{{ form.pincode.value|default:'' }}" required maxlength="6" />
+            {% if form.pincode.errors %}<div class="form-error">{{ form.pincode.errors.0 }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">State</label>
+          {% if form.state.field.choices %}
+            <select name="state" class="form-input" style="background-color: var(--surface-2); color: var(--text-1);">
+              {% for val, label in form.state.field.choices %}
+                <option value="{{ val }}" {% if form.state.value == val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <input class="form-input" type="text" name="state" placeholder="State" value="{{ form.state.value|default:'' }}" required />
+          {% endif %}
+          {% if form.state.errors %}<div class="form-error">{{ form.state.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Landmark <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+          <input class="form-input" type="text" name="landmark" placeholder="Nearby landmark" value="{{ form.landmark.value|default:'' }}" />
+          {% if form.landmark.errors %}<div class="form-error">{{ form.landmark.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Address Type</label>
+          <select name="address_type" class="form-input" style="background-color: var(--surface-2); color: var(--text-1);">
+            {% for val, label in form.address_type.field.choices %}
+              <option value="{{ val }}" {% if form.address_type.value == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          {% if form.address_type.errors %}<div class="form-error">{{ form.address_type.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+          <input type="checkbox" id="is_default" name="is_default" style="width:16px;height:16px;accent-color:var(--buy);cursor:pointer;" {% if form.is_default.value %}checked{% endif %} />
+          <label for="is_default" style="color:var(--text-2);font-size:.88rem;cursor:pointer;">Set as default address</label>
+        </div>
+
+        <div style="display:flex; gap:12px;">
+          <button type="submit" class="btn btn-sell" style="flex:1;">
+            Save Address
+          </button>
+          <a href="{% url 'dashboard_addresses' %}" class="btn btn-outline" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

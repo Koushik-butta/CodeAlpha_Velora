@@ -198,11 +198,61 @@ def place_order_view(request):
 
     # Get address
     address_id = request.POST.get('address_id')
-    if not address_id:
-        messages.error(request, 'Please select a delivery address.')
-        return redirect('checkout')
+    address = None
 
-    address = get_object_or_404(Address, pk=address_id, user=user)
+    if not address_id:
+        # Check if they filled out the new address form
+        if request.POST.get('full_name') and request.POST.get('street'):
+            addr_form = AddressForm(request.POST)
+            if addr_form.is_valid():
+                address = addr_form.save(commit=False)
+                address.user = user
+                address.save()
+                address_id = address.pk
+            else:
+                # If form is invalid, re-render checkout page showing errors
+                buy_now = request.session.get('buy_now')
+                if buy_now:
+                    product = get_object_or_404(Product, pk=buy_now['product_id'], is_active=True, is_sold=False)
+                    quantity = int(buy_now.get('quantity', 1))
+                    subtotal = product.price * quantity
+                    checkout_items = [{
+                        'product': product,
+                        'quantity': quantity,
+                        'subtotal': subtotal,
+                        'is_dict': True,
+                    }]
+                    mode = 'buy_now'
+                else:
+                    cart = Cart.objects.filter(user=user).first()
+                    cart_items = cart.items.select_related('product').all() if cart else []
+                    checkout_items = list(cart_items)
+                    subtotal = sum(item.subtotal for item in cart_items)
+                    mode = 'cart'
+
+                delivery_charge = 0 if subtotal >= 499 else 49
+                total = subtotal + delivery_charge
+                estimated_delivery = timezone.now() + timedelta(days=6)
+                addresses = Address.objects.filter(user=user).order_by('-is_default', '-created_at')
+
+                messages.error(request, 'Please correct the errors in the new address form.')
+                return render(request, 'cart/checkout.html', {
+                    'checkout_items': checkout_items,
+                    'addresses': addresses,
+                    'address_form': addr_form,
+                    'selected_address': None,
+                    'subtotal': subtotal,
+                    'delivery_charge': delivery_charge,
+                    'total': total,
+                    'estimated_delivery': estimated_delivery,
+                    'mode': mode,
+                })
+        else:
+            messages.error(request, 'Please select or add a delivery address.')
+            return redirect('checkout')
+    else:
+        address = get_object_or_404(Address, pk=address_id, user=user)
+
     payment_method = request.POST.get('payment_method', 'cod')
     buy_now = request.session.get('buy_now')
 

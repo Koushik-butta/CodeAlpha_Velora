@@ -1,112 +1,279 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Join Velora — India's premium marketplace to Buy, Sell & Exchange products. Free account, instant listing." />
+  <title>Create Account — Velora Marketplace</title>
 
-{% block title %}Create Account — Velora{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-{% block content %}
-<div class="auth-page">
+  <script>
+    (function(){
+      var s = localStorage.getItem('velora_theme');
+      var p = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', s || p);
+    })();
+  </script>
 
-  <!-- LEFT PANEL -->
-  <div class="auth-left">
-    <div class="auth-left__content">
-      <div style="margin-bottom:40px;">
-        <div class="vnav__logo" style="width:52px;height:52px;font-size:1.4rem;margin-bottom:20px;">V</div>
-        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:2.2rem;font-weight:900;color:#fff;margin:0 0 12px;line-height:1.1;">Join the<br/><span style="background:linear-gradient(135deg,#8B5CF6,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Velora Community</span></h1>
-        <p style="color:rgba(255,255,255,.6);font-size:1rem;line-height:1.6;margin:0;">Start buying, selling, and exchanging in minutes. It's completely free to join.</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;border-radius:12px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🆓</div>
-          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Free Forever</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">No hidden fees, no credit card required</div></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;border-radius:12px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚡</div>
-          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Instant Access</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">Start listing products right away</div></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:40px;height:40px;border-radius:12px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🛡️</div>
-          <div><div style="color:#fff;font-weight:600;font-size:.9rem;">Buyer Protection</div><div style="color:rgba(255,255,255,.5);font-size:.82rem;">Every purchase is protected</div></div>
-        </div>
-      </div>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+
+  <!-- Toast Messages -->
+  {% if messages %}
+  <div id="toast-container" style="position:fixed;top:16px;right:16px;z-index:300;display:flex;flex-direction:column;gap:8px;max-width:360px;width:calc(100vw - 32px);">
+    {% for message in messages %}
+    <div class="toast-msg alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}" style="box-shadow:var(--shadow-lg);">
+      <span style="flex:1">{{ message }}</span>
+      <button class="toast-close" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;margin-left:8px;" aria-label="Close">✕</button>
     </div>
+    {% endfor %}
   </div>
+  {% endif %}
 
-  <!-- RIGHT PANEL -->
-  <div class="auth-right">
-    <div class="auth-right__header">
-      <h2 class="auth-right__title">Create Your Account</h2>
-      <p style="color:var(--text-3);font-size:.9rem;margin:6px 0 0;">Already have an account? <a href="{% url 'login' %}" style="color:var(--sell);font-weight:600;text-decoration:none;">Log in</a></p>
+  <div class="auth-page">
+
+    <!-- ===== LEFT PANEL: Branding ===== -->
+    <div class="auth-left">
+      <div class="auth-left__bg" aria-hidden="true"></div>
+      <div class="auth-left__content">
+
+        <!-- Logo -->
+        <div class="auth-left__logo">
+          <div class="vnav__logo" style="width:44px;height:44px;font-size:1.3rem;">V</div>
+          <div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:-.03em;color:var(--text);">Velora</div>
+            <div style="font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);">Buy · Sell · Exchange</div>
+          </div>
+        </div>
+
+        <!-- Hero Text -->
+        <div class="auth-left__hero-title">
+          Start Selling<br>
+          <span style="color:var(--primary);">in Minutes</span>
+        </div>
+        <div class="auth-left__slogan">मुफ्त अकाउंट बनाओ, तुरंत शुरू करो</div>
+        <div class="auth-left__sub">
+          Join over 12,000 sellers across India. List your first product for free and start earning today.
+        </div>
+
+        <!-- Benefits -->
+        <div class="auth-floating-cards">
+          <div class="auth-float-card" style="border-left:3px solid var(--buy);">
+            <div class="auth-float-icon" style="background:var(--buy-dim);font-size:1.2rem;">✅</div>
+            <div>
+              <div class="auth-float-title">100% Free to Join</div>
+              <div class="auth-float-sub">No listing fee. No hidden charges. Ever.</div>
+            </div>
+          </div>
+          <div class="auth-float-card" style="border-left:3px solid var(--primary);">
+            <div class="auth-float-icon" style="background:var(--primary-dim);font-size:1.2rem;">⚡</div>
+            <div>
+              <div class="auth-float-title">Sell in 2 Minutes</div>
+              <div class="auth-float-sub">Upload photos, set price, go live instantly.</div>
+            </div>
+          </div>
+          <div class="auth-float-card" style="border-left:3px solid var(--swap);">
+            <div class="auth-float-icon" style="background:var(--swap-dim);font-size:1.2rem;">🔄</div>
+            <div>
+              <div class="auth-float-title">Exchange & Swap</div>
+              <div class="auth-float-sub">Trade goods without spending a rupee.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
+          <span class="badge badge-buy">🛡️ Safe Trade</span>
+          <span class="badge badge-primary">📱 Mobile Ready</span>
+          <span class="badge badge-gold">🇮🇳 Made in India</span>
+        </div>
+
+      </div>
     </div>
 
-    <form method="post" action="{% url 'register' %}" novalidate>
-      {% csrf_token %}
+    <!-- ===== RIGHT PANEL: Register Form ===== -->
+    <div class="auth-right">
+      <div class="auth-right__header">
+        <h1 class="auth-right__title">Create your account</h1>
+        <p class="auth-right__sub">Join thousands of buyers & sellers on Velora</p>
+      </div>
 
+      <!-- Non-field errors -->
       {% if form.non_field_errors %}
-      <div class="alert alert-error" style="margin-bottom:20px;">
-        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      <div class="alert alert-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ form.non_field_errors.0 }}
       </div>
       {% endif %}
 
-      <div class="form-group">
-        <label class="form-label" for="id_full_name">Full Name</label>
-        <input class="form-input" type="text" id="id_full_name" name="full_name" placeholder="Your full name" autocomplete="name" required value="{{ form.full_name.value|default:'' }}" />
-        {% if form.full_name.errors %}<div class="form-error">{{ form.full_name.errors.0 }}</div>{% endif %}
-      </div>
+      <form method="post" action="{% url 'register' %}" novalidate id="registerForm">
+        {% csrf_token %}
 
-      <div class="form-group">
-        <label class="form-label" for="id_email">Email Address</label>
-        <input class="form-input" type="email" id="id_email" name="email" placeholder="you@example.com" autocomplete="email" required value="{{ form.email.value|default:'' }}" />
-        {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="id_password1">Password</label>
-        <div style="position:relative;">
-          <input class="form-input" type="password" id="id_password1" name="password1" placeholder="At least 8 characters" autocomplete="new-password" required style="padding-right:48px;" />
-          <button type="button" onclick="togglePwd('id_password1',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+        <!-- Full Name -->
+        <div class="form-group">
+          <label class="form-label" for="id_full_name">Full Name</label>
+          <input
+            class="form-input {% if form.full_name.errors %}error{% endif %}"
+            type="text"
+            id="id_full_name"
+            name="full_name"
+            placeholder="Rahul Sharma"
+            autocomplete="name"
+            required
+            value="{{ form.full_name.value|default:'' }}"
+          />
+          {% if form.full_name.errors %}
+          <div class="form-error">{{ form.full_name.errors.0 }}</div>
+          {% endif %}
         </div>
-        {% if form.password1.errors %}<div class="form-error">{{ form.password1.errors.0 }}</div>{% endif %}
-        <div class="form-hint">Use at least 8 characters with letters and numbers.</div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label" for="id_password2">Confirm Password</label>
-        <div style="position:relative;">
-          <input class="form-input" type="password" id="id_password2" name="password2" placeholder="Repeat your password" autocomplete="new-password" required style="padding-right:48px;" />
-          <button type="button" onclick="togglePwd('id_password2',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="id_email">Email Address</label>
+          <input
+            class="form-input {% if form.email.errors %}error{% endif %}"
+            type="email"
+            id="id_email"
+            name="email"
+            placeholder="rahul@example.com"
+            autocomplete="email"
+            required
+            value="{{ form.email.value|default:'' }}"
+          />
+          {% if form.email.errors %}
+          <div class="form-error">{{ form.email.errors.0 }}</div>
+          {% endif %}
         </div>
-        {% if form.password2.errors %}<div class="form-error">{{ form.password2.errors.0 }}</div>{% endif %}
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="id_password">Password</label>
+          <div style="position:relative;">
+            <input
+              class="form-input {% if form.password.errors %}error{% endif %}"
+              type="password"
+              id="id_password"
+              name="password"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              required
+              style="padding-right:48px;"
+            />
+            <button type="button" onclick="togglePwd('id_password', this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;display:flex;align-items:center;" aria-label="Show password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <!-- Password strength bar -->
+          <div style="height:3px;background:var(--border-2);border-radius:2px;margin-top:6px;overflow:hidden;">
+            <div id="pwdStrengthBar" style="height:100%;width:0;border-radius:2px;transition:width .3s,background .3s;"></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:3px;">
+            <span id="pwdStrengthTxt" style="font-size:.72rem;font-weight:700;color:var(--text-3);">Enter password</span>
+          </div>
+          {% if form.password.errors %}
+          <div class="form-error">{{ form.password.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label class="form-label" for="id_password_confirm">Confirm Password</label>
+          <div style="position:relative;">
+            <input
+              class="form-input {% if form.password_confirm.errors %}error{% endif %}"
+              type="password"
+              id="id_password_confirm"
+              name="password_confirm"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              required
+              style="padding-right:48px;"
+            />
+            <button type="button" onclick="togglePwd('id_password_confirm', this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;display:flex;align-items:center;" aria-label="Show confirm password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          {% if form.password_confirm.errors %}
+          <div class="form-error">{{ form.password_confirm.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Terms -->
+        <div style="margin-bottom:24px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" name="agree_terms" required style="width:16px;height:16px;margin-top:2px;accent-color:var(--primary);flex-shrink:0;" />
+            <span style="color:var(--text-3);font-size:.85rem;line-height:1.5;">
+              I agree to Velora's <a href="/terms/" style="color:var(--primary);font-weight:700;">Terms of Service</a> &amp; <a href="/privacy/" style="color:var(--primary);font-weight:700;">Privacy Policy</a>
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-sell btn-full btn-lg" id="registerSubmitBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Create Free Account
+        </button>
+      </form>
+
+      <div class="auth-right__footer">
+        Already have an account?
+        <a href="{% url 'login' %}" id="loginExistingLink">Log in to Velora</a>
       </div>
 
-      <div style="margin-bottom:20px;">
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
-          <input type="checkbox" name="agree_terms" required style="width:16px;height:16px;margin-top:2px;accent-color:var(--sell);flex-shrink:0;" />
-          <span style="color:var(--text-3);font-size:.85rem;line-height:1.5;">I agree to Velora's <a href="/terms/" style="color:var(--sell);font-weight:600;text-decoration:none;">Terms of Service</a> and <a href="/privacy/" style="color:var(--sell);font-weight:600;text-decoration:none;">Privacy Policy</a></span>
-        </label>
+      <!-- Theme toggle -->
+      <div style="text-align:center;margin-top:24px;">
+        <button class="theme-toggle" id="authThemeToggleReg" type="button" aria-label="Toggle theme" style="margin:0 auto;">
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
       </div>
-
-      <button type="submit" class="btn btn-sell btn-full btn-lg">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-        Create My Account
-      </button>
-    </form>
-
-    <div class="form-divider"><span>or</span></div>
-    <div style="text-align:center;">
-      <p style="color:var(--text-3);font-size:.88rem;margin:0;">Already a member? <a href="{% url 'login' %}" class="btn btn-outline btn-sm" style="margin-left:8px;">Log In</a></p>
     </div>
+
   </div>
 
-</div>
+  <script src="{% static 'css/js/script.js' %}"></script>
+  <script>
+    function togglePwd(id, btn) {
+      var inp = document.getElementById(id);
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      } else {
+        inp.type = 'password';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+    }
 
-<script>
-function togglePwd(id, btn) {
-  var inp = document.getElementById(id);
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-}
-</script>
-{% endblock %}
+    // Password strength checker
+    var pwdInput = document.getElementById('id_password');
+    if (pwdInput) {
+      pwdInput.addEventListener('input', function() {
+        var pw = this.value;
+        var score = 0;
+        if (pw.length >= 8) score++;
+        if (/[A-Z]/.test(pw)) score++;
+        if (/[0-9]/.test(pw)) score++;
+        if (/[^A-Za-z0-9]/.test(pw)) score++;
+        var bar = document.getElementById('pwdStrengthBar');
+        var txt = document.getElementById('pwdStrengthTxt');
+        var labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+        var colors = ['', 'var(--error)', 'var(--offer)', 'var(--swap)', 'var(--buy)'];
+        bar.style.width = (score * 25) + '%';
+        bar.style.background = colors[score] || '';
+        if (txt) { txt.textContent = pw ? labels[score] : 'Enter password'; txt.style.color = colors[score] || 'var(--text-3)'; }
+      });
+    }
+
+    // Auto-dismiss toasts
+    document.querySelectorAll('.toast-msg').forEach(function(el) {
+      setTimeout(function() { el.style.opacity='0'; setTimeout(function(){el.remove();},300); }, 4500);
+      var closeBtn = el.querySelector('.toast-close');
+      if (closeBtn) closeBtn.addEventListener('click', function(){ el.remove(); });
+    });
+  </script>
+</body>
+</html>

@@ -1,116 +1,151 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Exchange Products — Velora{% endblock %}
+{% block title %}Exchange Marketplace — Velora{% endblock %}
 
 {% block content %}
-<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+<div style="min-height:calc(100vh - var(--nav-h)); background:var(--bg); padding:32px 0 64px;">
   <div class="container">
 
-    <!-- Header -->
-    <div style="text-align:center;margin-bottom:40px;padding:40px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);position:relative;overflow:hidden;">
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(6,182,212,.1),transparent 70%);pointer-events:none;"></div>
-      <div style="position:relative;">
-        <span class="badge badge-swap" style="font-size:.8rem;margin-bottom:12px;display:inline-block;">🔄 Exchange Marketplace</span>
-        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:2rem;letter-spacing:-.02em;margin-bottom:8px;">Exchange Products</h1>
-        <p style="color:var(--text-2);max-width:520px;margin:0 auto 20px;">Trade your items directly with other users. List a product for exchange and discover what others are offering.</p>
+    <!-- Header Banner with Green Accent -->
+    <div class="card-green" style="text-align:center; margin-bottom:40px; padding:48px 24px; border-top: 4px solid var(--buy) !important; background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(255,255,255,0.02) 50%, rgba(249,115,22,0.04) 100%); position: relative; overflow: hidden;">
+      <!-- Floating Ashoka Chakra Wheels -->
+      <div class="chakra-wheel" style="position: absolute; right: 40px; top: 50%; transform: translateY(-50%); width: 140px; height: 140px; opacity: 0.1; pointer-events: none; border-color: rgba(0,0,128,0.4); background: radial-gradient(circle, transparent 40%, rgba(0,0,128,0.1) 40%, rgba(0,0,128,0.1) 45%, transparent 45%), repeating-conic-gradient(from 0deg, transparent 0deg 7deg, rgba(0,0,128,0.2) 7deg 15deg);"></div>
+      <div class="chakra-wheel" style="position: absolute; left: 40px; top: 50%; transform: translateY(-50%); width: 140px; height: 140px; opacity: 0.1; pointer-events: none; border-color: rgba(0,0,128,0.4); background: radial-gradient(circle, transparent 40%, rgba(0,0,128,0.1) 40%, rgba(0,0,128,0.1) 45%, transparent 45%), repeating-conic-gradient(from 0deg, transparent 0deg 7deg, rgba(0,0,128,0.2) 7deg 15deg);"></div>
+      
+      <div style="position:relative; z-index:1;">
+        <span class="badge badge-success" style="font-size:.8rem; margin-bottom:14px; display:inline-block; font-weight:700; padding:4px 12px; background:var(--buy); color:#fff; border:none;">🔄 EXCHANGE MARKETPLACE</span>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:2.2rem; letter-spacing:-.03em; margin-bottom:12px; color:var(--text-1);">Barter & Swap Goods</h1>
+        <p style="color:var(--text-2); max-width:540px; margin:0 auto 24px; font-size:1rem; line-height:1.5;">Trade your products directly with other community members. List what you want to let go, define your desired swap, and trade hassle-free!</p>
         {% if user.is_authenticated %}
-          <a href="{% url 'sell_product' %}" class="btn btn-swap btn-lg">+ List for Exchange</a>
+          <a href="{% url 'sell_product' %}" class="btn btn-swap btn-lg" style="font-weight:700; padding:12px 28px;">+ List Product for Exchange</a>
         {% else %}
-          <a href="{% url 'login' %}" class="btn btn-swap btn-lg">Sign In to Exchange</a>
+          <a href="{% url 'login' %}" class="btn btn-swap btn-lg" style="font-weight:700; padding:12px 28px;">Sign In to Propose Swap</a>
         {% endif %}
       </div>
     </div>
 
-    <!-- How It Works -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px;">
-      {% for step, icon, title, desc in "1📤 List Your Product Describe what you want to offer~2🔍 Browse Exchanges Find products you want~3🤝 Make an Offer Propose your exchange deal"|split:"~" %}
-      {% endfor %}
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">📤</div>
-        <div style="font-weight:700;margin-bottom:4px;">1. List Your Product</div>
-        <div style="font-size:.82rem;color:var(--text-3);">Upload what you want to exchange</div>
+    <!-- Interactive Stepper visual cards for How Exchange Works -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; margin-bottom:44px;">
+      <div class="card-white" style="padding: 24px; text-align: center; border-radius: var(--radius-lg);">
+        <div style="width:54px; height:54px; border-radius:50%; background:var(--primary-dim); color:var(--primary); font-size:1.8rem; display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">📤</div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.95rem; margin-bottom:6px; color:var(--text-1);">1. List Offer</h3>
+        <p style="font-size:.82rem; color:var(--text-3); margin:0;">Create a listing and mark it available for exchange, stating what you want in return.</p>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
-        <div style="font-weight:700;margin-bottom:4px;">2. Browse & Discover</div>
-        <div style="font-size:.82rem;color:var(--text-3);">Find products you'd like to get</div>
+      <div class="card-white" style="padding: 24px; text-align: center; border-radius: var(--radius-lg);">
+        <div style="width:54px; height:54px; border-radius:50%; background:var(--buy-dim); color:var(--buy); font-size:1.8rem; display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">🔍</div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.95rem; margin-bottom:6px; color:var(--text-1);">2. Browse Swaps</h3>
+        <p style="font-size:.82rem; color:var(--text-3); margin:0;">Discover items listed by others. View what they want and check if you have a match.</p>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">🤝</div>
-        <div style="font-weight:700;margin-bottom:4px;">3. Request Exchange</div>
-        <div style="font-size:.82rem;color:var(--text-3);">Propose your swap with a message</div>
+      <div class="card-white" style="padding: 24px; text-align: center; border-radius: var(--radius-lg);">
+        <div style="width:54px; height:54px; border-radius:50%; background:var(--swap-dim); color:var(--swap); font-size:1.8rem; display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">🤝</div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.95rem; margin-bottom:6px; color:var(--text-1);">3. Propose Deal</h3>
+        <p style="font-size:.82rem; color:var(--text-3); margin:0;">Propose your item as a swap candidate. Chat, negotiate details, and close the deal!</p>
       </div>
     </div>
 
-    <!-- Products Grid -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;">
-        Products Available for Exchange
-        {% if page_obj %}<span style="font-size:.85rem;font-weight:500;color:var(--text-3);margin-left:8px;">({{ page_obj.paginator.count }} items)</span>{% endif %}
+    <!-- Active exchange products grid -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; border-bottom: 1.5px solid var(--border); padding-bottom:12px;">
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.2rem; color:var(--text-1); margin:0;">
+        Active Swap Listings
       </h2>
+      {% if page_obj %}
+        <span style="font-size:.85rem; font-weight:600; color:var(--text-3);">({{ page_obj.paginator.count }} listings found)</span>
+      {% endif %}
     </div>
 
     {% if exchange_products %}
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:24px;">
       {% for product in exchange_products %}
-      <div class="pcard">
-        <div class="pcard__media">
-          <a href="{% url 'product_detail' product.slug %}">
-            {% if product.primary_image %}
-              <img class="pcard__img" src="{{ product.primary_image.image_url }}" alt="{{ product.title }}" loading="lazy">
+      <div class="pcard card-green" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <!-- Media image area -->
+          <div class="pcard__media" style="position:relative; overflow:hidden; background:var(--surface-2); border-bottom:1px solid var(--border); padding-top: 80%; height: 0;">
+            <a href="{% url 'product_detail' product.slug %}" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+              {% if product.primary_image %}
+                <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;" />
+              {% else %}
+                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3.5rem;">{{ product.category.icon|default:"🔄" }}</div>
+              {% endif %}
+            </a>
+            <div class="pcard__badges" style="position:absolute; top:12px; left:12px; display:flex; flex-direction:column; gap:6px;">
+              <span class="badge badge-swap" style="font-weight:700;">🔄 Swap Option</span>
+              {% if product.is_featured %}
+                <span class="badge badge-gold" style="font-weight:700;">⭐ Featured</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Product description body -->
+          <div class="pcard__body" style="padding:16px;">
+            <div class="pcard__title" style="margin-bottom:8px;">
+              <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; text-decoration:none; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.4;">{{ product.title }}</a>
+            </div>
+            
+            {% if product.price > 0 %}
+              <div class="pcard__price" style="color:var(--buy); font-weight:800; font-size:1.1rem; margin-bottom:10px;">Est. Value: ₹{{ product.price|floatformat:0 }}</div>
             {% else %}
-              <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"🔄" }}</div>
+              <div class="pcard__price" style="color:var(--buy); font-weight:800; font-size:1.1rem; margin-bottom:10px;">Exchange Only</div>
             {% endif %}
-          </a>
-          <div class="pcard__badges">
-            <span class="badge badge-swap">Exchange</span>
-            {% if product.exchange_for %}<span class="badge badge-offer">Wants: {{ product.exchange_for|truncatechars:20 }}</span>{% endif %}
+
+            <!-- Exchange target description details -->
+            <div style="background:var(--surface-2); border:1.1px solid var(--border); border-radius:var(--radius-md); padding:10px 12px; font-size:0.78rem; margin-bottom:12px;">
+              <strong style="color:var(--text-2); font-weight:700; display:block; margin-bottom:2px; text-transform:uppercase; font-size:0.68rem; letter-spacing:0.04em;">Looking For:</strong>
+              <span style="color:var(--text-1); font-weight:600;">
+                {% if product.exchange_for %}
+                  {{ product.exchange_for|truncatechars:48 }}
+                {% else %}
+                  Any suitable exchange offers
+                {% endif %}
+              </span>
+            </div>
           </div>
         </div>
-        <div class="pcard__body">
-          <div class="pcard__title">
-            <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title|truncatechars:55 }}</a>
-          </div>
-          {% if product.price > 0 %}
-          <div class="pcard__price" style="color:var(--swap);">₹{{ product.price|floatformat:0 }}</div>
-          {% else %}
-          <div class="pcard__price" style="color:var(--swap);">Exchange Only</div>
-          {% endif %}
-          <div class="pcard__footer">
-            <span class="pcard__city">📍 {{ product.city }}</span>
-            <span class="pcard__condition">{{ product.get_condition_display }}</span>
+
+        <div>
+          <!-- Card footer and Action button -->
+          <div style="padding: 0 16px 16px;">
+            <div class="pcard__footer" style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:10px; font-size:0.75rem; color:var(--text-3); margin-bottom:12px;">
+              <span>📍 {{ product.city }}</span>
+              <span class="badge" style="font-size:0.68rem; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2);">{{ product.get_condition_display }}</span>
+            </div>
+
+            {% if user.is_authenticated and product.seller != user %}
+              <a href="{% url 'exchange_request' pk=product.pk %}" class="btn btn-swap btn-full btn-sm" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; font-weight:700;">
+                🔄 Request Exchange
+              </a>
+            {% elif not user.is_authenticated %}
+              <a href="{% url 'login' %}?next=/exchange/" class="btn btn-outline btn-full btn-sm" style="text-decoration:none; display:flex; align-items:center; justify-content:center; font-weight:700;">
+                Sign In to Swap
+              </a>
+            {% else %}
+              <button class="btn btn-ghost btn-full btn-sm" disabled style="opacity:0.65; cursor:not-allowed;">My Listing</button>
+            {% endif %}
           </div>
         </div>
-        {% if user.is_authenticated and product.seller != user %}
-        <div style="padding:0 12px 12px;">
-          <a href="{% url 'exchange_request' pk=product.pk %}" class="btn btn-swap btn-full btn-sm" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
-            🔄 Request Exchange
-          </a>
-        </div>
-        {% endif %}
       </div>
       {% endfor %}
     </div>
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-    <div style="display:flex;justify-content:center;gap:8px;margin-top:32px;">
-      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">← Prev</a>{% endif %}
-      <span style="display:flex;align-items:center;font-size:.85rem;color:var(--text-3);padding:0 12px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">Next →</a>{% endif %}
+    <div class="card-white" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:36px; padding:14px;">
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm" style="padding:6px 14px;">&laquo; Prev</a>{% endif %}
+      <span style="color:var(--text-2); font-size:.85rem; font-weight:600;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm" style="padding:6px 14px;">Next &raquo;</a>{% endif %}
     </div>
     {% endif %}
 
     {% else %}
-    <div style="text-align:center;padding:80px 20px;background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);">
-      <div style="font-size:4rem;margin-bottom:16px;">🔄</div>
-      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:8px;">No Exchange Listings Yet</h3>
-      <p style="color:var(--text-3);margin-bottom:24px;">Be the first to list a product for exchange!</p>
+    <!-- Empty State -->
+    <div class="card-white" style="text-align:center; padding:80px 20px;">
+      <div style="font-size:4rem; margin-bottom:16px;">🔄</div>
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.3rem; margin-bottom:8px; color:var(--text-1);">No Exchange Listings Yet</h3>
+      <p style="color:var(--text-3); margin-bottom:24px;">Be the first in your city to list a product for exchange!</p>
       {% if user.is_authenticated %}
-        <a href="{% url 'sell_product' %}" class="btn btn-swap btn-lg">List a Product for Exchange</a>
+        <a href="{% url 'sell_product' %}" class="btn btn-swap btn-lg" style="font-weight:700;">List a Swap Item</a>
       {% else %}
-        <a href="{% url 'register' %}" class="btn btn-swap btn-lg">Sign Up to Start Exchanging</a>
+        <a href="{% url 'register' %}" class="btn btn-swap btn-lg" style="font-weight:700;">Join Free to Swap</a>
       {% endif %}
     </div>
     {% endif %}

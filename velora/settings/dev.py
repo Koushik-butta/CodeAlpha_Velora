@@ -34,11 +34,6 @@ else:
         }
     }
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME', default=''),  # noqa: F405
-    'API_KEY': env('CLOUDINARY_API_KEY', default=''),  # noqa: F405
-    'API_SECRET': env('CLOUDINARY_API_SECRET', default=''),  # noqa: F405
-}
 
 BREVO_API_KEY = env('BREVO_API_KEY', default='')  # noqa: F405
 BREVO_SENDER_EMAIL = env('BREVO_SENDER_EMAIL', default=BREVO_SENDER_EMAIL)  # noqa: F405

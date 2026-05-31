@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Request Exchange for {{ target_product.title }} — Velora{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - var(--nav-h));background:var(--bg);padding:32px 0 64px;">
+  <div class="container" style="max-width:920px;">
+
+    <!-- Breadcrumb -->
+    <div style="font-size:.82rem;color:var(--text-3);margin-bottom:24px;display:flex;align-items:center;gap:6px;">
+      <a href="{% url 'home' %}" style="color:var(--text-3);text-decoration:none;">Home</a>
+      <span>/</span>
+      <a href="{% url 'exchange_index' %}" style="color:var(--text-3);text-decoration:none;">Exchanges</a>
+      <span>/</span>
+      <span style="color:var(--text-1);">Request Exchange</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:380px 1fr;gap:32px;align-items:start;">
+
+      <!-- Left Side: Target Product Preview -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;position:sticky;top:calc(var(--nav-h) + 16px);">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin:0 0 16px;">Product You Want</h3>
+        
+        <div style="background:var(--surface-2);border-radius:12px;overflow:hidden;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          {% if target_product.primary_image %}
+            <img src="{{ target_product.primary_image.url }}" alt="{{ target_product.title }}" style="width:100%;height:100%;object-fit:cover;">
+          {% else %}
+            <span style="font-size:4rem;">{{ target_product.category.icon|default:"🔄" }}</span>
+          {% endif %}
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <span class="badge badge-swap" style="margin-bottom:8px;display:inline-block;">{{ target_product.get_listing_type_display }}</span>
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:800;color:var(--text-1);margin:0 0 6px;line-height:1.3;">{{ target_product.title }}</h2>
+          <div style="font-size:1.4rem;font-weight:900;color:var(--sell);margin-bottom:8px;">₹{{ target_product.price|floatformat:0 }}</div>
+        </div>
+
+        <div style="color:var(--text-3);font-size:.85rem;line-height:1.6;border-top:1px solid var(--border);padding-top:12px;">
+          <div>📍 Location: <strong style="color:var(--text-2);">{{ target_product.city }}, {{ target_product.state }}</strong></div>
+          <div>Condition: <strong style="color:var(--text-2);">{{ target_product.get_condition_display }}</strong></div>
+          <div>Seller: <strong style="color:var(--text-2);">{{ target_product.seller.profile.full_name|default:target_product.seller.email }}</strong></div>
+        </div>
+      </div>
+
+      <!-- Right Side: Proposal Form -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;">
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text-1);margin:0 0 8px;">Create Exchange Proposal</h2>
+        <p style="color:var(--text-3);font-size:.88rem;margin:0 0 24px;">Propose a swap with one of your listed items. You can also specify an optional cash adjustment.</p>
+
+        {% if form.fields.offered_product.queryset.exists %}
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-error" style="margin-bottom:20px;">
+              {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+              <label class="form-label" for="id_offered_product">Product to Offer <span style="color:var(--error);">*</span></label>
+              {{ form.offered_product }}
+              <div class="form-hint" style="margin-top:6px;">Choose one of your active listings to trade.</div>
+              {% if form.offered_product.errors %}<div class="form-error">{{ form.offered_product.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="id_cash_adjustment">Cash Adjustment (₹)</label>
+              {{ form.cash_adjustment }}
+              <div class="form-hint" style="margin-top:6px;">
+                Enter a positive number if you want to pay extra cash. Enter a negative number (e.g. -500) if you expect the other seller to pay you extra.
+              </div>
+              {% if form.cash_adjustment.errors %}<div class="form-error">{{ form.cash_adjustment.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="id_message">Message to Seller</label>
+              {{ form.message }}
+              {% if form.message.errors %}<div class="form-error">{{ form.message.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:16px;">
+              <button type="submit" class="btn btn-swap btn-lg" style="flex:1;">
+                🔄 Propose Exchange
+              </button>
+              <a href="{% url 'product_detail' target_product.slug %}" class="btn btn-outline btn-lg" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+                Cancel
+              </a>
+            </div>
+          </form>
+        {% else %}
+          <div style="text-align:center;padding:40px 20px;border:1px dashed var(--border);border-radius:16px;background:var(--surface-2);">
+            <div style="font-size:3rem;margin-bottom:14px;">📤</div>
+            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--text-1);margin:0 0 10px;font-size:1.1rem;">No Active Listings to Offer</h3>
+            <p style="color:var(--text-3);font-size:.85rem;line-height:1.6;margin:0 0 20px;max-width:380px;margin-left:auto;margin-right:auto;">
+              You must list a product for exchange/sale first so the other party can see what you are offering to trade.
+            </p>
+            <a href="{% url 'sell_product' %}" class="btn btn-swap">
+              + List a Product First
+            </a>
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

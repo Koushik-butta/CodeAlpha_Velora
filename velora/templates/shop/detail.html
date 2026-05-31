@@ -28,7 +28,7 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px;">
           <div id="mainImgWrap" style="height:420px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);">
             {% if product.images.all %}
-            <img id="mainImg" src="{{ product.images.first.image.url }}" alt="{{ product.title }}" style="width:100%;height:100%;object-fit:contain;" />
+            <img id="mainImg" src="{{ product.images.first.url }}" alt="{{ product.title }}" style="width:100%;height:100%;object-fit:contain;" />
             {% else %}
             <div style="font-size:6rem;">{{ product.category.icon|default:"🛒" }}</div>
             {% endif %}
@@ -39,8 +39,8 @@
         {% if product.images.count > 1 %}
         <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;">
           {% for img in product.images.all %}
-          <div onclick="document.getElementById('mainImg').src='{{ img.image.url }}'" style="width:80px;height:80px;flex-shrink:0;border-radius:12px;overflow:hidden;border:2px solid var(--border);cursor:pointer;background:var(--surface-2);display:flex;align-items:center;justify-content:center;transition:border-color .2s;" onmouseenter="this.style.borderColor='var(--sell)'" onmouseleave="this.style.borderColor='var(--border)'">
-            <img src="{{ img.image.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />
+          <div onclick="document.getElementById('mainImg').src='{{ img.url }}'" style="width:80px;height:80px;flex-shrink:0;border-radius:12px;overflow:hidden;border:2px solid var(--border);cursor:pointer;background:var(--surface-2);display:flex;align-items:center;justify-content:center;transition:border-color .2s;" onmouseenter="this.style.borderColor='var(--sell)'" onmouseleave="this.style.borderColor='var(--border)'">
+            <img src="{{ img.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />
           </div>
           {% endfor %}
         </div>
@@ -199,17 +199,25 @@
             <!-- Other user's product -->
             {% if not product.is_sold %}
               {% if product.listing_type != 'exchange' %}
-              <div style="display:flex;gap:10px;margin-bottom:10px;">
+              <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;">
                 {% if in_cart %}
                 <a href="{% url 'cart' %}" class="btn btn-buy btn-full">View in Cart</a>
                 {% else %}
-                <form method="post" action="{% url 'add_to_cart' product.pk %}" style="flex:1;">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-buy btn-full">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    Add to Cart
-                  </button>
-                </form>
+                <div style="display:flex; gap:10px;">
+                  <form method="post" action="{% url 'add_to_cart' product.pk %}" style="flex:1; margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-buy btn-full" style="padding:10px 12px; font-size:0.85rem;">
+                      Add to Cart
+                    </button>
+                  </form>
+                  <form method="post" action="{% url 'add_to_cart' product.pk %}" style="flex:1; margin:0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'checkout' %}" />
+                    <button type="submit" class="btn btn-sell btn-full" style="padding:10px 12px; font-size:0.85rem; font-weight:700;">
+                      ⚡ Buy Now
+                    </button>
+                  </form>
+                </div>
                 {% endif %}
               </div>
               {% endif %}
@@ -222,7 +230,7 @@
               {% endif %}
 
               <!-- Wishlist -->
-              <button id="wishlistBtn" onclick="ajaxToggleWishlist({{ product.pk }}, this)" class="btn {% if in_wishlist %}btn-sell{% else %}btn-outline{% endif %} btn-full">
+              <button id="wishlistBtn" onclick="ajaxToggleWishlist('{{ product.pk }}', this)" class="btn {% if in_wishlist %}btn-sell{% else %}btn-outline{% endif %} btn-full">
                 {{ in_wishlist|yesno:"♥ Saved to Wishlist,♡ Add to Wishlist" }}
               </button>
 
@@ -325,8 +333,8 @@ function ajaxToggleWishlist(pk, btn) {
     method: 'POST',
     headers: { 'X-CSRFToken': '{{ csrf_token }}' }
   }).then(r => r.json()).then(function(data) {
-    btn.textContent = data.in_wishlist ? '♥ Saved to Wishlist' : '♡ Add to Wishlist';
-    btn.className = data.in_wishlist ? 'btn btn-sell btn-full' : 'btn btn-outline btn-full';
+    btn.textContent = data.added ? '♥ Saved to Wishlist' : '♡ Add to Wishlist';
+    btn.className = data.added ? 'btn btn-sell btn-full' : 'btn btn-outline btn-full';
   });
 }
 </script>

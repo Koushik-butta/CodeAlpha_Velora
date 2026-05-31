@@ -17,9 +17,13 @@
 
       <!-- Avatar / Quick Info -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;text-align:center;">
+        {% if user.profile.avatar_url %}
+        <img src="{{ user.profile.avatar_url }}" alt="Avatar" style="width:88px;height:88px;border-radius:50%;object-fit:cover;margin:0 auto 16px;border:2px solid var(--sell);" />
+        {% else %}
         <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--sell),var(--swap));display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;color:#fff;margin:0 auto 16px;">
           {{ user.email|first|upper }}
         </div>
+        {% endif %}
         <div style="font-weight:700;color:var(--text-1);font-size:1rem;margin-bottom:4px;">{{ user.profile.full_name|default:"No name set" }}</div>
         <div style="color:var(--text-3);font-size:.82rem;margin-bottom:16px;">{{ user.email }}</div>
         {% if user.profile.is_verified %}
@@ -81,11 +85,34 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">UPI ID <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
-            <input class="form-input" type="text" name="upi_id" placeholder="yourname@upi" value="{{ profile_form.upi_id.value|default:'' }}" />
+            <label class="form-label">State</label>
+            <input class="form-input" type="text" name="state" placeholder="State" value="{{ profile_form.state.value|default:'' }}" />
+            {% if profile_form.state.errors %}<div class="form-error">{{ profile_form.state.errors.0 }}</div>{% endif %}
           </div>
 
-          <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:8px;">
+          <div class="form-group">
+            <label class="form-label">Website <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+            <input class="form-input" type="url" name="website" placeholder="https://your-website.com" value="{{ profile_form.website.value|default:'' }}" />
+            {% if profile_form.website.errors %}<div class="form-error">{{ profile_form.website.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Profile Picture <span style="color:var(--text-3);font-weight:400;">(Optional)</span></label>
+            <input class="form-input" type="file" name="avatar" accept="image/*" style="padding: 8px;" />
+            <div class="form-hint">Upload a JPG, PNG or WEBP picture. Max 2MB.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Theme / Appearance</label>
+            <select name="theme" class="form-input" style="background-color: var(--surface-2); color: var(--text-1); cursor: pointer;">
+              {% for val, label in profile_form.fields.theme.choices %}
+                <option value="{{ val }}" {% if profile_form.theme.value == val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            {% if profile_form.theme.errors %}<div class="form-error">{{ profile_form.theme.errors.0 }}</div>{% endif %}
+          </div>
+
+          <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:16px;">
             <button type="submit" class="btn btn-sell">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Changes
@@ -109,4 +136,16 @@
     </div>
   </main>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function() {
+    var savedTheme = '{{ user.profile.theme }}';
+    if (savedTheme && (savedTheme === 'dark' || savedTheme === 'light')) {
+      localStorage.setItem('velora_theme', savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  })();
+</script>
 {% endblock %}

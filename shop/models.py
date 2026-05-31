@@ -30,6 +30,34 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    @classmethod
+    def get_all_active(cls):
+        """Get active categories, auto-creating default ones if none exist."""
+        if not cls.objects.filter(is_active=True).exists():
+            defaults = [
+                ('Mobiles', '📱', '#F97316', 0),
+                ('Laptops', '💻', '#10B981', 1),
+                ('Bikes', '🚲', '#F59E0B', 2),
+                ('Fashion', '👕', '#FF6B00', 3),
+                ('Electronics', '🔌', '#3B82F6', 4),
+                ('Books', '📚', '#8B5CF6', 5),
+                ('Sports', '🏏', '#10B981', 6),
+                ('Furniture', '🪑', '#F59E0B', 7),
+                ('Gaming', '🎮', '#EF4444', 8),
+                ('Home Appliances', '🏠', '#128807', 9),
+            ]
+            for name, icon, color, order in defaults:
+                cls.objects.get_or_create(
+                    name=name,
+                    defaults={
+                        'icon': icon,
+                        'color': color,
+                        'order': order,
+                        'is_active': True,
+                    }
+                )
+        return cls.objects.filter(is_active=True).order_by('order')
+
 
 class Product(models.Model):
     """Core product listing — Buy, Sell, or Exchange."""

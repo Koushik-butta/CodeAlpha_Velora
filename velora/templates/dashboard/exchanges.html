@@ -42,12 +42,12 @@
             <!-- Your product -->
             <div style="display:flex;align-items:center;gap:14px;">
               <div style="width:56px;height:56px;border-radius:12px;background:var(--surface-2);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;">
-                {% if exc.requested_product.primary_image %}<img src="{{ exc.requested_product.primary_image.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />{% else %}{{ exc.requested_product.category.icon|default:"🛒" }}{% endif %}
+                {% if exc.target_product.primary_image %}<img src="{{ exc.target_product.primary_image.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />{% else %}{{ exc.target_product.category.icon|default:"🛒" }}{% endif %}
               </div>
               <div>
                 <div style="font-size:.72rem;color:var(--text-3);margin-bottom:2px;">Your Product</div>
-                <div style="font-weight:700;color:var(--text-1);font-size:.92rem;">{{ exc.requested_product.title }}</div>
-                <div style="color:var(--sell);font-weight:700;font-size:.88rem;">₹{{ exc.requested_product.price|floatformat:0 }}</div>
+                <div style="font-weight:700;color:var(--text-1);font-size:.92rem;">{{ exc.target_product.title }}</div>
+                <div style="color:var(--sell);font-weight:700;font-size:.88rem;">₹{{ exc.target_product.price|floatformat:0 }}</div>
               </div>
             </div>
           </div>
@@ -104,12 +104,12 @@
             <div style="font-size:1.5rem;color:var(--swap);">⇌</div>
             <div style="display:flex;align-items:center;gap:14px;">
               <div style="width:56px;height:56px;border-radius:12px;background:var(--surface-2);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;">
-                {% if exc.requested_product.primary_image %}<img src="{{ exc.requested_product.primary_image.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />{% else %}{{ exc.requested_product.category.icon|default:"🛒" }}{% endif %}
+                {% if exc.target_product.primary_image %}<img src="{{ exc.target_product.primary_image.url }}" alt="" style="width:100%;height:100%;object-fit:cover;" />{% else %}{{ exc.target_product.category.icon|default:"🛒" }}{% endif %}
               </div>
               <div>
                 <div style="font-size:.72rem;color:var(--text-3);margin-bottom:2px;">Wanted</div>
-                <div style="font-weight:700;color:var(--text-1);font-size:.92rem;">{{ exc.requested_product.title }}</div>
-                <div style="color:var(--sell);font-weight:700;font-size:.88rem;">₹{{ exc.requested_product.price|floatformat:0 }}</div>
+                <div style="font-weight:700;color:var(--text-1);font-size:.92rem;">{{ exc.target_product.title }}</div>
+                <div style="color:var(--sell);font-weight:700;font-size:.88rem;">₹{{ exc.target_product.price|floatformat:0 }}</div>
               </div>
             </div>
           </div>

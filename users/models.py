@@ -80,6 +80,7 @@ class Profile(models.Model):
     notify_email = models.BooleanField(default=True)
     notify_swap_updates = models.BooleanField(default=True)
     notify_marketing = models.BooleanField(default=False)
+    theme = models.CharField(max_length=10, choices=[('dark', 'Dark Mode'), ('light', 'Light Mode')], default='dark')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

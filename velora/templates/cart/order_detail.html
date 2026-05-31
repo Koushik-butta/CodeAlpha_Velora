@@ -55,7 +55,7 @@
           <span style="font-weight:800;color:var(--buy);">Delivered on {{ order.delivered_at|date:"d M Y"|default:"N/A" }}</span>
         </div>
       {% else %}
-        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--sell-dim);border:1px solid rgba(139,92,246,.3);border-radius:var(--radius-sm);padding:10px 16px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--sell-dim);border:1px solid rgba(249,115,22,.3);border-radius:var(--radius-sm);padding:10px 16px;">
           <span style="font-size:1.2rem;">📦</span>
           <span style="font-weight:800;color:var(--sell);">{{ order.get_status_display }}</span>
         </div>
@@ -78,7 +78,7 @@
           {% for step in progress_steps %}
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;">
             <div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;transition:all .3s;
-              {% if step.state == 'active' %}background:var(--sell);color:white;box-shadow:0 0 20px rgba(139,92,246,.6);border:3px solid white;
+              {% if step.state == 'active' %}background:var(--sell);color:white;box-shadow:0 0 20px rgba(249,115,22,.6);border:3px solid white;
               {% elif step.state == 'completed' %}background:var(--buy);color:white;
               {% else %}background:var(--surface-2);border:2px solid var(--border-2);color:var(--text-3);{% endif %}">
               {% if step.state == 'completed' %}✓{% else %}{{ step.icon }}{% endif %}

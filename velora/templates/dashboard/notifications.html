@@ -24,12 +24,12 @@
     {% if notifications %}
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
       {% for notif in notifications %}
-      <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid var(--border);{% if not notif.is_read %}background:rgba(139,92,246,.04);{% endif %}transition:background .15s;">
+      <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid var(--border);{% if not notif.is_read %}background:rgba(249,115,22,.04);{% endif %}transition:background .15s;">
         <div style="width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
           {% if notif.notif_type == 'order' %}background:rgba(16,185,129,.12);
-          {% elif notif.notif_type == 'exchange' %}background:rgba(6,182,212,.12);
+          {% elif notif.notif_type == 'exchange' %}background:rgba(245,158,11,.12);
           {% elif notif.notif_type == 'wishlist' %}background:rgba(239,68,68,.12);
-          {% else %}background:rgba(139,92,246,.12);{% endif %}">
+          {% else %}background:rgba(249,115,22,.12);{% endif %}">
           {% if notif.notif_type == 'order' %}📦
           {% elif notif.notif_type == 'exchange' %}🔄
           {% elif notif.notif_type == 'wishlist' %}❤️

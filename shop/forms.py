@@ -23,10 +23,11 @@ class MultipleFileInput(forms.Widget):
 
     def render(self, name, value, attrs=None, renderer=None):
         from django.forms.utils import flatatt
+        from django.utils.safestring import mark_safe
         final_attrs = self.build_attrs(self.attrs, attrs)
         final_attrs['type'] = 'file'
         final_attrs['name'] = name
-        return f'<input{flatatt(final_attrs)}>'
+        return mark_safe(f'<input{flatatt(final_attrs)}>')
 
 
 class MultipleFileField(forms.Field):

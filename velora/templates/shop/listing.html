@@ -4,25 +4,28 @@
 {% block title %}{% if query %}{{ query }} — {% endif %}{% if selected_category %}{{ selected_category }} — {% endif %}Browse Products — Velora{% endblock %}
 
 {% block content %}
-<div style="background:var(--bg);min-height:80vh;padding:32px 0;">
+<div style="background:var(--bg); min-height:85vh; padding:32px 0;">
   <div class="container">
-    <div style="display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:start;">
+    <div style="display:grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start;">
 
-      <!-- SIDEBAR FILTERS -->
-      <aside style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;position:sticky;top:calc(var(--nav-h) + 16px);">
-        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--text-1);margin:0 0 20px;">Filters</h2>
+      <!-- SIDEBAR FILTERS (Flipkart / Amazon Style) -->
+      <aside class="card-white" style="padding: 24px; position: sticky; top: calc(var(--nav-h) + 20px);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+          <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.1rem; font-weight:800; color:var(--text-1); margin:0;">Filters</h2>
+          <a href="{% url 'product_list' %}" style="font-size:0.75rem; font-weight:700; color:var(--primary); text-decoration:none;">Clear All</a>
+        </div>
 
         <form method="get" action="{% url 'product_list' %}" id="filterForm">
-          <!-- Search -->
-          <div class="form-group">
-            <label class="form-label">Search</label>
-            <input class="form-input" type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}" />
+          <!-- Search input -->
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">Search Keyword</label>
+            <input class="form-input" type="text" name="q" placeholder="What are you looking for..." value="{{ query|default:'' }}" style="background:var(--surface-2); border-color:var(--border);" />
           </div>
 
-          <!-- Category -->
-          <div class="form-group">
-            <label class="form-label">Category</label>
-            <select class="form-input" name="category">
+          <!-- Category selection -->
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">Category</label>
+            <select class="form-input" name="category" style="background:var(--surface-2); border-color:var(--border); cursor:pointer;">
               <option value="">All Categories</option>
               {% for cat in categories %}
               <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>{{ cat.icon|default:"" }} {{ cat.name }}</option>
@@ -31,131 +34,168 @@
           </div>
 
           <!-- Listing Type -->
-          <div class="form-group">
-            <label class="form-label">Listing Type</label>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
-                <input type="radio" name="type" value="" {% if not listing_type %}checked{% endif %} style="accent-color:var(--sell);" /> All Types
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">Listing Type</label>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top: 6px;">
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--text-2); font-size:.85rem; font-weight:500;">
+                <input type="radio" name="type" value="" {% if not listing_type %}checked{% endif %} style="accent-color:var(--primary); width:16px; height:16px;" /> All Listings
               </label>
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
-                <input type="radio" name="type" value="buy" {% if listing_type == 'buy' %}checked{% endif %} style="accent-color:var(--buy);" /> 🛒 Buy
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--text-2); font-size:.85rem; font-weight:500;">
+                <input type="radio" name="type" value="buy" {% if listing_type == 'buy' %}checked{% endif %} style="accent-color:var(--primary); width:16px; height:16px;" /> 🛒 Buy Direct
               </label>
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
-                <input type="radio" name="type" value="sell" {% if listing_type == 'sell' %}checked{% endif %} style="accent-color:var(--sell);" /> 💰 Sell
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--text-2); font-size:.85rem; font-weight:500;">
+                <input type="radio" name="type" value="sell" {% if listing_type == 'sell' %}checked{% endif %} style="accent-color:var(--primary); width:16px; height:16px;" /> 💰 Seller Offers
               </label>
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);font-size:.88rem;">
-                <input type="radio" name="type" value="exchange" {% if listing_type == 'exchange' %}checked{% endif %} style="accent-color:var(--swap);" /> 🔄 Exchange
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--text-2); font-size:.85rem; font-weight:500;">
+                <input type="radio" name="type" value="exchange" {% if listing_type == 'exchange' %}checked{% endif %} style="accent-color:var(--primary); width:16px; height:16px;" /> 🔄 Exchange Available
               </label>
             </div>
           </div>
 
           <!-- Condition -->
-          <div class="form-group">
-            <label class="form-label">Condition</label>
-            <select class="form-input" name="condition">
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">Condition</label>
+            <select class="form-input" name="condition" style="background:var(--surface-2); border-color:var(--border); cursor:pointer;">
               <option value="">Any Condition</option>
-              <option value="new" {% if request.GET.condition == 'new' %}selected{% endif %}>New</option>
-              <option value="like_new" {% if request.GET.condition == 'like_new' %}selected{% endif %}>Like New</option>
-              <option value="good" {% if request.GET.condition == 'good' %}selected{% endif %}>Good</option>
-              <option value="fair" {% if request.GET.condition == 'fair' %}selected{% endif %}>Fair</option>
-              <option value="poor" {% if request.GET.condition == 'poor' %}selected{% endif %}>Poor</option>
+              <option value="new" {% if request.GET.condition == 'new' %}selected{% endif %}>🆕 New</option>
+              <option value="like_new" {% if request.GET.condition == 'like_new' %}selected{% endif %}>✨ Like New</option>
+              <option value="good" {% if request.GET.condition == 'good' %}selected{% endif %}>👍 Good</option>
+              <option value="fair" {% if request.GET.condition == 'fair' %}selected{% endif %}>👌 Fair</option>
+              <option value="poor" {% if request.GET.condition == 'poor' %}selected{% endif %}>🔧 Poor</option>
             </select>
           </div>
 
           <!-- Price Range -->
-          <div class="form-group">
-            <label class="form-label">Price Range (₹)</label>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <input class="form-input" type="number" name="min_price" placeholder="Min" value="{{ request.GET.min_price|default:'' }}" min="0" />
-              <input class="form-input" type="number" name="max_price" placeholder="Max" value="{{ request.GET.max_price|default:'' }}" min="0" />
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">Price Range (₹)</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <input class="form-input" type="number" name="min_price" placeholder="Min" value="{{ request.GET.min_price|default:'' }}" min="0" style="background:var(--surface-2); border-color:var(--border); font-size:0.8rem;" />
+              <input class="form-input" type="number" name="max_price" placeholder="Max" value="{{ request.GET.max_price|default:'' }}" min="0" style="background:var(--surface-2); border-color:var(--border); font-size:0.8rem;" />
             </div>
           </div>
 
           <!-- City -->
-          <div class="form-group">
-            <label class="form-label">City</label>
-            <input class="form-input" type="text" name="city" placeholder="e.g. Hyderabad" value="{{ request.GET.city|default:'' }}" />
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label" style="font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2);">City / Location</label>
+            <input class="form-input" type="text" name="city" placeholder="e.g. Mumbai, Delhi..." value="{{ request.GET.city|default:'' }}" style="background:var(--surface-2); border-color:var(--border);" />
           </div>
 
-          <button type="submit" class="btn btn-sell btn-full" style="margin-top:4px;">Apply Filters</button>
-          <a href="{% url 'product_list' %}" class="btn btn-ghost btn-full btn-sm" style="margin-top:8px;">Clear All</a>
+          <button type="submit" class="btn btn-sell btn-full" style="font-weight:700;">Apply Filters</button>
         </form>
       </aside>
 
       <!-- PRODUCTS GRID -->
       <div>
-        <!-- Header bar -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-          <div style="color:var(--text-3);font-size:.88rem;">
+        <!-- Search Header Bar -->
+        <div class="card-white" style="display:flex; align-items:center; justify-content:space-between; padding:16px 24px; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+          <div style="color:var(--text-2); font-size:.9rem; font-weight:500;">
             {% if page_obj %}
-            <strong style="color:var(--text-1);">{{ page_obj.paginator.count }}</strong> product{{ page_obj.paginator.count|pluralize }} found
+              Showing <strong style="color:var(--text-1);">{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of <strong style="color:var(--text-1);">{{ page_obj.paginator.count }}</strong> results
+            {% else %}
+              0 results found
             {% endif %}
-            {% if query %} for "<strong style="color:var(--sell);">{{ query }}</strong>"{% endif %}
+            {% if query %} for "<span style="color:var(--primary); font-weight:700;">{{ query }}</span>"{% endif %}
           </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <label style="color:var(--text-3);font-size:.85rem;white-space:nowrap;">Sort by:</label>
-            <select class="form-input" style="padding:8px 12px;font-size:.85rem;" onchange="document.getElementById('filterForm').submit()" name="sort" form="filterForm">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <label style="color:var(--text-3); font-size:.85rem; white-space:nowrap; font-weight:600;">Sort by:</label>
+            <select class="form-input" style="padding:6px 12px; font-size:.85rem; background:var(--surface-2); border-color:var(--border); width: 160px; cursor:pointer;" onchange="document.getElementById('filterForm').submit()" name="sort" form="filterForm">
               <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Newest First</option>
               <option value="price" {% if sort == 'price' %}selected{% endif %}>Price: Low to High</option>
               <option value="-price" {% if sort == '-price' %}selected{% endif %}>Price: High to Low</option>
-              <option value="-views_count" {% if sort == '-views_count' %}selected{% endif %}>Most Viewed</option>
+              <option value="-views_count" {% if sort == '-views_count' %}selected{% endif %}>Most Popular</option>
             </select>
           </div>
         </div>
 
         {% if products %}
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px;">
           {% for product in products %}
-          <div class="pcard">
-            <div class="pcard__media">
-              <a href="{% url 'product_detail' product.slug %}">
+          <div class="pcard card-white" style="height: 100%; display: flex; flex-direction: column;">
+            <div class="pcard__media" style="position:relative; overflow:hidden; background:var(--surface-2); border-bottom:1px solid var(--border); padding-top: 80%; height: 0;">
+              <a href="{% url 'product_detail' product.slug %}" style="position:absolute; top:0; left:0; width:100%; height:100%;">
                 {% if product.primary_image %}
-                <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" />
+                <img class="pcard__img" src="{{ product.primary_image.url }}" alt="{{ product.title }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;" />
                 {% else %}
-                <div class="pcard__img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface-2);">{{ product.category.icon|default:"🛒" }}</div>
+                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3.5rem;">{{ product.category.icon|default:"🛒" }}</div>
                 {% endif %}
               </a>
-              <div class="pcard__badges">
-                {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
-                {% if product.is_featured %}<span class="badge badge-gold">Featured</span>{% endif %}
-                {% if product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
+              <div class="pcard__badges" style="position:absolute; top:12px; left:12px; display:flex; flex-direction:column; gap:6px;">
+                {% if product.listing_type == 'buy' %}
+                  <span class="badge badge-buy" style="font-weight:700;">Buy</span>
+                {% elif product.listing_type == 'sell' %}
+                  <span class="badge badge-sell" style="font-weight:700;">Sell</span>
+                {% elif product.listing_type == 'exchange' %}
+                  <span class="badge badge-swap" style="font-weight:700;">Exchange</span>
+                {% endif %}
+                
+                {% if product.is_featured %}
+                  <span class="badge badge-gold" style="font-weight:700;">⭐ Featured</span>
+                {% endif %}
+                
+                {% if product.is_sold %}
+                  <span class="badge badge-error" style="font-weight:700;">Sold</span>
+                {% endif %}
               </div>
-              {% if user.is_authenticated %}
-              <button class="pcard__wish" onclick="toggleWishlist({{ product.pk }}, this)" title="Add to Wishlist" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1rem;transition:background .2s;">♡</button>
+              
+              {% if user.is_authenticated and not product.is_sold %}
+              <button class="pcard__wishlist-toggle" onclick="toggleWishlist('{{ product.pk }}', this)" title="Add to Wishlist" 
+                      style="position:absolute; top:12px; right:12px; background:rgba(255, 255, 255, 0.9); border:1px solid var(--border); border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-2); font-size:1.15rem; transition:all 0.2s; box-shadow:var(--shadow-sm); z-index:2;">
+                {% if product.pk in wishlist_product_ids %}
+                  <span style="color:var(--error); font-weight:bold;">♥</span>
+                {% else %}
+                  <span>♡</span>
+                {% endif %}
+              </button>
               {% endif %}
             </div>
-            <div class="pcard__body">
-              <div class="pcard__title"><a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title }}</a></div>
-              <div class="pcard__price">₹{{ product.price|floatformat:0 }}</div>
-              <div class="pcard__footer">
-                <span class="pcard__city">📍 {{ product.city }}</span>
-                <span class="pcard__condition">
-                  {% if product.condition == 'new' %}New{% elif product.condition == 'like_new' %}Like New{% elif product.condition == 'good' %}Good{% elif product.condition == 'fair' %}Fair{% else %}Poor{% endif %}
-                </span>
+            <div class="pcard__body" style="padding:16px; flex: 1; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div class="pcard__title" style="margin-bottom:8px;">
+                  <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; text-decoration:none; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.4;">{{ product.title }}</a>
+                </div>
+                <div class="pcard__pricing" style="display:flex; align-items:baseline; gap:8px; margin-bottom:12px;">
+                  <span class="pcard__price" style="font-weight:800; font-size:1.15rem; color:var(--primary);">₹{{ product.price|floatformat:0 }}</span>
+                  {% if product.original_price and product.original_price > product.price %}
+                    <span class="pcard__price-old" style="text-decoration:line-through; color:var(--text-3); font-size:0.85rem;">₹{{ product.original_price|floatformat:0 }}</span>
+                    <span style="color:var(--buy); font-size:0.75rem; font-weight:700;">(Save {% widthratio product.price product.original_price 100 %}%)</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="pcard__footer" style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:10px; font-size:0.78rem; color:var(--text-3);">
+                <span style="display:flex; align-items:center; gap:4px;">📍 {{ product.city }}</span>
+                <span class="badge" style="font-size:0.7rem; background:var(--surface-2); border:1.1px solid var(--border); color:var(--text-2);">{{ product.get_condition_display }}</span>
               </div>
             </div>
           </div>
           {% endfor %}
         </div>
 
-        <!-- Pagination -->
+        <!-- Pagination Bar -->
         {% if page_obj.has_other_pages %}
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:36px;">
-          {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">&laquo; Prev</a>{% endif %}
-          <span style="color:var(--text-3);font-size:.88rem;padding:0 8px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-          {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">Next &raquo;</a>{% endif %}
+        <div class="card-white" style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:36px; padding:14px;">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if listing_type %}&type={{ listing_type }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn btn-outline btn-sm" style="padding:6px 14px;">&laquo; Prev</a>
+          {% endif %}
+          
+          <span style="color:var(--text-2); font-size:.85rem; font-weight:600;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if listing_type %}&type={{ listing_type }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="btn btn-outline btn-sm" style="padding:6px 14px;">Next &raquo;</a>
+          {% endif %}
         </div>
         {% endif %}
 
         {% else %}
-        <div style="text-align:center;padding:80px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;">
-          <div style="font-size:4rem;margin-bottom:16px;">🔍</div>
-          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-1);margin:0 0 10px;">No Products Found</h3>
-          <p style="color:var(--text-3);margin:0 0 24px;">Try adjusting your filters or search query.</p>
-          <a href="{% url 'product_list' %}" class="btn btn-outline">Clear Filters</a>
+        <!-- Empty State -->
+        <div class="card-white" style="text-align:center; padding:80px 20px;">
+          <div style="font-size:4rem; margin-bottom:16px;">🔍</div>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.4rem; font-weight:800; color:var(--text-1); margin:0 0 10px;">No Products Found</h3>
+          <p style="color:var(--text-3); margin:0 0 24px;">We couldn't find any products matching your criteria. Try adjusting filters.</p>
+          <a href="{% url 'product_list' %}" class="btn btn-sell">Clear Filters</a>
         </div>
         {% endif %}
       </div>
+
     </div>
   </div>
 </div>
@@ -163,22 +203,25 @@
 <script>
 function toggleWishlist(pk, btn) {
   var csrfToken = '{{ csrf_token }}';
-  fetch('/products/wishlist/' + pk + '/toggle/', {
+  fetch('/products/wishlist/toggle/' + pk + '/', {
     method: 'POST',
     headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }
   }).then(function(res) { return res.json(); }).then(function(data) {
-    btn.textContent = data.in_wishlist ? '♥' : '♡';
-    btn.style.color = data.in_wishlist ? 'var(--error)' : '#fff';
+    if (data.added) {
+      btn.innerHTML = '<span style="color:var(--error); font-weight:bold;">♥</span>';
+    } else {
+      btn.innerHTML = '<span>♡</span>';
+    }
   }).catch(function() {});
 }
 </script>
 
 <style>
-@media (max-width: 768px) {
-  .container > div[style*="grid-template-columns: 260px"] {
+@media (max-width: 992px) {
+  .container > div {
     grid-template-columns: 1fr !important;
   }
-  aside[style*="sticky"] { position: static !important; }
+  aside { position: static !important; }
 }
 </style>
 {% endblock %}
