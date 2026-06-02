@@ -342,6 +342,162 @@
   --chakra-color-alpha: rgba(0, 0, 128, 0.15);
 }
 
+/* 7. Holi Festival (Colorful) */
+[data-theme="holi-festival"] {
+  --bg: #0C0F1D;
+  --bg-2: #14172E;
+  --bg-3: #22274A;
+  --bg-4: #303766;
+  --surface: #181C38;
+  --surface-2: #22274A;
+  --surface-3: #303766;
+  --text: #F0F3FF;
+  --text-1: #FFFFFF;
+  --text-2: #E879F9;
+  --text-3: #60A5FA;
+  --text-inv: #000000;
+  --border: rgba(232,121,249,.15);
+  --border-2: rgba(96,165,250,.25);
+  --border-3: rgba(244,63,94,.4);
+  --primary: #D946EF;
+  --primary-dark: #A21CAF;
+  --primary-light: #F472B6;
+  --primary-dim: rgba(217,70,239,.15);
+  --primary-glow: rgba(217,70,239,.4);
+  --buy: #10B981;
+  --buy-dark: #047857;
+  --buy-dim: rgba(16,185,129,.15);
+  --buy-glow: rgba(16,185,129,.3);
+  --sell: #F59E0B;
+  --sell-dim: rgba(245,158,11,.15);
+  --sell-glow: rgba(245,158,11,.3);
+  --swap: #3B82F6;
+  --swap-dim: rgba(59,130,246,.15);
+  --swap-glow: rgba(59,130,246,.3);
+  --logo-bg: linear-gradient(135deg, #EC4899 0%, #3B82F6 50%, #10B981 100%);
+  --logo-tagline-color: #F472B6;
+  --chakra-color: rgba(217, 70, 239, 0.7);
+  --chakra-color-alpha: rgba(217, 70, 239, 0.2);
+  --nav-bg: rgba(12,15,29,.97);
+}
+
+/* 8. Midnight Slate / Monochrome */
+[data-theme="midnight-slate"] {
+  --bg: #090A0F;
+  --bg-2: #12131A;
+  --bg-3: #1E202C;
+  --bg-4: #2D3042;
+  --surface: #181922;
+  --surface-2: #1E202C;
+  --surface-3: #2D3042;
+  --text: #E2E8F0;
+  --text-1: #F8FAFC;
+  --text-2: #94A3B8;
+  --text-3: #64748B;
+  --text-inv: #0F172A;
+  --border: rgba(148,163,184,.1);
+  --border-2: rgba(148,163,184,.18);
+  --border-3: rgba(148,163,184,.3);
+  --primary: #64748B;
+  --primary-dark: #475569;
+  --primary-light: #94A3B8;
+  --primary-dim: rgba(100,116,139,.12);
+  --primary-glow: rgba(100,116,139,.25);
+  --buy: #475569;
+  --buy-dark: #334155;
+  --buy-dim: rgba(71,85,105,.12);
+  --buy-glow: rgba(71,85,105,.25);
+  --sell: #64748B;
+  --sell-dim: rgba(100,116,139,.12);
+  --sell-glow: rgba(100,116,139,.25);
+  --swap: #94A3B8;
+  --swap-dim: rgba(148,163,184,.12);
+  --swap-glow: rgba(148,163,184,.25);
+  --logo-bg: linear-gradient(135deg, #64748B 0%, #334155 100%);
+  --logo-tagline-color: #94A3B8;
+  --chakra-color: rgba(148, 163, 184, 0.5);
+  --chakra-color-alpha: rgba(148, 163, 184, 0.15);
+  --nav-bg: rgba(9,10,15,.98);
+}
+
+/* 9. Sunset Magenta */
+[data-theme="sunset-magenta"] {
+  --bg: #140812;
+  --bg-2: #1E0C1C;
+  --bg-3: #2D142B;
+  --bg-4: #3C1C3A;
+  --surface: #240F22;
+  --surface-2: #2D142B;
+  --surface-3: #3C1C3A;
+  --text: #FAE8FF;
+  --text-1: #FDF4FF;
+  --text-2: #E879F9;
+  --text-3: #A21CAF;
+  --text-inv: #2E0827;
+  --border: rgba(232,121,249,.1);
+  --border-2: rgba(232,121,249,.18);
+  --border-3: rgba(232,121,249,.3);
+  --primary: #C026D3;
+  --primary-dark: #86198F;
+  --primary-light: #E879F9;
+  --primary-dim: rgba(192,38,211,.15);
+  --primary-glow: rgba(192,38,211,.3);
+  --buy: #F59E0B;
+  --buy-dark: #D97706;
+  --buy-dim: rgba(245,158,11,.15);
+  --buy-glow: rgba(245,158,11,.3);
+  --sell: #C026D3;
+  --sell-dim: rgba(192,38,211,.15);
+  --sell-glow: rgba(192,38,211,.3);
+  --swap: #EC4899;
+  --swap-dim: rgba(236,72,153,.15);
+  --swap-glow: rgba(236,72,153,.3);
+  --logo-bg: linear-gradient(135deg, #C026D3 0%, #F59E0B 100%);
+  --logo-tagline-color: #E879F9;
+  --chakra-color: rgba(245, 158, 11, 0.6);
+  --chakra-color-alpha: rgba(245, 158, 11, 0.2);
+  --nav-bg: rgba(20,8,18,.97);
+}
+
+/* 10. Ocean Turquoise */
+[data-theme="ocean-turquoise"] {
+  --bg: #061314;
+  --bg-2: #091D1E;
+  --bg-3: #112F30;
+  --bg-4: #194042;
+  --surface: #0F2729;
+  --surface-2: #112F30;
+  --surface-3: #194042;
+  --text: #E6F8F9;
+  --text-1: #F2FCFD;
+  --text-2: #2DD4BF;
+  --text-3: #0D9488;
+  --text-inv: #042F2E;
+  --border: rgba(45,212,191,.1);
+  --border-2: rgba(45,212,191,.18);
+  --border-3: rgba(45,212,191,.3);
+  --primary: #0D9488;
+  --primary-dark: #0F766E;
+  --primary-light: #2DD4BF;
+  --primary-dim: rgba(13,148,136,.15);
+  --primary-glow: rgba(13,148,136,.3);
+  --buy: #00F5D4;
+  --buy-dark: #00BB9C;
+  --buy-dim: rgba(0,245,212,.15);
+  --buy-glow: rgba(0,245,212,.3);
+  --sell: #0D9488;
+  --sell-dim: rgba(13,148,136,.15);
+  --sell-glow: rgba(13,148,136,.3);
+  --swap: #3B82F6;
+  --swap-dim: rgba(59,130,246,.15);
+  --swap-glow: rgba(59,130,246,.3);
+  --logo-bg: linear-gradient(135deg, #0D9488 0%, #3B82F6 100%);
+  --logo-tagline-color: #2DD4BF;
+  --chakra-color: rgba(0, 245, 212, 0.6);
+  --chakra-color-alpha: rgba(0, 245, 212, 0.2);
+  --nav-bg: rgba(6,19,20,.97);
+}
+
 /* Theme active states & variables */
 .theme-opt.active {
   background: var(--primary-dim) !important;
@@ -633,6 +789,8 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
 .vdrawer__links {
   padding: 12px 8px;
   display: flex; flex-direction: column; gap: 2px;
+  flex: 1;
+  overflow-y: auto;
 }
 .vdrawer__link {
   display: flex; align-items: center; gap: 12px;
@@ -722,14 +880,26 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: all var(--dur) var(--ease);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   position: relative;
 }
+.pcard::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -150%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
+  transform: skewX(-25deg);
+  pointer-events: none;
+}
 .pcard:hover {
-  border-color: var(--primary-dim);
-  box-shadow: var(--shadow);
-  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  transform: translateY(-6px);
+}
+.pcard:hover::after {
+  left: 150%;
+  transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .pcard__media {
   position: relative;
@@ -1688,13 +1858,28 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
   color: var(--text-1);
 }
 
-/* Tricolor Banner backgrounds */
+/* Tricolor Banner backgrounds (animated gradient shift) */
+@keyframes shiftingGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 .banner-tricolor {
-  background: linear-gradient(135deg, var(--primary-dim), rgba(255,255,255,0.03) 50%, var(--buy-dim));
+  background: linear-gradient(270deg, var(--primary-dim), rgba(255,255,255,0.03) 50%, var(--buy-dim));
+  background-size: 300% 300%;
+  animation: shiftingGradient 15s ease infinite;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   position: relative;
   overflow: hidden;
+}
+
+/* Spin logo Ashoka Chakra slowly on hover */
+.vnav__brand:hover .chakra-wheel {
+  transform: rotate(360deg);
+}
+.chakra-wheel {
+  transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 /* Header Search Bar */

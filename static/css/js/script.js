@@ -370,3 +370,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+/* ---- CONFETTI CELEBRATION EFFECT ---- */
+function triggerConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '99999';
+  document.body.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+  
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+  
+  const colors = ['#FF9933', '#128807', '#3B82F6', '#EC4899', '#FBBF24', '#00FFFF'];
+  const particles = [];
+  
+  for (let i = 0; i < 150; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height - height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * width,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+      tiltAngle: 0
+    });
+  }
+  
+  let opacity = 1.0;
+  
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach((p, idx) => {
+      p.tiltAngle += p.tiltAngleIncremental;
+      p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+      p.x += Math.sin(p.tiltAngle);
+      p.tilt = Math.sin(p.tiltAngle - idx/3) * 15;
+      
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.globalAlpha = opacity;
+      ctx.moveTo(p.x + p.tilt + p.r/2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r/2);
+      ctx.stroke();
+    });
+    
+    opacity -= 0.006;
+    if (opacity > 0) {
+      requestAnimationFrame(draw);
+    } else {
+      canvas.remove();
+    }
+  }
+  draw();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hasSuccessToast = document.querySelector('.alert-success');
+  if (hasSuccessToast) {
+    // Small delay so toast loads, then boom!
+    setTimeout(triggerConfetti, 200);
+  }
+});
