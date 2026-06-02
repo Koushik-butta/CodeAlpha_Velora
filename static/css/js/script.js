@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (icon) icon.textContent = isWish ? '♥' : '♡';
           if (isWish) {
             triggerHearts(e.clientX, e.clientY);
+            playSynthSound('heart');
           }
         } else if (res.status === 403) { window.location.href = '/login/'; }
       } catch {}
@@ -454,6 +455,18 @@ document.addEventListener('DOMContentLoaded', () => {
     wheel.addEventListener('click', e => {
       e.stopPropagation();
       triggerSparks(e.clientX, e.clientY);
+      playSynthSound('chime');
+    });
+  });
+
+  // Play foley sound effects on button clicks
+  document.querySelectorAll('.btn, .theme-toggle, .theme-opt, .theme-opt-circle, .vnav__icon-btn, .hero__pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Avoid overlapping sounds (theme triggers chime, wishlist triggers heart)
+      const isSpecial = btn.classList.contains('theme-opt') || btn.classList.contains('theme-opt-circle') || btn.classList.contains('chakra-wheel') || btn.closest('[data-wishlist-btn]');
+      if (!isSpecial) {
+        playSynthSound('click');
+      }
     });
   });
   
@@ -463,12 +476,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initMagneticButtons();
   initHeroParticles();
   initDynamicGreeting();
+  initCursorTrail();
 });
 
 /* ---- ADVANCED TRANSITIONS & EFFECTS ---- */
 
 // 1. Theme Change Circular Sweep Ripple Transition
 function applyThemeWithTransition(t, e) {
+  playSynthSound('chime');
   let x = window.innerWidth / 2;
   let y = window.innerHeight / 2;
   if (e && e.clientX && e.clientY) {
@@ -865,4 +880,128 @@ function initDynamicGreeting() {
     greet = 'Namaste 🌙 Good Night, Welcome Back';
   }
   el.textContent = greet;
+}
+
+// 9. Synthesized Foley Audio Feedback (Web Audio API Synth Plucks/Clicks)
+function playSynthSound(type) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  
+  try {
+    const ctx = new AudioContext();
+    
+    if (type === 'chime') {
+      // Bell/chime pluck sound (bell synth)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5 note
+      osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.15); // slides up to A6
+      
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35); // decay
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start();
+      osc.stop(ctx.currentTime + 0.4);
+    } else if (type === 'heart') {
+      // Cute bubble sound for wishlist plucks
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+      osc.frequency.exponentialRampToValueAtTime(987.77, ctx.currentTime + 0.12); // B5
+      
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start();
+      osc.stop(ctx.currentTime + 0.25);
+    } else if (type === 'click') {
+      // Clean mechanical UI click sound
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.05);
+      
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.start();
+      osc.stop(ctx.currentTime + 0.08);
+    }
+  } catch (e) {}
+}
+
+// 10. Dynamic Cursor Trail Particles (sparkles following mouse movement)
+function initCursorTrail() {
+  const canvas = document.getElementById('cursor-trail-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+  
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+  
+  const particles = [];
+  const computedStyle = getComputedStyle(document.documentElement);
+  
+  window.addEventListener('mousemove', e => {
+    // Spawn trail particles dynamically matching active theme primary colors
+    const colorPrimary = computedStyle.getPropertyValue('--primary').trim() || '#FF9933';
+    
+    for (let i = 0; i < 2; i++) {
+      particles.push({
+        x: e.clientX,
+        y: e.clientY,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5 - 0.4, // float slightly upward
+        r: Math.random() * 2.8 + 1.2,
+        color: colorPrimary,
+        alpha: 0.75,
+        decay: Math.random() * 0.035 + 0.02
+      });
+    }
+  });
+  
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    
+    const colorPrimary = computedStyle.getPropertyValue('--primary').trim() || '#FF9933';
+    
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= p.decay;
+      
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color === 'var(--primary)' || !p.color ? colorPrimary : p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
 }
