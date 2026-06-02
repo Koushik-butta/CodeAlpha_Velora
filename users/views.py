@@ -19,7 +19,7 @@ from users.forms import (
 )
 from cart.forms import AddressForm
 from users.models import Profile
-from cart.models import Address, Order
+from cart.models import Address, Order, OrderItem
 from shop.models import Product, Wishlist, RecentlyViewed, Category
 from swap.models import ExchangeRequest
 from notifications.models import Notification
@@ -291,6 +291,20 @@ def my_products_view(request):
 
     return render(request, 'dashboard/my_products.html', {
         'products': page_obj.object_list,
+        'page_obj': page_obj,
+    })
+
+
+@login_required
+def seller_sales_view(request):
+    """View to track orders received by the seller for their products."""
+    sales_qs = OrderItem.objects.filter(seller=request.user).select_related('order', 'order__buyer').order_by('-order__created_at')
+    paginator = Paginator(sales_qs, 10)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'dashboard/sales.html', {
+        'sales': page_obj.object_list,
         'page_obj': page_obj,
     })
 

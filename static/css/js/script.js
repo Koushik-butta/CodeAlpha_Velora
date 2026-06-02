@@ -304,7 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (icon) icon.textContent = isWish ? '♥' : '♡';
           if (isWish) {
             triggerHearts(e.clientX, e.clientY);
-            playSynthSound('heart');
           }
         } else if (res.status === 403) { window.location.href = '/login/'; }
       } catch {}
@@ -455,18 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
     wheel.addEventListener('click', e => {
       e.stopPropagation();
       triggerSparks(e.clientX, e.clientY);
-      playSynthSound('chime');
-    });
-  });
-
-  // Play foley sound effects on button clicks
-  document.querySelectorAll('.btn, .theme-toggle, .theme-opt, .theme-opt-circle, .vnav__icon-btn, .hero__pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Avoid overlapping sounds (theme triggers chime, wishlist triggers heart)
-      const isSpecial = btn.classList.contains('theme-opt') || btn.classList.contains('theme-opt-circle') || btn.classList.contains('chakra-wheel') || btn.closest('[data-wishlist-btn]');
-      if (!isSpecial) {
-        playSynthSound('click');
-      }
     });
   });
   
@@ -483,7 +470,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 1. Theme Change Circular Sweep Ripple Transition
 function applyThemeWithTransition(t, e) {
-  playSynthSound('chime');
   let x = window.innerWidth / 2;
   let y = window.innerHeight / 2;
   if (e && e.clientX && e.clientY) {
@@ -882,68 +868,7 @@ function initDynamicGreeting() {
   el.textContent = greet;
 }
 
-// 9. Synthesized Foley Audio Feedback (Web Audio API Synth Plucks/Clicks)
-function playSynthSound(type) {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) return;
-  
-  try {
-    const ctx = new AudioContext();
-    
-    if (type === 'chime') {
-      // Bell/chime pluck sound (bell synth)
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5 note
-      osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.15); // slides up to A6
-      
-      gain.gain.setValueAtTime(0.08, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35); // decay
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      osc.start();
-      osc.stop(ctx.currentTime + 0.4);
-    } else if (type === 'heart') {
-      // Cute bubble sound for wishlist plucks
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(987.77, ctx.currentTime + 0.12); // B5
-      
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      osc.start();
-      osc.stop(ctx.currentTime + 0.25);
-    } else if (type === 'click') {
-      // Clean mechanical UI click sound
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(160, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.05);
-      
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      osc.start();
-      osc.stop(ctx.currentTime + 0.08);
-    }
-  } catch (e) {}
-}
+// 9. Synthesized Foley Audio Feedback (Removed)
 
 // 10. Dynamic Cursor Trail Particles (sparkles following mouse movement)
 function initCursorTrail() {

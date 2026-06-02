@@ -323,6 +323,8 @@ def place_order_view(request):
             image_url=primary_image.image_url if primary_image else '',
             quantity=item_data['quantity'],
         )
+        product.is_sold = True
+        product.save()
 
     # Clear cart or buy_now session
     if buy_now:

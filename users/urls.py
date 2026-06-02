@@ -14,6 +14,7 @@ urlpatterns = [
     # ── Dashboard ─────────────────────────────────────────────
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('dashboard/my-products/', views.my_products_view, name='dashboard_my_products'),
+    path('dashboard/sales/', views.seller_sales_view, name='dashboard_sales'),
     path('dashboard/wishlist/', views.wishlist_view, name='dashboard_wishlist'),
     path('dashboard/orders/', cart_views.order_list_view, name='dashboard_orders'),
     path('dashboard/exchanges/', views.dashboard_exchanges_view, name='dashboard_exchanges'),
