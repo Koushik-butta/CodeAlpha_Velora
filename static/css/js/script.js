@@ -299,8 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (res.ok) {
           btn.classList.toggle('wishlisted');
+          const isWish = btn.classList.contains('wishlisted');
           const icon = btn.querySelector('.wish-icon');
-          if (icon) icon.textContent = btn.classList.contains('wishlisted') ? '♥' : '♡';
+          if (icon) icon.textContent = isWish ? '♥' : '♡';
+          if (isWish) {
+            triggerHearts(e.clientX, e.clientY);
+          }
         } else if (res.status === 403) { window.location.href = '/login/'; }
       } catch {}
     });
@@ -458,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCard3DTilt();
   initMagneticButtons();
   initHeroParticles();
+  initDynamicGreeting();
 });
 
 /* ---- ADVANCED TRANSITIONS & EFFECTS ---- */
@@ -765,4 +770,99 @@ function initLoadingProgress() {
       }, 150);
     });
   });
+}
+
+// 7. Confetti Hearts on Wishlist Toggle
+function triggerHearts(x, y) {
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '999999';
+  document.body.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const particles = [];
+  
+  for (let i = 0; i < 15; i++) {
+    particles.push({
+      x: x,
+      y: y,
+      vx: (Math.random() - 0.5) * 3.2,
+      vy: -Math.random() * 4 - 2.5, // float upwards
+      r: Math.random() * 6 + 4.5,
+      color: ['#FF2E93', '#FF4E75', '#FF7597', '#E879F9'][Math.floor(Math.random() * 4)],
+      alpha: 1.0,
+      decay: Math.random() * 0.02 + 0.015,
+      angle: Math.random() * 360,
+      spin: (Math.random() - 0.5) * 4.5
+    });
+  }
+  
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = false;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.98; // horizontal air resistance
+      p.angle += p.spin;
+      p.alpha -= p.decay;
+      
+      if (p.alpha > 0) {
+        active = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle * Math.PI / 180);
+        ctx.globalAlpha = p.alpha;
+        
+        // Draw Heart Shape
+        ctx.beginPath();
+        const size = p.r;
+        ctx.moveTo(0, size / 4);
+        ctx.bezierCurveTo(0, -size / 2, -size, -size / 2, -size, 0);
+        ctx.bezierCurveTo(-size, size / 2, 0, size, 0, size * 1.25);
+        ctx.bezierCurveTo(0, size, size, size / 2, size, 0);
+        ctx.bezierCurveTo(size, -size / 2, 0, -size / 2, 0, size / 4);
+        ctx.closePath();
+        
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.restore();
+      }
+    });
+    
+    if (active) {
+      requestAnimationFrame(draw);
+    } else {
+      canvas.remove();
+    }
+  }
+  draw();
+}
+
+// 8. Time of Day Welcome Greeting for Dashboard Home
+function initDynamicGreeting() {
+  const el = document.getElementById('dynamic-greeting-label');
+  if (!el) return;
+  const hours = new Date().getHours();
+  let greet = 'Namaste, Welcome Back';
+  if (hours < 12) {
+    greet = 'Namaste 🌅 Good Morning, Welcome Back';
+  } else if (hours < 17) {
+    greet = 'Namaste ☀️ Good Afternoon, Welcome Back';
+  } else if (hours < 21) {
+    greet = 'Namaste 🌆 Good Evening, Welcome Back';
+  } else {
+    greet = 'Namaste 🌙 Good Night, Welcome Back';
+  }
+  el.textContent = greet;
 }
