@@ -32,12 +32,9 @@
             {% if item.product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif item.product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif item.product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
             {% if item.product.is_sold %}<span class="badge badge-error">Sold</span>{% endif %}
           </div>
-          <form method="post" action="{% url 'toggle_wishlist' item.product.pk %}" style="position:absolute;top:10px;right:10px;">
-            {% csrf_token %}
-            <button type="submit" title="Remove from Wishlist" style="background:rgba(239,68,68,.8);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </form>
+          <button onclick="removeWishlistItem('{{ item.product.pk }}', this)" title="Remove from Wishlist" style="position:absolute;top:10px;right:10px;background:rgba(239,68,68,.8);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;z-index:10;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
         </div>
         <div class="pcard__body">
           <div class="pcard__title"><a href="{% url 'product_detail' item.product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ item.product.title }}</a></div>
@@ -66,4 +63,35 @@
     {% endif %}
   </main>
 </div>
+
+<script>
+function removeWishlistItem(pk, btn) {
+  const card = btn.closest('.pcard');
+  if (!card) return;
+  const grid = card.parentElement;
+  
+  fetch('/products/wishlist/toggle/' + pk + '/', {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': '{{ csrf_token }}',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.added) {
+      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        card.remove();
+        if (grid && grid.children.length === 0) {
+          window.location.reload();
+        }
+      }, 300);
+    }
+  })
+  .catch(console.error);
+}
+</script>
 {% endblock %}
