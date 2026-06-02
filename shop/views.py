@@ -55,14 +55,17 @@ def home_view(request):
         is_active=True, is_sold=False
     ).select_related('category').prefetch_related('images')[:8]
 
-    stats_products = Product.objects.filter(is_active=True).count()
+    stats_products = Product.objects.filter(is_active=True, is_sold=False).count()
     stats_sellers = User.objects.filter(is_active=True).count()
+    stats_cities = Product.objects.filter(is_active=True, is_sold=False).values('city').exclude(city='').distinct().count()
+    stats_cities = max(stats_cities, 1)
 
     return render(request, 'landing.html', {
         'categories': categories,
         'featured_products': featured_products,
         'stats_products': stats_products,
         'stats_sellers': stats_sellers,
+        'stats_cities': stats_cities,
     })
 
 
