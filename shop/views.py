@@ -92,6 +92,9 @@ def product_list_view(request):
         products_qs = products_qs.filter(
             Q(title__icontains=query) |
             Q(brand__icontains=query) |
+            Q(model_name__icontains=query) |
+            Q(city__icontains=query) |
+            Q(state__icontains=query) |
             Q(description__icontains=query) |
             Q(category__name__icontains=query)
         )
@@ -417,6 +420,42 @@ def seller_profile_view(request, user_id):
 # SEARCH
 # ──────────────────────────────────────────────────────────────
 
+def search_suggestions_view(request):
+    """API endpoint for live search suggestions/autocomplete."""
+    query = request.GET.get('q', '').strip()
+    category_slug = request.GET.get('category', '').strip()
+
+    if not query:
+        return JsonResponse({'suggestions': []})
+
+    products_qs = Product.objects.filter(is_active=True, is_sold=False).select_related('category')
+
+    if category_slug:
+        products_qs = products_qs.filter(category__slug=category_slug)
+
+    products_qs = products_qs.filter(
+        Q(title__icontains=query) |
+        Q(brand__icontains=query) |
+        Q(model_name__icontains=query) |
+        Q(city__icontains=query) |
+        Q(state__icontains=query) |
+        Q(category__name__icontains=query)
+    )[:6]
+
+    suggestions = []
+    for p in products_qs:
+        primary_image = p.images.filter(is_primary=True).first() or p.images.first()
+        suggestions.append({
+            'title': p.title,
+            'price': float(p.price),
+            'slug': p.slug,
+            'image_url': primary_image.image_url if primary_image else '',
+            'category': p.category.name if p.category else 'Other',
+        })
+
+    return JsonResponse({'suggestions': suggestions})
+
+
 def search_view(request):
     """Full-text product search with optional filters."""
     query = request.GET.get('q', '').strip()
@@ -429,7 +468,9 @@ def search_view(request):
         products_qs = products_qs.filter(
             Q(title__icontains=query) |
             Q(brand__icontains=query) |
+            Q(model_name__icontains=query) |
             Q(city__icontains=query) |
+            Q(state__icontains=query) |
             Q(description__icontains=query) |
             Q(category__name__icontains=query)
         )

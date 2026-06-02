@@ -157,7 +157,7 @@
                   <span class="pcard__price" style="font-weight:800; font-size:1.15rem; color:var(--primary);">₹{{ product.price|floatformat:0 }}</span>
                   {% if product.original_price and product.original_price > product.price %}
                     <span class="pcard__price-old" style="text-decoration:line-through; color:var(--text-3); font-size:0.85rem;">₹{{ product.original_price|floatformat:0 }}</span>
-                    <span style="color:var(--buy); font-size:0.75rem; font-weight:700;">(Save {% widthratio product.price product.original_price 100 %}%)</span>
+                    <span style="color:var(--buy); font-size:0.75rem; font-weight:700;">(Save {{ product.discount_percent }}%)</span>
                   {% endif %}
                 </div>
               </div>

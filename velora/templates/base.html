@@ -70,7 +70,7 @@
       </div>
 
       <!-- Center: Large Centered Search Bar -->
-      <form action="/products/" method="get" class="header-search">
+      <form action="/products/" method="get" class="header-search" style="position: relative;">
         <div class="header-search__wrapper">
           <select name="category" class="header-search__select" aria-label="Select Category">
             <option value="">All Categories</option>
@@ -84,6 +84,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </button>
         </div>
+        <div class="search-suggestions-dropdown" id="searchSuggestionsBox"></div>
       </form>
 
       <!-- Right: Wishlist, Cart, Notifications, Profile / Login -->
@@ -273,11 +274,12 @@
 
   <!-- Mobile Search Bar inside Drawer -->
   <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-2);">
-    <form action="/products/" method="get" style="display: flex; gap: 8px; margin: 0;">
-      <input type="text" name="q" placeholder="Search products..." style="flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text); font-size: 0.88rem; outline: none; font-family: inherit;" value="{{ request.GET.q|default:'' }}">
+    <form action="/products/" method="get" style="display: flex; gap: 8px; margin: 0; position: relative;">
+      <input type="text" name="q" placeholder="Search products..." class="mobile-search__input" style="flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text); font-size: 0.88rem; outline: none; font-family: inherit;" value="{{ request.GET.q|default:'' }}" autocomplete="off">
       <button type="submit" style="background: var(--primary); border: none; border-radius: var(--radius-sm); color: #fff; padding: 0 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
+      <div class="search-suggestions-dropdown" id="mobileSearchSuggestionsBox" style="top: 100%; left: 0; right: 0; margin-top: 4px;"></div>
     </form>
   </div>
 
@@ -481,6 +483,149 @@
 
 <script src="{% static 'css/js/script.js' %}?v=3.4"></script>
 <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+
+<!-- Live Search Autocomplete Suggestions Styles & Script -->
+<style>
+.search-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  z-index: 1000;
+  max-height: 320px;
+  overflow-y: auto;
+  margin-top: 6px;
+  display: none;
+}
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-1);
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border-2);
+}
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+.search-suggestion-item:hover {
+  background: var(--surface-2);
+}
+.search-suggestion-thumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+.search-suggestion-info {
+  flex: 1;
+  min-width: 0;
+}
+.search-suggestion-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.search-suggestion-meta {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  display: flex;
+  justify-content: space-between;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const setupSuggestions = (inputEl, dropdownEl, categorySelectEl) => {
+    if (!inputEl || !dropdownEl) return;
+    
+    let debounceTimer;
+    
+    inputEl.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      const query = inputEl.value.trim();
+      const category = categorySelectEl ? categorySelectEl.value : '';
+      
+      if (query.length < 1) {
+        dropdownEl.style.display = 'none';
+        dropdownEl.innerHTML = '';
+        return;
+      }
+      
+      debounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`/products/search-suggestions/?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`);
+          if (res.ok) {
+            const data = await res.json();
+            const suggestions = data.suggestions || [];
+            
+            if (suggestions.length === 0) {
+              dropdownEl.style.display = 'none';
+              dropdownEl.innerHTML = '';
+              return;
+            }
+            
+            dropdownEl.innerHTML = suggestions.map(item => `
+              <a href="/products/${item.slug}/" class="search-suggestion-item">
+                ${item.image_url ? `
+                  <img src="${item.image_url}" class="search-suggestion-thumb" alt="">
+                ` : `
+                  <div class="search-suggestion-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:var(--surface-2);">📦</div>
+                `}
+                <div class="search-suggestion-info">
+                  <div class="search-suggestion-title">${escapeHTML(item.title)}</div>
+                  <div class="search-suggestion-meta">
+                    <span>${escapeHTML(item.category)}</span>
+                    <span style="font-weight:700;color:var(--sell);">₹${item.price.toFixed(0)}</span>
+                  </div>
+                </div>
+              </a>
+            `).join('');
+            dropdownEl.style.display = 'block';
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }, 150);
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!inputEl.contains(e.target) && !dropdownEl.contains(e.target)) {
+        dropdownEl.style.display = 'none';
+      }
+    });
+  };
+  
+  function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+  
+  setupSuggestions(
+    document.querySelector('.header-search__input'),
+    document.getElementById('searchSuggestionsBox'),
+    document.querySelector('.header-search__select')
+  );
+  
+  setupSuggestions(
+    document.querySelector('.mobile-search__input'),
+    document.getElementById('mobileSearchSuggestionsBox'),
+    null
+  );
+});
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

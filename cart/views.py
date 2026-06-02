@@ -448,6 +448,12 @@ def cancel_order_view(request, pk):
     order.status = 'cancelled'
     order.save()
 
+    # Revert products associated with order items to not sold
+    for item in order.items.select_related('product').all():
+        if item.product:
+            item.product.is_sold = False
+            item.product.save()
+
     Notification.objects.create(
         user=request.user,
         notification_type='order',
@@ -475,15 +481,15 @@ def reorder_view(request, pk):
 
     for item in order.items.select_related('product').all():
         if item.product and item.product.is_active and not item.product.is_sold:
-            _, created = CartItem.objects.get_or_create(
+            cart_item, created = CartItem.objects.get_or_create(
                 cart=cart,
                 product=item.product,
                 defaults={'quantity': item.quantity},
             )
-            if created:
-                added += 1
-            else:
-                skipped += 1
+            if not created:
+                cart_item.quantity = max(cart_item.quantity, item.quantity)
+                cart_item.save()
+            added += 1
         else:
             skipped += 1
 

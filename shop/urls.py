@@ -14,6 +14,7 @@ urlpatterns = [
     path('products/wishlist/toggle/<uuid:pk>/', views.toggle_wishlist_view, name='toggle_wishlist'),
 
     # ── Product detail (slug must come after specific patterns) ─
+    path('products/search-suggestions/', views.search_suggestions_view, name='search_suggestions'),
     path('products/<slug:slug>/', views.product_detail_view, name='product_detail'),
     path('products/<slug:slug>/edit/', views.edit_product_view, name='edit_product'),
     path('products/<slug:slug>/delete/', views.delete_product_view, name='delete_product'),
