@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <form method="post" action="{% url 'place_order' %}" id="checkoutForm">
+    <form method="post" action="{% url 'place_order' %}" id="checkoutForm" novalidate>
       {% csrf_token %}
       <input type="hidden" name="mode" value="{{ mode }}">
 
@@ -58,14 +58,13 @@
             {% endif %}
 
             <!-- Add New Address Toggle -->
-            <button type="button" id="toggleAddrForm"
-              onclick="document.getElementById('newAddrSection').style.display=document.getElementById('newAddrSection').style.display==='none'?'block':'none'"
+            <button type="button" id="toggleAddrForm" onclick="toggleNewAddr()"
               style="margin-top:4px;background:none;border:1px dashed var(--border-2);border-radius:var(--radius-sm);padding:12px 20px;cursor:pointer;color:var(--sell);font-weight:700;width:100%;font-size:.88rem;">
               + Add New Address
             </button>
 
             <!-- New Address Form -->
-            <div id="newAddrSection" style="display:none;margin-top:16px;padding:20px;background:var(--surface-2);border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <div id="newAddrSection" style="{% if addresses %}display:none;{% else %}display:block;{% endif %}margin-top:16px;padding:20px;background:var(--surface-2);border-radius:var(--radius-sm);border:1px solid var(--border);">
               <h3 style="font-size:.95rem;font-weight:700;margin-bottom:16px;">New Delivery Address</h3>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="form-group">
@@ -258,6 +257,8 @@ document.querySelectorAll('input[name="address_id"]').forEach(radio => {
       l.style.borderColor = 'var(--border)';
     });
     document.querySelector('label[for="' + this.id + '"]').style.borderColor = 'var(--sell)';
+    // Hide new address form since they chose a saved address
+    document.getElementById('newAddrSection').style.display = 'none';
   });
 });
 
@@ -273,9 +274,33 @@ document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
   });
 });
 
+// Toggle new address form helper
+function toggleNewAddr() {
+  const section = document.getElementById('newAddrSection');
+  const isHidden = section.style.display === 'none' || section.style.display === '';
+  if (isHidden) {
+    section.style.display = 'block';
+    // Deselect all address radios so backend knows to use the new address form
+    document.querySelectorAll('input[name="address_id"]').forEach(radio => {
+      radio.checked = false;
+      radio.closest('label').style.borderColor = 'var(--border)';
+    });
+  } else {
+    section.style.display = 'none';
+    // Select the first radio button if available
+    const firstRadio = document.querySelector('input[name="address_id"]');
+    if (firstRadio) {
+      firstRadio.checked = true;
+      firstRadio.closest('label').style.borderColor = 'var(--sell)';
+    }
+  }
+}
+
 // Disable double-submit
 document.getElementById('checkoutForm').addEventListener('submit', function() {
-  document.getElementById('placeOrderBtn').disabled = true;
+  setTimeout(() => {
+    document.getElementById('placeOrderBtn').disabled = true;
+  }, 0);
   document.getElementById('placeOrderBtn').textContent = 'Placing Order...';
 });
 </script>
