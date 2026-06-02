@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
@@ -167,7 +167,12 @@ def product_list_view(request):
 
 def product_detail_view(request, slug):
     """Show full product detail page. Increment view count, track recently viewed."""
-    product = get_object_or_404(Product, slug=slug, is_active=True)
+    product = get_object_or_404(Product, slug=slug)
+
+    # Draft product validation: only allow the seller or the admin to view it
+    if not product.is_active:
+        if not (request.user.is_authenticated and (request.user == product.seller or request.user.email == 'b.kowshik2007@gmail.com')):
+            raise Http404("Product not found or in draft mode.")
 
     # Increment views atomically
     Product.objects.filter(pk=product.pk).update(views_count=product.views_count + 1)
@@ -228,6 +233,10 @@ def sell_product_view(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.seller = request.user
+            if 'draft' in request.POST:
+                product.is_active = False
+            else:
+                product.is_active = True
             product.save()
 
             # Handle up to 5 image uploads
@@ -258,8 +267,12 @@ def sell_product_view(request):
                     order=idx,
                 )
 
-            messages.success(request, f'"{product.title}" listed successfully!')
-            return redirect('product_detail', slug=product.slug)
+            if 'draft' in request.POST:
+                messages.success(request, f'"{product.title}" saved as draft successfully!')
+                return redirect('dashboard_my_products')
+            else:
+                messages.success(request, f'"{product.title}" listed successfully!')
+                return redirect('product_detail', slug=product.slug)
         else:
             messages.error(request, 'Please correct the errors below.')
 
@@ -287,7 +300,12 @@ def edit_product_view(request, slug):
 
     if request.method == 'POST':
         if form.is_valid():
-            product = form.save()
+            product = form.save(commit=False)
+            if 'draft' in request.POST:
+                product.is_active = False
+            else:
+                product.is_active = True
+            product.save()
 
             # Handle additional image uploads
             new_images = request.FILES.getlist('images')
@@ -317,8 +335,12 @@ def edit_product_view(request, slug):
                     order=existing_count + idx,
                 )
 
-            messages.success(request, f'"{product.title}" updated successfully!')
-            return redirect('product_detail', slug=product.slug)
+            if 'draft' in request.POST:
+                messages.success(request, f'"{product.title}" saved as draft successfully!')
+                return redirect('dashboard_my_products')
+            else:
+                messages.success(request, f'"{product.title}" updated successfully!')
+                return redirect('product_detail', slug=product.slug)
         else:
             messages.error(request, 'Please correct the errors below.')
 
