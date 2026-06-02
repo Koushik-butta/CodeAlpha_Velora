@@ -107,10 +107,28 @@
           </div>
         </div>
 
+        <div id="shimmerGridContainer" style="display:none; margin-bottom: 30px;">
+          <div class="shimmer-grid">
+            {% for i in "12345678" %}
+            <div class="skeleton-card">
+              <div class="skeleton-media"></div>
+              <div class="skeleton-body">
+                <div>
+                  <div class="skeleton-line title"></div>
+                  <div class="skeleton-line price"></div>
+                </div>
+                <div class="skeleton-line footer"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div id="productGridContainer">
         {% if products %}
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px;">
           {% for product in products %}
-          <div class="pcard card-white" style="height: 100%; display: flex; flex-direction: column;">
+          <div class="pcard card-white{% if product.is_featured %} pcard--featured{% endif %}" style="height: 100%; display: flex; flex-direction: column;">
             <div class="pcard__media" style="position:relative; overflow:hidden; background:var(--surface-2); border-bottom:1px solid var(--border); padding-top: 80%; height: 0;">
               <a href="{% url 'product_detail' product.slug %}" style="position:absolute; top:0; left:0; width:100%; height:100%;">
                 {% if product.primary_image %}
@@ -184,6 +202,7 @@
           {% endif %}
         </div>
         {% endif %}
+        </div>
 
         {% else %}
         <!-- Empty State -->
@@ -223,6 +242,18 @@ function toggleWishlist(pk, btn) {
     }
   }).catch(function() {});
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const filterForm = document.getElementById('filterForm');
+  if (filterForm) {
+    filterForm.addEventListener('submit', function() {
+      const grid = document.getElementById('productGridContainer');
+      const shimmer = document.getElementById('shimmerGridContainer');
+      if (grid) grid.style.display = 'none';
+      if (shimmer) shimmer.style.display = 'block';
+    });
+  }
+});
 </script>
 
 <style>

@@ -44,8 +44,15 @@
             <div style="font-size:.78rem;color:var(--text-3);margin-top:2px;">{{ exchange.offered_product.get_condition_display }}</div>
           </div>
 
-          <!-- Arrow -->
-          <div style="text-align:center;color:var(--swap);font-size:1.8rem;">⇄</div>
+          <!-- Arrow with connecting svg animation -->
+          <div style="text-align:center;color:var(--swap);font-size:1.8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+            <div style="position:relative;z-index:2;background:var(--surface);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);box-shadow:var(--shadow-sm);">
+              ⇄
+            </div>
+            <svg class="exchange-pulse-line" style="position:absolute;width:150px;height:40px;top:calc(50% - 20px);z-index:1;overflow:visible;pointer-events:none;">
+              <path d="M-60,20 L210,20" stroke="var(--swap)" stroke-width="3" stroke-dasharray="8 6" fill="none" class="pulse-path"/>
+            </svg>
+          </div>
 
           <!-- Target Product -->
           <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">

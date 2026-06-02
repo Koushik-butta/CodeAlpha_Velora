@@ -40,6 +40,40 @@ def cart_view(request):
 
 
 @login_required
+def cart_json_view(request):
+    """Retrieve full cart contents as JSON."""
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.select_related('product').all()
+    items_data = []
+    for item in cart_items:
+        image_url = ''
+        if item.product.images.exists():
+            image_url = item.product.images.first().image.url
+        elif item.product.image:
+            image_url = item.product.image.url
+        items_data.append({
+            'id': item.pk,
+            'product_id': str(item.product.pk),
+            'product_title': item.product.title,
+            'product_price': float(item.product.price),
+            'product_image': image_url,
+            'product_slug': item.product.slug,
+            'quantity': item.quantity,
+            'subtotal': float(item.subtotal),
+        })
+    subtotal = sum(item.subtotal for item in cart_items)
+    delivery_charge = 0 if subtotal >= 499 else (49 if subtotal > 0 else 0)
+    return JsonResponse({
+        'success': True,
+        'items': items_data,
+        'subtotal': float(subtotal),
+        'delivery_charge': float(delivery_charge),
+        'total': float(subtotal + delivery_charge),
+        'cart_count': cart.item_count,
+    })
+
+
+@login_required
 @require_POST
 def add_to_cart_view(request, pk):
     """Add a product to cart. Returns JSON for AJAX or redirects."""
@@ -76,7 +110,21 @@ def remove_from_cart_view(request, pk):
     """Remove a cart item."""
     item = get_object_or_404(CartItem, pk=pk, cart__user=request.user)
     title = item.product.title
+    cart = item.cart
     item.delete()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        subtotal = sum(i.subtotal for i in cart.items.all())
+        delivery_charge = 0 if subtotal >= 499 else (49 if subtotal > 0 else 0)
+        return JsonResponse({
+            'success': True,
+            'message': f'"{title}" removed from cart.',
+            'cart_count': cart.item_count,
+            'cart_subtotal': float(subtotal),
+            'delivery_charge': float(delivery_charge),
+            'cart_total': float(subtotal + delivery_charge),
+        })
+
     messages.success(request, f'"{title}" removed from cart.')
     return redirect('cart')
 
