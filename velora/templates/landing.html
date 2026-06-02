@@ -29,7 +29,7 @@
       </h1>
 
       <!-- Slogan -->
-      <div class="hero__slogan" data-reveal>खरीदो · बेचो · बदलो — Velora पर करो</div>
+      <div class="hero__slogan" data-reveal>Buy · Sell · Exchange — do it on Velora</div>
 
       <!-- Subtitle -->
       <p class="hero__sub" data-reveal>
@@ -177,137 +177,6 @@
 </section>
 {% endif %}
 
-<!-- ===== EXCHANGE FESTIVAL BANNER ===== -->
-<section class="section-sm">
-  <div class="container">
-    <div class="xfest" data-reveal>
-      <div style="position:absolute;right:-60px;top:-60px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;" aria-hidden="true"></div>
-      <div class="xfest__content" style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;flex-wrap:wrap;">
-        <div>
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:900;color:rgba(255,255,255,.9);margin-bottom:8px;">🔄 Exchange Mela is Live!</div>
-          <div class="xfest__title">Swap Your Stuff, Save Big</div>
-          <div class="xfest__sub">Trade your old electronics, bikes, and gadgets without spending a rupee.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
-          <a href="{% url 'exchange_index' %}" class="btn" style="background:#fff;color:var(--primary);border-color:#fff;font-weight:800;font-size:1rem;padding:14px 28px;">Start Exchanging</a>
-          <a href="{% url 'product_list' %}?type=exchange" class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);">Browse Exchanges</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== HOW IT WORKS ===== -->
-<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
-  <div class="container">
-    <div class="section-head" data-reveal>
-      <div style="text-align:center;width:100%;">
-        <div class="section-label">🚀 Simple & Fast</div>
-        <h2 class="section-title">How Velora Works</h2>
-        <p class="section-sub">Start buying, selling or exchanging in just 3 steps.</p>
-      </div>
-    </div>
-    <div class="grid-4" data-reveal>
-      <div class="how-step">
-        <div class="how-step__num how-step__num-1">1</div>
-        <div class="how-step__title">Create Free Account</div>
-        <div class="how-step__desc">Sign up in under 60 seconds. No listing fee. No credit card required.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step__num how-step__num-2">2</div>
-        <div class="how-step__title">List Your Product</div>
-        <div class="how-step__desc">Upload photos, set your price, choose Buy/Sell/Exchange, and you're live.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step__num how-step__num-3">3</div>
-        <div class="how-step__title">Connect with Buyers</div>
-        <div class="how-step__desc">Receive offers, negotiate, and coordinate the handover at your convenience.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step__num how-step__num-4">4</div>
-        <div class="how-step__title">Get Paid or Trade</div>
-        <div class="how-step__desc">Complete the deal safely. Build your seller score and grow your reputation.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== TRUST SIGNALS ===== -->
-<section class="section">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:48px;" data-reveal>
-      <div class="section-label">🛡️ Safe & Secure</div>
-      <h2 class="section-title">Why Velora?</h2>
-    </div>
-    <div class="grid-4" data-reveal>
-      <div class="trust-item">
-        <div class="trust-icon" style="background:var(--buy-dim);">🛡️</div>
-        <div class="trust-title">Verified Sellers</div>
-        <div class="trust-desc">All sellers go through Velora's verification process for safe trading.</div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-icon" style="background:var(--primary-dim);">⚡</div>
-        <div class="trust-title">Fast Listing</div>
-        <div class="trust-desc">List your product in under 2 minutes with our guided upload flow.</div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-icon" style="background:var(--swap-dim);">🤝</div>
-        <div class="trust-title">Local Community</div>
-        <div class="trust-desc">Trade with people from your city and neighborhood.</div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-icon" style="background:var(--gold-dim);">⭐</div>
-        <div class="trust-title">Trade Score System</div>
-        <div class="trust-desc">Build your reputation with honest reviews and become a top seller.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== TESTIMONIALS ===== -->
-<section class="section-sm" style="background:var(--bg-2);border-top:1px solid var(--border);">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:40px;" data-reveal>
-      <div class="section-label">💬 Real Users</div>
-      <h2 class="section-title">What People are Saying</h2>
-    </div>
-    <div class="grid-3" data-reveal>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-text">"Sold my old iPhone 12 in 3 hours! The listing process was super smooth and I got a great price."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:var(--primary);">R</div>
-          <div>
-            <div class="testimonial-name">Rahul Sharma</div>
-            <div class="testimonial-city">📍 Hyderabad</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-text">"Exchanged my old laptop for a gaming setup without spending any cash. Velora Exchange is amazing!"</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:var(--buy);">P</div>
-          <div>
-            <div class="testimonial-name">Priya Nair</div>
-            <div class="testimonial-city">📍 Bengaluru</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars">★★★★★</div>
-        <div class="testimonial-text">"Found a KTM Duke at 40% below market price from a verified seller. Total trust, zero issues."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:var(--swap);">A</div>
-          <div>
-            <div class="testimonial-name">Arjun Reddy</div>
-            <div class="testimonial-city">📍 Pune</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ===== JOIN CTA ===== -->
 <section class="section">

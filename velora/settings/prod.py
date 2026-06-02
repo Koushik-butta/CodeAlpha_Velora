@@ -13,7 +13,7 @@ RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME', default='')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-environ.Env.read_env(BASE_DIR / '.env')  # noqa: F405
+environ.Env.read_env(BASE_DIR / '.env', overwrite=True)  # noqa: F405
 
 SECRET_KEY = env('SECRET_KEY')  # noqa: F405
 

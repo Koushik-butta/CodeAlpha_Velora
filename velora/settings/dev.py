@@ -8,7 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])  # noqa: F405
 
-environ.Env.read_env(BASE_DIR / '.env')  # noqa: F405
+environ.Env.read_env(BASE_DIR / '.env', overwrite=True)  # noqa: F405
 
 # Re-read secrets and DB after .env is loaded
 SECRET_KEY = env('SECRET_KEY', default=SECRET_KEY)  # noqa: F405

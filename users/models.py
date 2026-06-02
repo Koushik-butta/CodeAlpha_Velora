@@ -80,7 +80,15 @@ class Profile(models.Model):
     notify_email = models.BooleanField(default=True)
     notify_swap_updates = models.BooleanField(default=True)
     notify_marketing = models.BooleanField(default=False)
-    theme = models.CharField(max_length=10, choices=[('dark', 'Dark Mode'), ('light', 'Light Mode')], default='dark')
+    THEME_CHOICES = [
+        ('sunset-saffron', 'Sunset Saffron (Tricolor)'),
+        ('royal-ashoka', 'Royal Ashoka Blue'),
+        ('lotus-pink', 'Lotus Pink / Rose'),
+        ('vibrant-emerald', 'Vibrant Emerald'),
+        ('cyber-tricolor', 'Cyber Neon'),
+        ('classic-light', 'Classic Light Mode'),
+    ]
+    theme = models.CharField(max_length=30, choices=THEME_CHOICES, default='sunset-saffron')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

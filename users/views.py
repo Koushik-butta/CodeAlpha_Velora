@@ -265,25 +265,6 @@ def dashboard_view(request):
     # Categories using the classmethod helper
     categories = Category.get_all_active()
 
-    # Recommended Products (featured or random active products)
-    recommended_products = Product.objects.filter(
-        is_active=True, is_sold=False, is_featured=True
-    ).select_related('seller', 'category').prefetch_related('images')[:8]
-    if not recommended_products.exists():
-        recommended_products = Product.objects.filter(
-            is_active=True, is_sold=False
-        ).select_related('seller', 'category').prefetch_related('images').order_by('?')[:8]
-
-    # Trending Products (ordered by wishlist/views)
-    trending_products = Product.objects.filter(
-        is_active=True, is_sold=False
-    ).select_related('seller', 'category').prefetch_related('images').order_by('-wishlist_count', '-views_count')[:8]
-
-    # Recently Uploaded Products
-    recently_uploaded = Product.objects.filter(
-        is_active=True, is_sold=False
-    ).select_related('seller', 'category').prefetch_related('images').order_by('-created_at')[:8]
-
     return render(request, 'dashboard/home.html', {
         'listings_count': listings_count,
         'orders_count': orders_count,
@@ -296,9 +277,6 @@ def dashboard_view(request):
         'recent_products': recent_products,
         'notifications': notifications,
         'categories': categories,
-        'recommended_products': recommended_products,
-        'trending_products': trending_products,
-        'recently_uploaded': recently_uploaded,
     })
     
 
@@ -453,3 +431,24 @@ def dashboard_exchanges_view(request):
         'sent_exchanges': sent_exchanges,
         'received_exchanges': received_exchanges,
     })
+
+
+@login_required
+def update_theme_view(request):
+    """Asynchronously update the logged-in user's theme in their profile."""
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+    import json
+    try:
+        data = json.loads(request.body)
+        theme = data.get('theme')
+        valid_themes = ['sunset-saffron', 'royal-ashoka', 'lotus-pink', 'vibrant-emerald', 'cyber-tricolor', 'classic-light']
+        if theme in valid_themes:
+            profile, _ = Profile.objects.get_or_create(user=request.user)
+            profile.theme = theme
+            profile.save()
+            return JsonResponse({'status': 'success'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid theme'}, status=400)

@@ -142,7 +142,9 @@
 <script>
   (function() {
     var savedTheme = '{{ user.profile.theme }}';
-    if (savedTheme && (savedTheme === 'dark' || savedTheme === 'light')) {
+    if (savedTheme) {
+      if (savedTheme === 'dark') savedTheme = 'sunset-saffron';
+      if (savedTheme === 'light') savedTheme = 'classic-light';
       localStorage.setItem('velora_theme', savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
     }

@@ -19,7 +19,26 @@ User = get_user_model()
 from django.conf import settings
 from core.integrations import upload_image
 
-CLOUDINARY_AVAILABLE = bool(settings.CLOUDINARY_STORAGE.get('CLOUD_NAME'))
+def is_cloudinary_available():
+    """Dynamically determine if Cloudinary credentials are configured, with a runtime file fallback."""
+    if settings.CLOUDINARY_STORAGE.get('CLOUD_NAME'):
+        return True
+    try:
+        from pathlib import Path
+        import environ
+        env_file = Path(settings.BASE_DIR) / '.env'
+        if env_file.exists():
+            env = environ.Env()
+            env.read_env(env_file, overwrite=True)
+            cloud_name = env.str('CLOUDINARY_CLOUD_NAME', default='')
+            if cloud_name:
+                settings.CLOUDINARY_STORAGE['CLOUD_NAME'] = cloud_name
+                settings.CLOUDINARY_STORAGE['API_KEY'] = str(env('CLOUDINARY_API_KEY', default=''))
+                settings.CLOUDINARY_STORAGE['API_SECRET'] = env('CLOUDINARY_API_SECRET', default='')
+                return True
+    except Exception:
+        pass
+    return False
 
 
 # ──────────────────────────────────────────────────────────────
@@ -63,7 +82,7 @@ def product_list_view(request):
     query = request.GET.get('q', '').strip()
     selected_category = request.GET.get('category', '').strip()
     condition = request.GET.get('condition', '').strip()
-    listing_type = request.GET.get('listing_type', '').strip()
+    listing_type = request.GET.get('type', request.GET.get('listing_type', '')).strip()
     min_price = request.GET.get('min_price', '').strip()
     max_price = request.GET.get('max_price', '').strip()
     city = request.GET.get('city', '').strip()
@@ -111,6 +130,8 @@ def product_list_view(request):
     paginator = Paginator(products_qs, 12)
     page_obj = paginator.get_page(request.GET.get('page', 1))
 
+    has_any_products = Product.objects.filter(is_active=True, is_sold=False).exists()
+
     return render(request, 'shop/listing.html', {
         'products': page_obj.object_list,
         'page_obj': page_obj,
@@ -123,6 +144,7 @@ def product_list_view(request):
         'min_price': min_price,
         'max_price': max_price,
         'city': city,
+        'has_any_products': has_any_products,
     })
 
 
@@ -200,7 +222,7 @@ def sell_product_view(request):
             for idx, image_file in enumerate(images[:5]):
                 image_url = ''
                 public_id = ''
-                if CLOUDINARY_AVAILABLE:
+                if is_cloudinary_available():
                     try:
                         result = upload_image(
                             image_file,
@@ -255,7 +277,7 @@ def edit_product_view(request, slug):
             new_images = request.FILES.getlist('images')
             existing_count = product.images.count()
             for idx, image_file in enumerate(new_images[: max(0, 5 - existing_count)]):
-                if CLOUDINARY_AVAILABLE:
+                if is_cloudinary_available():
                     try:
                         result = upload_image(
                             image_file,

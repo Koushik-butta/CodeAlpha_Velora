@@ -103,8 +103,205 @@
   --nav-bg: rgba(15,15,15,.97);
 }
 
-/* ---- LIGHT THEME ---- */
-[data-theme="light"] {
+/* ---- COLOR THEMES SYSTEM ---- */
+
+/* 1. Sunset Saffron (Default / Tricolor Accent) */
+[data-theme="sunset-saffron"], [data-theme="dark"] {
+  --bg: #121214;
+  --bg-2: #18181C;
+  --bg-3: #202025;
+  --bg-4: #28282D;
+  --surface: #1B1B1E;
+  --surface-2: #24242A;
+  --surface-3: #2D2D35;
+  --text: #F3F4F6;
+  --text-1: #F3F4F6;
+  --text-2: #9CA3AF;
+  --text-3: #6B7280;
+  --text-inv: #111827;
+  --border: rgba(255,255,255,.07);
+  --border-2: rgba(255,255,255,.11);
+  --border-3: rgba(255,255,255,.18);
+  --primary: #FF9933;
+  --primary-dark: #E07B12;
+  --primary-light: #FFAA55;
+  --primary-dim: rgba(255,153,51,.12);
+  --primary-glow: rgba(255,153,51,.25);
+  --buy: #128807;
+  --buy-dark: #0E6E05;
+  --buy-dim: rgba(18,136,7,.12);
+  --buy-glow: rgba(18,136,7,.25);
+  --sell: #FF9933;
+  --sell-dim: rgba(255,153,51,.12);
+  --sell-glow: rgba(255,153,51,.25);
+  --swap: #F59E0B;
+  --swap-dim: rgba(245,158,11,.12);
+  --swap-glow: rgba(245,158,11,.25);
+  --logo-bg: linear-gradient(135deg, #FF9933 0%, #128807 100%);
+  --logo-tagline-color: #128807;
+  --chakra-color: rgba(0, 0, 128, 0.45);
+  --chakra-color-alpha: rgba(0, 0, 128, 0.15);
+  --nav-bg: rgba(15,15,15,.97);
+}
+
+/* 2. Royal Ashoka Blue */
+[data-theme="royal-ashoka"] {
+  --bg: #0A0F1D;
+  --bg-2: #0F172A;
+  --bg-3: #1E293B;
+  --bg-4: #334155;
+  --surface: #131E35;
+  --surface-2: #1E293B;
+  --surface-3: #334155;
+  --text: #F8FAFC;
+  --text-1: #F8FAFC;
+  --text-2: #94A3B8;
+  --text-3: #64748B;
+  --text-inv: #0F172A;
+  --border: rgba(255,255,255,.08);
+  --border-2: rgba(255,255,255,.14);
+  --border-3: rgba(255,255,255,.22);
+  --primary: #3B82F6;
+  --primary-dark: #1D4ED8;
+  --primary-light: #60A5FA;
+  --primary-dim: rgba(59,130,246,.15);
+  --primary-glow: rgba(59,130,246,.3);
+  --buy: #F59E0B;
+  --buy-dark: #D97706;
+  --buy-dim: rgba(245,158,11,.15);
+  --buy-glow: rgba(245,158,11,.3);
+  --sell: #3B82F6;
+  --sell-dim: rgba(59,130,246,.15);
+  --sell-glow: rgba(59,130,246,.3);
+  --swap: #10B981;
+  --swap-dim: rgba(16,185,129,.15);
+  --swap-glow: rgba(16,185,129,.3);
+  --logo-bg: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  --logo-tagline-color: #60A5FA;
+  --chakra-color: rgba(245, 158, 11, 0.6);
+  --chakra-color-alpha: rgba(245, 158, 11, 0.2);
+  --nav-bg: rgba(10,15,29,.97);
+}
+
+/* 3. Lotus Pink / Rose */
+[data-theme="lotus-pink"] {
+  --bg: #140C1A;
+  --bg-2: #1D1126;
+  --bg-3: #2A1A36;
+  --bg-4: #372247;
+  --surface: #20132B;
+  --surface-2: #2A1A36;
+  --surface-3: #372247;
+  --text: #FDF2F8;
+  --text-1: #FDF2F8;
+  --text-2: #F472B6;
+  --text-3: #C084FC;
+  --text-inv: #1E1B4B;
+  --border: rgba(253,242,248,.08);
+  --border-2: rgba(253,242,248,.15);
+  --border-3: rgba(253,242,248,.25);
+  --primary: #EC4899;
+  --primary-dark: #BE185D;
+  --primary-light: #F472B6;
+  --primary-dim: rgba(236,72,153,.15);
+  --primary-glow: rgba(236,72,153,.3);
+  --buy: #FBBF24;
+  --buy-dark: #D97706;
+  --buy-dim: rgba(251,191,36,.15);
+  --buy-glow: rgba(251,191,36,.3);
+  --sell: #EC4899;
+  --sell-dim: rgba(236,72,153,.15);
+  --sell-glow: rgba(236,72,153,.3);
+  --swap: #A855F7;
+  --swap-dim: rgba(168,85,247,.15);
+  --swap-glow: rgba(168,85,247,.3);
+  --logo-bg: linear-gradient(135deg, #EC4899 0%, #A855F7 100%);
+  --logo-tagline-color: #F472B6;
+  --chakra-color: rgba(251, 191, 36, 0.6);
+  --chakra-color-alpha: rgba(251, 191, 36, 0.2);
+  --nav-bg: rgba(20,12,26,.97);
+}
+
+/* 4. Vibrant Emerald / Forest */
+[data-theme="vibrant-emerald"] {
+  --bg: #051A14;
+  --bg-2: #09261E;
+  --bg-3: #11382D;
+  --bg-4: #194A3D;
+  --surface: #0E3027;
+  --surface-2: #11382D;
+  --surface-3: #194A3D;
+  --text: #ECFDF5;
+  --text-1: #ECFDF5;
+  --text-2: #A7F3D0;
+  --text-3: #34D399;
+  --text-inv: #064E3B;
+  --border: rgba(236,253,245,.08);
+  --border-2: rgba(236,253,245,.14);
+  --border-3: rgba(236,253,245,.22);
+  --primary: #10B981;
+  --primary-dark: #047857;
+  --primary-light: #34D399;
+  --primary-dim: rgba(16,185,129,.15);
+  --primary-glow: rgba(16,185,129,.3);
+  --buy: #FBBF24;
+  --buy-dark: #D97706;
+  --buy-dim: rgba(251,191,36,.15);
+  --buy-glow: rgba(251,191,36,.3);
+  --sell: #10B981;
+  --sell-dim: rgba(16,185,129,.15);
+  --sell-glow: rgba(16,185,129,.3);
+  --swap: #3B82F6;
+  --swap-dim: rgba(59,130,246,.15);
+  --swap-glow: rgba(59,130,246,.3);
+  --logo-bg: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  --logo-tagline-color: #34D399;
+  --chakra-color: rgba(251, 191, 36, 0.6);
+  --chakra-color-alpha: rgba(251, 191, 36, 0.2);
+  --nav-bg: rgba(5,26,20,.97);
+}
+
+/* 5. Cyber Tricolor (Neon) */
+[data-theme="cyber-tricolor"] {
+  --bg: #050508;
+  --bg-2: #0A0A10;
+  --bg-3: #12121E;
+  --bg-4: #1B1B2C;
+  --surface: #0E0E16;
+  --surface-2: #12121E;
+  --surface-3: #1B1B2C;
+  --text: #E0E7FF;
+  --text-1: #FFFFFF;
+  --text-2: #818CF8;
+  --text-3: #4F46E5;
+  --text-inv: #000000;
+  --border: rgba(99,102,241,.15);
+  --border-2: rgba(99,102,241,.25);
+  --border-3: rgba(99,102,241,.4);
+  --primary: #FF5500;
+  --primary-dark: #CC3300;
+  --primary-light: #FF8844;
+  --primary-dim: rgba(255,85,0,.15);
+  --primary-glow: rgba(255,85,0,.45);
+  --buy: #00FF66;
+  --buy-dark: #00CC44;
+  --buy-dim: rgba(0,255,102,.15);
+  --buy-glow: rgba(0,255,102,.45);
+  --sell: #FF5500;
+  --sell-dim: rgba(255,85,0,.15);
+  --sell-glow: rgba(255,85,0,.45);
+  --swap: #00FFFF;
+  --swap-dim: rgba(0,255,255,.15);
+  --swap-glow: rgba(0,255,255,.45);
+  --logo-bg: linear-gradient(135deg, #FF5500 0%, #00FF66 100%);
+  --logo-tagline-color: #00FF66;
+  --chakra-color: rgba(0, 255, 255, 0.75);
+  --chakra-color-alpha: rgba(0, 255, 255, 0.25);
+  --nav-bg: rgba(5,5,8,.97);
+}
+
+/* 6. Classic Light */
+[data-theme="classic-light"], [data-theme="light"] {
   --bg: #FFFFFF;
   --bg-2: #F8F9FA;
   --bg-3: #F1F3F5;
@@ -138,6 +335,25 @@
   --sell-glow: rgba(255,153,51,.15);
   --swap: #F59E0B;
   --swap-dim: rgba(245,158,11,.08);
+  --swap-glow: rgba(245,158,11,.15);
+  --logo-bg: linear-gradient(135deg, #FF9933 0%, #128807 100%);
+  --logo-tagline-color: #128807;
+  --chakra-color: rgba(0, 0, 128, 0.45);
+  --chakra-color-alpha: rgba(0, 0, 128, 0.15);
+}
+
+/* Theme active states & variables */
+.theme-opt.active {
+  background: var(--primary-dim) !important;
+  color: var(--primary) !important;
+}
+.theme-opt-circle.active {
+  border-color: var(--primary) !important;
+  transform: scale(1.2);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+.theme-opt:hover {
+  background: var(--bg-3);
 }
 
 /* ---- RESET & BASE ---- */
