@@ -50,7 +50,9 @@
           </div>
           {% if user.is_authenticated %}
           <button class="pcard__wish" onclick="toggleWishlist('{{ product.pk }}', this)"
-            style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1rem;">♡</button>
+            style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:{% if product.pk in wishlist_product_ids %}var(--error){% else %}#fff{% endif %};font-size:1rem;">
+            {% if product.pk in wishlist_product_ids %}♥{% else %}♡{% endif %}
+          </button>
           {% endif %}
         </div>
         <div class="pcard__body">
@@ -113,8 +115,8 @@ function toggleWishlist(pk, btn) {
     method: 'POST',
     headers: { 'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/json' }
   }).then(r => r.json()).then(data => {
-    btn.textContent = data.in_wishlist ? '♥' : '♡';
-    btn.style.color = data.in_wishlist ? 'var(--error)' : '#fff';
+    btn.textContent = data.added ? '♥' : '♡';
+    btn.style.color = data.added ? 'var(--error)' : '#fff';
   }).catch(console.error);
 }
 </script>

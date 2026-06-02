@@ -21,6 +21,7 @@ urlpatterns = [
     path('orders/<uuid:pk>/', views.order_detail_view, name='order_detail'),
     path('orders/<uuid:pk>/confirmation/', views.order_confirmation_view, name='order_confirmation'),
     path('orders/<uuid:pk>/cancel/', views.cancel_order_view, name='cancel_order'),
+    path('orders/sales/cancel/<int:pk>/', views.seller_cancel_order_view, name='seller_cancel_order'),
     path('orders/<uuid:pk>/reorder/', views.reorder_view, name='reorder'),
 
     # Return Requests

@@ -80,6 +80,17 @@
 
         </div>
 
+        {% if sale.order.status != 'cancelled' and sale.order.status != 'delivered' %}
+        <div style="padding: 0 20px 20px; display: flex; justify-content: flex-end; border-top: 1px solid var(--border-2); margin-top: 10px; padding-top: 15px;">
+          <form method="post" action="{% url 'seller_cancel_order' sale.pk %}" onsubmit="return confirm('Cancel this sale? The product will be returned to the store and the buyer will be notified. This cannot be undone.');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline" style="border-color: var(--error); color: var(--error); font-size: 0.82rem; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">
+              ✕ Cancel Sale
+            </button>
+          </form>
+        </div>
+        {% endif %}
+
       </div>
       {% endfor %}
     </div>

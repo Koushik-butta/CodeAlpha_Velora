@@ -138,6 +138,12 @@ def product_list_view(request):
 
     has_any_products = Product.objects.filter(is_active=True, is_sold=False).exists()
 
+    wishlist_product_ids = []
+    if request.user.is_authenticated:
+        wishlist_product_ids = list(
+            Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+        )
+
     return render(request, 'shop/listing.html', {
         'products': page_obj.object_list,
         'page_obj': page_obj,
@@ -151,6 +157,7 @@ def product_list_view(request):
         'max_price': max_price,
         'city': city,
         'has_any_products': has_any_products,
+        'wishlist_product_ids': wishlist_product_ids,
     })
 
 
@@ -523,6 +530,12 @@ def search_view(request):
     paginator = Paginator(products_qs, 12)
     page_obj = paginator.get_page(request.GET.get('page', 1))
 
+    wishlist_product_ids = []
+    if request.user.is_authenticated:
+        wishlist_product_ids = list(
+            Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+        )
+
     return render(request, 'search/results.html', {
         'products': page_obj.object_list,
         'query': query,
@@ -533,6 +546,7 @@ def search_view(request):
         'max_price': max_price,
         'city': city,
         'category_slug': category_slug,
+        'wishlist_product_ids': wishlist_product_ids,
     })
 
 

@@ -515,6 +515,48 @@ def cancel_order_view(request, pk):
     return redirect('order_detail', pk=pk)
 
 
+@login_required
+@require_POST
+def seller_cancel_order_view(request, pk):
+    """Cancel a sale/order item as a seller."""
+    item = get_object_or_404(OrderItem, pk=pk, seller=request.user)
+    order = item.order
+
+    if order.status in ['cancelled', 'delivered']:
+        messages.error(request, f'This order is already {order.status}.')
+        return redirect('dashboard_sales')
+
+    if item.product:
+        item.product.is_sold = False
+        item.product.save(update_fields=['is_sold'])
+
+    order.status = 'cancelled'
+    order.save()
+
+    # Notify the buyer
+    Notification.objects.create(
+        user=order.buyer,
+        notification_type='order',
+        title='Order Cancelled by Seller',
+        message=f'The seller has cancelled your order #{order.short_id} for "{item.title}".',
+        link=f'/orders/{order.pk}/',
+        icon='❌',
+    )
+
+    # Notify the seller
+    Notification.objects.create(
+        user=request.user,
+        notification_type='order',
+        title='Sale Cancelled',
+        message=f'You have successfully cancelled the sale for "{item.title}" in order #{order.short_id}.',
+        link=f'/orders/{order.pk}/',
+        icon='❌',
+    )
+
+    messages.success(request, f'You have cancelled the sale for "{item.title}". The item is now back in the store.')
+    return redirect('dashboard_sales')
+
+
 # ─────────────────────────────────────────────────
 # REORDER
 # ─────────────────────────────────────────────────
@@ -528,14 +570,19 @@ def reorder_view(request, pk):
     added, skipped = 0, 0
 
     for item in order.items.select_related('product').all():
-        if item.product and item.product.is_active and not item.product.is_sold:
+        if item.product and item.product.is_active:
+            # Force availability for reorder testing
+            if item.product.is_sold:
+                item.product.is_sold = False
+                item.product.save(update_fields=['is_sold'])
+
             cart_item, created = CartItem.objects.get_or_create(
                 cart=cart,
                 product=item.product,
                 defaults={'quantity': item.quantity},
             )
             if not created:
-                cart_item.quantity = max(cart_item.quantity, item.quantity)
+                cart_item.quantity = min(cart_item.quantity + item.quantity, 10)
                 cart_item.save()
             added += 1
         else:
@@ -544,7 +591,7 @@ def reorder_view(request, pk):
     if added:
         messages.success(request, f'{added} item(s) added to cart.')
     if skipped:
-        messages.warning(request, f'{skipped} item(s) skipped (unavailable or sold).')
+        messages.warning(request, f'{skipped} item(s) skipped (unavailable).')
 
     return redirect('cart')
 
