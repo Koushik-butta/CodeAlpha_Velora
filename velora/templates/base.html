@@ -28,6 +28,11 @@
 </head>
 <body>
 
+<!-- Scroll Progress Indicator -->
+<div id="scroll-progress-indicator"></div>
+<!-- Page Loader Progress Bar -->
+<div id="page-loader-progress"></div>
+
 <!-- Tricolor Patriotic Top Bar -->
 <div style="height:4px;background:linear-gradient(90deg, #FF9933 0%, #FF9933 40%, #000080 40%, #000080 42%, #FFFFFF 42%, #FFFFFF 58%, #000080 58%, #000080 60%, #128807 60%, #128807 100%);width:100%;"></div>
 
@@ -86,7 +91,7 @@
           <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Select theme" title="Select theme" style="border: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: var(--radius-sm); transition: background 0.2s; font-size: 1.1rem; cursor: pointer;">
             🎨
           </button>
-          <div class="theme-dropdown" id="themeDropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface-2); border: 1px solid var(--border-2); border-radius: var(--radius); padding: 8px; width: 220px; box-shadow: var(--shadow); z-index: 1000;">
+          <div class="theme-dropdown" id="themeDropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface-2); border: 1px solid var(--border-2); border-radius: var(--radius); padding: 8px; width: 220px; box-shadow: var(--shadow); z-index: 1000; max-height: 380px; overflow-y: auto;">
             <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-3); margin-bottom: 8px; padding-left: 6px; letter-spacing: 0.05em;">SELECT VELORA THEME</div>
             
             <button class="theme-opt" data-theme-val="sunset-saffron" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
@@ -132,6 +137,26 @@
             <button class="theme-opt" data-theme-val="ocean-turquoise" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
               <span style="width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #0D9488 0%, #3B82F6 100%); display: inline-block; border: 1px solid var(--border-3);"></span>
               Ocean Turquoise
+            </button>
+            
+            <button class="theme-opt" data-theme-val="sakura-blossom" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
+              <span style="width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #FF75A0 0%, #D946EF 100%); display: inline-block; border: 1px solid var(--border-3);"></span>
+              Sakura Blossom
+            </button>
+
+            <button class="theme-opt" data-theme-val="cosmic-lavender" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
+              <span style="width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #9D4EDD 0%, #FF007F 100%); display: inline-block; border: 1px solid var(--border-3);"></span>
+              Cosmic Lavender
+            </button>
+
+            <button class="theme-opt" data-theme-val="nordic-aurora" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
+              <span style="width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #00E575 0%, #00F5D4 100%); display: inline-block; border: 1px solid var(--border-3);"></span>
+              Nordic Aurora
+            </button>
+
+            <button class="theme-opt" data-theme-val="desert-amber" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
+              <span style="width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%); display: inline-block; border: 1px solid var(--border-3);"></span>
+              Desert Amber
             </button>
             
             <button class="theme-opt" data-theme-val="classic-light" style="width: 100%; display: flex; align-items: center; gap: 8px; border: none; background: transparent; padding: 8px; border-radius: var(--radius-sm); color: var(--text); font-weight: 500; font-size: 0.88rem; text-align: left; cursor: pointer;">
@@ -325,6 +350,10 @@
         <button class="theme-opt-circle" data-theme-val="midnight-slate" title="Midnight Slate" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #64748B 0%, #334155 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
         <button class="theme-opt-circle" data-theme-val="sunset-magenta" title="Sunset Magenta" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #C026D3 0%, #F59E0B 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
         <button class="theme-opt-circle" data-theme-val="ocean-turquoise" title="Ocean Turquoise" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #0D9488 0%, #3B82F6 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
+        <button class="theme-opt-circle" data-theme-val="sakura-blossom" title="Sakura Blossom" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #FF75A0 0%, #D946EF 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
+        <button class="theme-opt-circle" data-theme-val="cosmic-lavender" title="Cosmic Lavender" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #9D4EDD 0%, #FF007F 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
+        <button class="theme-opt-circle" data-theme-val="nordic-aurora" title="Nordic Aurora" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #00E575 0%, #00F5D4 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
+        <button class="theme-opt-circle" data-theme-val="desert-amber" title="Desert Amber" style="width:24px;height:24px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg, #F59E0B 0%, #F97316 100%);cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
         <button class="theme-opt-circle" data-theme-val="classic-light" title="Classic Light Mode" style="width:24px;height:24px;border-radius:50%;border:2px solid rgba(0,0,0,0.1);background:#FFFFFF;cursor:pointer;padding:0;box-sizing:border-box;transition: transform 0.2s;"></button>
       </div>
     </div>
@@ -431,7 +460,16 @@
   </div>
 </footer>
 
-<script src="{% static 'css/js/script.js' %}?v=3.3"></script>
+<!-- Back to Top Circular Button -->
+<button id="backToTop" class="back-to-top-progress" aria-label="Back to Top" title="Back to Top">
+  <svg>
+    <circle class="circle-bg" cx="23" cy="23" r="22"></circle>
+    <circle class="circle-progress" cx="23" cy="23" r="22"></circle>
+  </svg>
+  <span class="arrow-icon">↑</span>
+</button>
+
+<script src="{% static 'css/js/script.js' %}?v=3.4"></script>
 <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
 {% block extra_js %}{% endblock %}
 </body>

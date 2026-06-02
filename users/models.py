@@ -87,6 +87,14 @@ class Profile(models.Model):
         ('vibrant-emerald', 'Vibrant Emerald'),
         ('cyber-tricolor', 'Cyber Neon'),
         ('classic-light', 'Classic Light Mode'),
+        ('holi-festival', 'Holi Festival (Colorful)'),
+        ('midnight-slate', 'Midnight Slate'),
+        ('sunset-magenta', 'Sunset Magenta'),
+        ('ocean-turquoise', 'Ocean Turquoise'),
+        ('sakura-blossom', 'Sakura Blossom (Pink & Plum)'),
+        ('cosmic-lavender', 'Cosmic Lavender (Violet Neon)'),
+        ('nordic-aurora', 'Nordic Aurora (Arctic Mint)'),
+        ('desert-amber', 'Desert Amber (Oasis Gold)'),
     ]
     theme = models.CharField(max_length=30, choices=THEME_CHOICES, default='sunset-saffron')
     created_at = models.DateTimeField(auto_now_add=True)

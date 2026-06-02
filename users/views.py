@@ -443,7 +443,12 @@ def update_theme_view(request):
     try:
         data = json.loads(request.body)
         theme = data.get('theme')
-        valid_themes = ['sunset-saffron', 'royal-ashoka', 'lotus-pink', 'vibrant-emerald', 'cyber-tricolor', 'classic-light']
+        valid_themes = [
+            'sunset-saffron', 'royal-ashoka', 'lotus-pink', 'vibrant-emerald', 
+            'cyber-tricolor', 'classic-light', 'holi-festival', 'midnight-slate', 
+            'sunset-magenta', 'ocean-turquoise', 'sakura-blossom', 
+            'cosmic-lavender', 'nordic-aurora', 'desert-amber'
+        ]
         if theme in valid_themes:
             profile, _ = Profile.objects.get_or_create(user=request.user)
             profile.theme = theme

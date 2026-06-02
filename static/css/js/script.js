@@ -55,14 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', () => { dropdown.style.display = 'none'; });
     dropdown.addEventListener('click', (e) => { e.stopPropagation(); });
     dropdown.querySelectorAll('.theme-opt').forEach(opt => {
-      opt.addEventListener('click', () => {
-        applyTheme(opt.dataset.themeVal);
+      opt.addEventListener('click', (e) => {
+        applyThemeWithTransition(opt.dataset.themeVal, e);
         dropdown.style.display = 'none';
       });
     });
   }
   document.querySelectorAll('.theme-opt-circle').forEach(circle => {
-    circle.addEventListener('click', () => { applyTheme(circle.dataset.themeVal); });
+    circle.addEventListener('click', (e) => { applyThemeWithTransition(circle.dataset.themeVal, e); });
   });
   const currentTheme = localStorage.getItem(THEME_KEY) || 'sunset-saffron';
   updateThemeUIActiveState(currentTheme);
@@ -443,4 +443,326 @@ document.addEventListener('DOMContentLoaded', () => {
     // Small delay so toast loads, then boom!
     setTimeout(triggerConfetti, 200);
   }
+  
+  // Attach sparks listener to Ashoka Chakra spinning wheels
+  document.querySelectorAll('.chakra-wheel').forEach(wheel => {
+    wheel.style.cursor = 'pointer';
+    wheel.addEventListener('click', e => {
+      e.stopPropagation();
+      triggerSparks(e.clientX, e.clientY);
+    });
+  });
+  
+  // Initialize new visual components
+  initScrollEffects();
+  initCard3DTilt();
+  initMagneticButtons();
+  initHeroParticles();
 });
+
+/* ---- ADVANCED TRANSITIONS & EFFECTS ---- */
+
+// 1. Theme Change Circular Sweep Ripple Transition
+function applyThemeWithTransition(t, e) {
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
+  if (e && e.clientX && e.clientY) {
+    x = e.clientX;
+    y = e.clientY;
+  }
+
+  // Create sweep overlay ripple
+  const ripple = document.createElement('div');
+  ripple.className = 'theme-switch-ripple';
+  
+  // Calculate size to cover all corners
+  const maxDim = Math.max(window.innerWidth, window.innerHeight);
+  const size = maxDim * 2.5;
+  ripple.style.width = size + 'px';
+  ripple.style.height = size + 'px';
+  ripple.style.left = (x - size / 2) + 'px';
+  ripple.style.top = (y - size / 2) + 'px';
+  
+  // Setup colors (radial sweep gradient starting with primary theme variables)
+  ripple.style.background = 'radial-gradient(circle, var(--primary) 0%, var(--bg) 80%)';
+  document.body.appendChild(ripple);
+  
+  // Trigger paint
+  ripple.offsetHeight;
+  
+  ripple.style.transform = 'scale(1)';
+  ripple.style.opacity = '0.96';
+  
+  setTimeout(() => {
+    applyTheme(t);
+  }, 220);
+  
+  setTimeout(() => {
+    ripple.style.opacity = '0';
+    setTimeout(() => ripple.remove(), 400);
+  }, 650);
+}
+
+// 2. Interactive Canvas Spark Burst centered on Logo Wheel Click
+function triggerSparks(x, y) {
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '999999';
+  document.body.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const particles = [];
+  const computedStyle = getComputedStyle(document.documentElement);
+  const color1 = computedStyle.getPropertyValue('--primary').trim() || '#FF9933';
+  const color2 = computedStyle.getPropertyValue('--buy').trim() || '#128807';
+  const color3 = computedStyle.getPropertyValue('--swap').trim() || '#F59E0B';
+  const resolvedColors = [color1, color2, color3, '#FFFFFF'];
+
+  for (let i = 0; i < 24; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 4 + 2.5;
+    particles.push({
+      x: x,
+      y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      r: Math.random() * 3 + 1.8,
+      color: resolvedColors[Math.floor(Math.random() * resolvedColors.length)],
+      alpha: 1.0,
+      decay: Math.random() * 0.035 + 0.02
+    });
+  }
+  
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = false;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.08; // gravity
+      p.alpha -= p.decay;
+      if (p.alpha > 0) {
+        active = true;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+      }
+    });
+    if (active) {
+      requestAnimationFrame(draw);
+    } else {
+      canvas.remove();
+    }
+  }
+  draw();
+}
+
+// 3. Scroll Depth and Back-To-Top Circular Button
+function initScrollEffects() {
+  const scrollIndicator = document.getElementById('scroll-progress-indicator');
+  const backToTopBtn = document.getElementById('backToTop');
+  const progressCircle = backToTopBtn?.querySelector('.circle-progress');
+  
+  if (!scrollIndicator && !backToTopBtn) return;
+  
+  window.addEventListener('scroll', () => {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight <= 0) return;
+    
+    const pct = (window.scrollY / totalHeight) * 100;
+    
+    if (scrollIndicator) {
+      scrollIndicator.style.width = pct + '%';
+    }
+    
+    if (backToTopBtn) {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+      
+      if (progressCircle) {
+        const offset = 138 - (pct / 100 * 138);
+        progressCircle.style.strokeDashoffset = offset;
+      }
+    }
+  }, { passive: true });
+  
+  backToTopBtn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// 4. 3D Card Hover Perspective and Cursor Spotlight Glow
+function initCard3DTilt() {
+  document.querySelectorAll('.pcard').forEach(card => {
+    card.style.setProperty('--mouse-x', '0px');
+    card.style.setProperty('--mouse-y', '0px');
+    
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+      
+      // Calculate rotation angles
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -6; // max 6 deg
+      const rotateY = ((x - centerX) / centerX) * 6;  // max 6 deg
+      
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale(1.02)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+    });
+  });
+}
+
+// 5. Magnetic Button physics (for CTAs)
+function initMagneticButtons() {
+  document.querySelectorAll('.btn-sell, .theme-toggle, .hero__pill').forEach(btn => {
+    btn.classList.add('btn-magnetic');
+    
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0px, 0px)';
+    });
+  });
+}
+
+// 6. Interactive Floating Canvas Particles in Hero Section
+function initHeroParticles() {
+  const canvas = document.getElementById('hero-particles-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width = canvas.width = canvas.offsetWidth;
+  let height = canvas.height = canvas.offsetHeight;
+  
+  window.addEventListener('resize', () => {
+    width = canvas.width = canvas.offsetWidth;
+    height = canvas.height = canvas.offsetHeight;
+  });
+  
+  const particles = [];
+  const computedStyle = getComputedStyle(document.documentElement);
+  
+  for (let i = 0; i < 35; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      alpha: Math.random() * 0.4 + 0.15
+    });
+  }
+  
+  let mouse = { x: -1000, y: -1000 };
+  const parent = canvas.parentElement;
+  
+  parent.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  
+  parent.addEventListener('mouseleave', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+  
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    
+    // Resolve dynamic primary color from theme
+    const colorPrimary = computedStyle.getPropertyValue('--primary').trim() || '#FF9933';
+    
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      // Repel from cursor
+      if (mouse.x > -1000) {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          const force = (100 - dist) / 100;
+          p.x += (dx / dist) * force * 2.5;
+          p.y += (dy / dist) * force * 2.5;
+        }
+      }
+      
+      // Boundaries
+      if (p.x < 0) p.x = width;
+      if (p.x > width) p.x = 0;
+      if (p.y < 0) p.y = height;
+      if (p.y > height) p.y = 0;
+      
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = colorPrimary;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+// Initialize Page Loading Progress indicator immediately
+initLoadingProgress();
+
+function initLoadingProgress() {
+  // Try to find element or create immediate indicator
+  document.addEventListener('DOMContentLoaded', () => {
+    const bar = document.getElementById('page-loader-progress');
+    if (!bar) return;
+    
+    bar.style.width = '0%';
+    bar.style.opacity = '1';
+    
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 12 + 4;
+      if (progress >= 92) {
+        progress = 92;
+        clearInterval(interval);
+      }
+      bar.style.width = progress + '%';
+    }, 80);
+    
+    window.addEventListener('load', () => {
+      clearInterval(interval);
+      bar.style.width = '100%';
+      setTimeout(() => {
+        bar.style.opacity = '0';
+      }, 150);
+    });
+  });
+}

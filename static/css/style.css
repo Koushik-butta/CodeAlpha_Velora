@@ -498,6 +498,162 @@
   --nav-bg: rgba(6,19,20,.97);
 }
 
+/* 11. Sakura Blossom */
+[data-theme="sakura-blossom"] {
+  --bg: #130C16;
+  --bg-2: #1D1322;
+  --bg-3: #281B2E;
+  --bg-4: #35243C;
+  --surface: #1E1424;
+  --surface-2: #281B2E;
+  --surface-3: #35243C;
+  --text: #FDE8EF;
+  --text-1: #FFF0F5;
+  --text-2: #F472B6;
+  --text-3: #C084FC;
+  --text-inv: #1C0A15;
+  --border: rgba(244,114,182,.1);
+  --border-2: rgba(244,114,182,.18);
+  --border-3: rgba(244,114,182,.3);
+  --primary: #FF75A0;
+  --primary-dark: #D946EF;
+  --primary-light: #FFB3C6;
+  --primary-dim: rgba(255,117,160,.12);
+  --primary-glow: rgba(255,117,160,.25);
+  --buy: #FF5E7E;
+  --buy-dark: #D63350;
+  --buy-dim: rgba(255,94,126,.12);
+  --buy-glow: rgba(255,94,126,.25);
+  --sell: #FF75A0;
+  --sell-dim: rgba(255,117,160,.12);
+  --sell-glow: rgba(255,117,160,.25);
+  --swap: #D946EF;
+  --swap-dim: rgba(217,70,239,.12);
+  --swap-glow: rgba(217,70,239,.25);
+  --logo-bg: linear-gradient(135deg, #FF75A0 0%, #D946EF 100%);
+  --logo-tagline-color: #FFB3C6;
+  --chakra-color: rgba(255, 117, 160, 0.6);
+  --chakra-color-alpha: rgba(255, 117, 160, 0.2);
+  --nav-bg: rgba(19,12,22,.97);
+}
+
+/* 12. Cosmic Lavender */
+[data-theme="cosmic-lavender"] {
+  --bg: #090714;
+  --bg-2: #110E22;
+  --bg-3: #1B1735;
+  --bg-4: #27214B;
+  --surface: #141129;
+  --surface-2: #1B1735;
+  --surface-3: #27214B;
+  --text: #F3EEFF;
+  --text-1: #FAF5FF;
+  --text-2: #C084FC;
+  --text-3: #A855F7;
+  --text-inv: #090514;
+  --border: rgba(192,132,252,.12);
+  --border-2: rgba(192,132,252,.22);
+  --border-3: rgba(192,132,252,.35);
+  --primary: #9D4EDD;
+  --primary-dark: #7B2CBF;
+  --primary-light: #C77DFF;
+  --primary-dim: rgba(157,78,221,.15);
+  --primary-glow: rgba(157,78,221,.3);
+  --buy: #FF007F;
+  --buy-dark: #D6006B;
+  --buy-dim: rgba(255,0,127,.15);
+  --buy-glow: rgba(255,0,127,.3);
+  --sell: #9D4EDD;
+  --sell-dim: rgba(157,78,221,.15);
+  --sell-glow: rgba(157,78,221,.3);
+  --swap: #390099;
+  --swap-dim: rgba(57,0,153,.15);
+  --swap-glow: rgba(57,0,153,.3);
+  --logo-bg: linear-gradient(135deg, #9D4EDD 0%, #FF007F 100%);
+  --logo-tagline-color: #C77DFF;
+  --chakra-color: rgba(199, 125, 255, 0.6);
+  --chakra-color-alpha: rgba(199, 125, 255, 0.2);
+  --nav-bg: rgba(9,7,20,.97);
+}
+
+/* 13. Nordic Aurora */
+[data-theme="nordic-aurora"] {
+  --bg: #050E0F;
+  --bg-2: #09171A;
+  --bg-3: #11272C;
+  --bg-4: #1A383F;
+  --surface: #0E2024;
+  --surface-2: #11272C;
+  --surface-3: #1A383F;
+  --text: #EAF9F6;
+  --text-1: #F5FFFD;
+  --text-2: #2DD4BF;
+  --text-3: #34D399;
+  --text-inv: #020C0D;
+  --border: rgba(45,212,191,.1);
+  --border-2: rgba(45,212,191,.18);
+  --border-3: rgba(45,212,191,.3);
+  --primary: #00E575;
+  --primary-dark: #00B35B;
+  --primary-light: #52FFA4;
+  --primary-dim: rgba(0,229,117,.15);
+  --primary-glow: rgba(0,229,117,.3);
+  --buy: #00F5D4;
+  --buy-dark: #00C4AA;
+  --buy-dim: rgba(0,245,212,.15);
+  --buy-glow: rgba(0,245,212,.3);
+  --sell: #00E575;
+  --sell-dim: rgba(0,229,117,.15);
+  --sell-glow: rgba(0,229,117,.3);
+  --swap: #3B82F6;
+  --swap-dim: rgba(59,130,246,.15);
+  --swap-glow: rgba(59,130,246,.3);
+  --logo-bg: linear-gradient(135deg, #00E575 0%, #00F5D4 100%);
+  --logo-tagline-color: #52FFA4;
+  --chakra-color: rgba(0, 245, 212, 0.6);
+  --chakra-color-alpha: rgba(0, 245, 212, 0.2);
+  --nav-bg: rgba(5,14,15,.97);
+}
+
+/* 14. Desert Amber */
+[data-theme="desert-amber"] {
+  --bg: #150F0B;
+  --bg-2: #221711;
+  --bg-3: #32231A;
+  --bg-4: #453024;
+  --surface: #261B14;
+  --surface-2: #32231A;
+  --surface-3: #453024;
+  --text: #FFF8F2;
+  --text-1: #FFFBF7;
+  --text-2: #FDBA74;
+  --text-3: #F97316;
+  --text-inv: #1F1005;
+  --border: rgba(253,186,116,.1);
+  --border-2: rgba(253,186,116,.18);
+  --border-3: rgba(253,186,116,.3);
+  --primary: #F59E0B;
+  --primary-dark: #D97706;
+  --primary-light: #FBBF24;
+  --primary-dim: rgba(245,158,11,.15);
+  --primary-glow: rgba(245,158,11,.3);
+  --buy: #2DD4BF;
+  --buy-dark: #0D9488;
+  --buy-dim: rgba(45,212,191,.15);
+  --buy-glow: rgba(45,212,191,.3);
+  --sell: #F59E0B;
+  --sell-dim: rgba(245,158,11,.15);
+  --sell-glow: rgba(245,158,11,.3);
+  --swap: #F97316;
+  --swap-dim: rgba(249,115,22,.15);
+  --swap-glow: rgba(249,115,22,.3);
+  --logo-bg: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+  --logo-tagline-color: #FDBA74;
+  --chakra-color: rgba(253, 186, 116, 0.6);
+  --chakra-color-alpha: rgba(253, 186, 116, 0.2);
+  --nav-bg: rgba(21,15,11,.97);
+}
+
 /* Theme active states & variables */
 .theme-opt.active {
   background: var(--primary-dim) !important;
@@ -1945,12 +2101,234 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
   cursor: pointer;
   transition: background var(--dur) var(--ease);
 }
-.header-search__btn:hover {
-  background: #e05a0a;
-}
-
 @media (max-width: 768px) {
   .header-search {
     display: none;
   }
+}
+
+/* ============================================================
+   ADVANCED VISUAL EFFECTS & STYLING
+   ============================================================ */
+
+/* 1. Scroll Progress Indicator */
+#scroll-progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary), var(--buy), var(--swap));
+  z-index: 10000;
+  width: 0%;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 1px 8px var(--primary-glow);
+}
+
+/* 2. Page Loading Indicator */
+#page-loader-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--primary);
+  z-index: 10001;
+  width: 0%;
+  transition: width 0.2s ease, opacity 0.4s ease;
+  box-shadow: 0 1px 12px var(--primary-glow);
+}
+
+/* 3. Ambient Glow Blobs */
+.hero__glow-blobs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  animation: floatBlob 16s infinite alternate ease-in-out;
+  will-change: transform;
+}
+[data-theme="light"] .glow-blob, [data-theme="classic-light"] .glow-blob {
+  mix-blend-mode: multiply;
+  opacity: 0.08;
+  filter: blur(100px);
+}
+.glow-blob-1 {
+  width: 320px;
+  height: 320px;
+  background: var(--primary);
+  left: 8%;
+  top: 15%;
+}
+.glow-blob-2 {
+  width: 420px;
+  height: 420px;
+  background: var(--buy);
+  right: 12%;
+  bottom: 8%;
+  animation-delay: -4s;
+  animation-duration: 20s;
+}
+.glow-blob-3 {
+  width: 260px;
+  height: 260px;
+  background: var(--swap);
+  left: 48%;
+  top: 45%;
+  animation-delay: -8s;
+  animation-duration: 18s;
+}
+@keyframes floatBlob {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -70px) scale(1.15); }
+  100% { transform: translate(-40px, 40px) scale(0.85); }
+}
+
+/* 4. Theme Switch Ripple Sweep Overlay */
+.theme-switch-ripple {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.65s cubic-bezier(0.1, 0.8, 0.25, 1), opacity 0.35s ease;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* 5. 3D Card Hover Spotlight */
+.pcard {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.pcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 255, 255, 0.08),
+    transparent 80%
+  );
+  will-change: background;
+}
+[data-theme="light"] .pcard::before, [data-theme="classic-light"] .pcard::before {
+  background: radial-gradient(
+    250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(0, 0, 0, 0.035),
+    transparent 80%
+  );
+}
+.pcard:hover::before {
+  opacity: 1;
+}
+
+/* 6. Magnetic Buttons & Subtle Floating */
+.btn-magnetic {
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+/* 7. Text Gradient Shimmer */
+.text-shimmer {
+  background: linear-gradient(
+    to right,
+    var(--primary) 20%,
+    var(--primary-light) 40%,
+    var(--primary) 60%,
+    var(--swap) 80%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: textShimmer 4s linear infinite;
+}
+@keyframes textShimmer {
+  to { background-position: 200% center; }
+}
+
+/* 8. Back-to-Top circular scroll progress button */
+.back-to-top-progress {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: all 0.3s var(--ease);
+  box-shadow: var(--shadow);
+}
+.back-to-top-progress.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.back-to-top-progress svg {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  transform: rotate(-90deg);
+}
+.back-to-top-progress svg circle {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.back-to-top-progress svg .circle-bg {
+  stroke: var(--border);
+}
+.back-to-top-progress svg .circle-progress {
+  stroke: var(--primary);
+  stroke-dasharray: 138;
+  stroke-dashoffset: 138;
+  transition: stroke-dashoffset 0.1s linear;
+}
+.back-to-top-progress .arrow-icon {
+  font-size: 1.1rem;
+  z-index: 2;
+  color: var(--text);
+  transition: transform 0.2s var(--ease);
+}
+.back-to-top-progress:hover .arrow-icon {
+  transform: translateY(-2px);
+}
+
+/* 9. Theme Options circle bounces */
+.theme-opt-circle:hover {
+  transform: scale(1.3) !important;
+}
+
+/* 10. Stagger Reveal Anim */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: opacity, transform;
+}
+[data-reveal].in {
+  opacity: 1;
+  transform: translateY(0);
 }

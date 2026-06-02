@@ -10,6 +10,12 @@
 <section class="hero page-wrap">
   <div class="hero__bg" aria-hidden="true"></div>
   <div class="hero__grid-pattern" aria-hidden="true"></div>
+  <div class="hero__glow-blobs" aria-hidden="true">
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+    <div class="glow-blob glow-blob-3"></div>
+  </div>
+  <canvas id="hero-particles-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.6;"></canvas>
   <div class="container" style="width:100%;">
     <div class="hero__inner">
 
@@ -25,7 +31,7 @@
         <span class="word-buy">Buy</span>,
         <span class="word-sell">Sell</span> &
         <span class="word-swap">Exchange</span><br>
-        Anything, Anywhere
+        <span class="text-shimmer">Anything, Anywhere</span>
       </h1>
 
       <!-- Slogan -->
