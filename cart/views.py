@@ -47,10 +47,9 @@ def cart_json_view(request):
     items_data = []
     for item in cart_items:
         image_url = ''
-        if item.product.images.exists():
-            image_url = item.product.images.first().image.url
-        elif item.product.image:
-            image_url = item.product.image.url
+        primary = item.product.primary_image
+        if primary:
+            image_url = primary.image_url
         items_data.append({
             'id': item.pk,
             'product_id': str(item.product.pk),

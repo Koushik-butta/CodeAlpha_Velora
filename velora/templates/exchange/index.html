@@ -115,7 +115,7 @@
                 🔄 Request Exchange
               </a>
             {% elif not user.is_authenticated %}
-              <a href="{% url 'login' %}?next=/exchange/" class="btn btn-outline btn-full btn-sm" style="text-decoration:none; display:flex; align-items:center; justify-content:center; font-weight:700;">
+              <a href="{% url 'login' %}?next={% url 'exchange_request' product.pk %}" class="btn btn-outline btn-full btn-sm" style="text-decoration:none; display:flex; align-items:center; justify-content:center; font-weight:700;">
                 Sign In to Swap
               </a>
             {% else %}

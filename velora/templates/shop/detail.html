@@ -256,7 +256,7 @@
             {% endif %}
 
             {% if product.exchange_available or product.listing_type == 'exchange' %}
-            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-swap btn-full" style="margin-bottom:10px; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+            <a href="{% url 'login' %}?next={% url 'exchange_request' product.pk %}" class="btn btn-swap btn-full" style="margin-bottom:10px; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
               Request Exchange
             </a>
