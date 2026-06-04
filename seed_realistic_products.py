@@ -74,7 +74,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Experience iPhone 15 Pro. Forged in titanium and featuring the groundbreaking A17 Pro chip, a customizable Action button, and the most powerful iPhone camera system ever. Comes with 1 Year Apple India Warranty.',
-            'image_url': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1696258686454-0Twv181dqgg?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -121,6 +121,9 @@ def seed_products():
             'state': 'Karnataka',
             'description': 'Selling my pristine iPhone 13. Blue color, 128GB capacity. Battery health is at 90%. Always used with a Spigen case and tempered glass. Zero scratches or dents. Comes with original box and unused charging cable.',
             'image_url': 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 38000,
+            'exchange_for': 'iPhone 14 or Samsung Galaxy S23 (I will pay difference)',
         },
         {
             'category_slug': 'mobiles',
@@ -135,7 +138,10 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Selling my OnePlus 11R Galactic Silver. Phone is 10 months old and performs beautifully. Snapdragon 8+ Gen 1, excellent gaming performance. 100W charging works perfectly (charger included). Minor scratches on the plastic frame.',
-            'image_url': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 24000,
+            'exchange_for': 'iPad Air or gaming console',
         },
         {
             'category_slug': 'mobiles',
@@ -230,6 +236,9 @@ def seed_products():
             'state': 'Telangana',
             'description': 'ASUS ROG gaming laptop. Setup: Core i7 10th Gen, Nvidia GTX 1650 Ti, 16GB RAM, 512GB SSD. Great for esports titles like Valorant, CS2, GTA V. RGB keyboard is fully working. Selling because I bought a desktop.',
             'image_url': 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 38000,
+            'exchange_for': 'MacBook Air M1/M2 or iPhone 13 Pro',
         },
         {
             'category_slug': 'laptops',
@@ -298,7 +307,7 @@ def seed_products():
         {
             'category_slug': 'electronics',
             'seller_email': 'karan.grover@gmail.com',
-            'title': 'JBL Tune Beam 2 Active Noise Cancelling Earbuds',
+            'title': 'JBL Tune Beam 2 Active Noise Cancelling Earphones',
             'price': 2499,
             'original_price': 5499,
             'listing_type': 'sell',
@@ -309,6 +318,9 @@ def seed_products():
             'state': 'Delhi NCR',
             'description': 'JBL Tune Beam 2 wireless bluetooth earbuds. Deep bass signature sound with fully working active noise cancelling. Used for just 1 week. Comes with box, charger, extra tips, and purchase invoice.',
             'image_url': 'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 2400,
+            'exchange_for': 'Wireless mouse or mechanical keyboard',
         },
         {
             'category_slug': 'electronics',
@@ -371,7 +383,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Experience epic energy with the new Adidas Ultraboost Light, our lightest Ultraboost ever. The secret is the generation of Boost cushioning: Light Boost. Sealed pack in Adidas retail box.',
-            'image_url': 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'fashion',
@@ -403,6 +415,9 @@ def seed_products():
             'state': 'Maharashtra',
             'description': 'Worn once for a brief indoor photoshoot. US Size 9 (UK 8.5). Comfort-foam inner sole, rich tan brown leather outer material. Selling because it is half-size too small for me.',
             'image_url': 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 1799,
+            'exchange_for': 'Sneakers in UK Size 9.5 or premium backpack',
         },
         {
             'category_slug': 'fashion',
@@ -432,7 +447,10 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'The famous "CasiOak" GA-2100 carbon core guard watch. All black tactical colorway. Resin strap showing minor signs of wear near the buckle. Glass is absolutely scratchless. Works perfectly.',
-            'image_url': 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 3400,
+            'exchange_for': 'Fossil or Seiko Chronograph watch',
         },
 
         # === 5. FURNITURE ===
@@ -528,6 +546,61 @@ def seed_products():
             'description': 'Sturdy wooden study/office desk with 3 sliding drawers. Very durable build, made of local rosewood. Shows slight surface wear but has no structurally weak points.',
             'image_url': 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?w=600&auto=format&fit=crop&q=80',
         },
+        # === 6. EXCHANGE PRODUCTS ===
+        {
+            'category_slug': 'mobiles',
+            'seller_email': 'rahul.mehta@gmail.com',
+            'title': 'Google Pixel 7a 5G (Charcoal, 128GB)',
+            'price': 28000,
+            'original_price': 43999,
+            'listing_type': 'exchange',
+            'condition': 'like_new',
+            'brand': 'Google',
+            'model_name': 'Pixel 7a',
+            'city': 'Mumbai',
+            'state': 'Maharashtra',
+            'description': 'Want to exchange my Google Pixel 7a 5G in Charcoal color. 128GB storage, spotless condition. Looking to swap for a OnePlus phone or a Nintendo Switch console. The phone is in like-new condition, always used with screen protector and case.',
+            'image_url': 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 28000,
+            'exchange_for': 'OnePlus phone or Nintendo Switch console',
+        },
+        {
+            'category_slug': 'electronics',
+            'seller_email': 'priya.sharma@gmail.com',
+            'title': 'Sony WH-CH720N Wireless Over-Ear Headphones',
+            'price': 5500,
+            'original_price': 9990,
+            'listing_type': 'exchange',
+            'condition': 'good',
+            'brand': 'Sony',
+            'model_name': 'WH-CH720N',
+            'city': 'Bengaluru',
+            'state': 'Karnataka',
+            'description': 'Looking to exchange my Sony WH-CH720N over-ear active noise cancelling headphones. Excellent sound quality and battery life. Looking for equivalent wireless earbuds (TWS) or a good smartwatch.',
+            'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 5500,
+            'exchange_for': 'Premium TWS Earbuds or Smartwatch',
+        },
+        {
+            'category_slug': 'fashion',
+            'seller_email': 'karan.grover@gmail.com',
+            'title': 'Royal Enfield Classic Riding Jacket (Black, Size L)',
+            'price': 4200,
+            'original_price': 7500,
+            'listing_type': 'exchange',
+            'condition': 'like_new',
+            'brand': 'Royal Enfield',
+            'model_name': 'Classic Jacket',
+            'city': 'Delhi',
+            'state': 'Delhi NCR',
+            'description': 'Royal Enfield mesh riding jacket with CE level 1 armor on elbows and shoulders. Worn for only 3 short rides. I gained some weight, so looking to exchange for a Size XL riding jacket of similar quality.',
+            'image_url': 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80',
+            'exchange_available': True,
+            'exchange_value_estimate': 4200,
+            'exchange_for': 'Riding Jacket (Size XL) or equivalent riding boots',
+        },
     ]
 
     for p in products_to_create:
@@ -556,6 +629,9 @@ def seed_products():
                 'city': p['city'],
                 'state': p['state'],
                 'description': p['description'],
+                'exchange_available': p.get('exchange_available', False),
+                'exchange_value_estimate': p.get('exchange_value_estimate'),
+                'exchange_for': p.get('exchange_for', ''),
                 'is_active': True,
                 'is_sold': False,
             }
@@ -579,6 +655,10 @@ def seed_products():
             prod.city = p['city']
             prod.state = p['state']
             prod.description = p['description']
+            prod.listing_type = p['listing_type']
+            prod.exchange_available = p.get('exchange_available', False)
+            prod.exchange_value_estimate = p.get('exchange_value_estimate')
+            prod.exchange_for = p.get('exchange_for', '')
             prod.save()
             print(f"Verified/Synced existing product: {prod.title}")
             
