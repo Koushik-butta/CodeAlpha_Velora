@@ -89,7 +89,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Welcome to the era of mobile AI. With Galaxy S24 Ultra in your hands, you can unleash whole new levels of creativity, productivity and possibility. 200MP main camera, S Pen included, Snapdragon 8 Gen 3.',
-            'image_url': 'https://images.unsplash.com/photo-1610945415295-d9bff067e59c?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -104,7 +104,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Redefined flagship smartphone. Boasting the Snapdragon 8 Gen 3 CPU, 4th Gen Hasselblad Camera system, and 100W SUPERVOOC charging. Flowy Emerald color with marble texture design. Sealed in box.',
-            'image_url': 'https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -135,7 +135,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Selling my OnePlus 11R Galactic Silver. Phone is 10 months old and performs beautifully. Snapdragon 8+ Gen 1, excellent gaming performance. 100W charging works perfectly (charger included). Minor scratches on the plastic frame.',
-            'image_url': 'https://images.unsplash.com/photo-1621330396173-e41b1cafd17f?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -262,7 +262,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Industry-leading noise cancelling wireless over-ear headphones with auto NC optimizer, crystal clear hands-free calling, and 30 hours battery backup. Brand new sealed item with bill and warranty card.',
-            'image_url': 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -323,7 +323,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Selling my Fire-Boltt smartwatch. 1.9-inch HD display, bluetooth calling, voice assistant, heart tracking. 100% scratchless screen, looks completely brand new. Charging cable included.',
-            'image_url': 'https://images.unsplash.com/photo-1517502884422-41eaaced0168?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -338,7 +338,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Premium wireless Sony noise cancelling earbuds. Used for 1.5 years. Battery backup is around 4 hours with Active Noise Cancelling turned on. Foam ear tips replaced recently. Clear case included.',
-            'image_url': 'https://images.unsplash.com/photo-1599669454699-248893623440?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&auto=format&fit=crop&q=80',
         },
 
         # === 4. FASHION ===
@@ -371,7 +371,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Experience epic energy with the new Adidas Ultraboost Light, our lightest Ultraboost ever. The secret is the generation of Boost cushioning: Light Boost. Sealed pack in Adidas retail box.',
-            'image_url': 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'fashion',
@@ -386,7 +386,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Close your eyes. Think "jeans." Now open. They were 501s, right? They are literally the blueprint for every pair of jeans in existence — burned into the world\'s collective cortex. Authentic Levi\'s jeans, brand new.',
-            'image_url': 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -402,7 +402,7 @@ def seed_products():
             'city': 'Pune',
             'state': 'Maharashtra',
             'description': 'Worn once for a brief indoor photoshoot. US Size 9 (UK 8.5). Comfort-foam inner sole, rich tan brown leather outer material. Selling because it is half-size too small for me.',
-            'image_url': 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'fashion',
@@ -432,7 +432,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'The famous "CasiOak" GA-2100 carbon core guard watch. All black tactical colorway. Resin strap showing minor signs of wear near the buckle. Glass is absolutely scratchless. Works perfectly.',
-            'image_url': 'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&auto=format&fit=crop&q=80',
         },
 
         # === 5. FURNITURE ===
@@ -450,7 +450,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Support your posture with the Wakefit ergonomic high-back mesh office chair. Features synchro-tilt mechanism, adjustable armrests, lumbar support and class 4 gas lift. Box packed with manual.',
-            'image_url': 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'furniture',
@@ -480,7 +480,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Solid Sheesham wood coffee table in warm teak finish. Elegant, simple box-frame styling with two under-drawers for storage. Perfect centerpiece for your premium living room. Covered under brand warranty.',
-            'image_url': 'https://images.unsplash.com/photo-1532372320978-9b4d7a92b24d?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1581428982868-e410dd047a90?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -526,7 +526,7 @@ def seed_products():
             'city': 'Hyderabad',
             'state': 'Telangana',
             'description': 'Sturdy wooden study/office desk with 3 sliding drawers. Very durable build, made of local rosewood. Shows slight surface wear but has no structurally weak points.',
-            'image_url': 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?w=600&auto=format&fit=crop&q=80',
         },
     ]
 
