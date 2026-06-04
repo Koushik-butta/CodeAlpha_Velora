@@ -4,7 +4,7 @@
 {% block title %}{{ product.title }} — Velora{% endblock %}
 
 {% block content %}
-<div style="background:var(--bg);padding:32px 0 60px;">
+<div style="background:transparent;padding:32px 0 60px;">
   <div class="container">
 
     <!-- Breadcrumb -->
@@ -71,7 +71,7 @@
             <div style="background:var(--surface-2);border-radius:12px;padding:14px;">
               <div style="font-size:.75rem;color:var(--text-3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;">Condition</div>
               <div style="font-weight:600;color:var(--text-1);font-size:.92rem;">
-                {% if product.condition == 'new' %}New{% elif product.condition == 'like_new' %}Like New{% elif product.condition == 'good' %}Good{% elif product.condition == 'fair' %}Fair{% else %}Poor{% endif %}
+                {% if product.condition == 'new' %}✨ Brand New{% elif product.condition == 'like_new' %}🔄 Pre-owned (Like New){% elif product.condition == 'good' %}🔄 Pre-owned (Good){% elif product.condition == 'fair' %}🔄 Pre-owned (Fair){% else %}🔧 Pre-owned (Poor){% endif %}
               </div>
             </div>
             <div style="background:var(--surface-2);border-radius:12px;padding:14px;">
@@ -161,7 +161,7 @@
           <!-- Badges -->
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
             {% if product.listing_type == 'buy' %}<span class="badge badge-buy">Buy</span>{% elif product.listing_type == 'sell' %}<span class="badge badge-sell">Sell</span>{% elif product.listing_type == 'exchange' %}<span class="badge badge-swap">Exchange</span>{% endif %}
-            {% if product.condition == 'new' %}<span class="badge badge-new">New</span>{% elif product.condition == 'like_new' %}<span class="badge badge-success">Like New</span>{% else %}<span class="badge">{{ product.get_condition_display }}</span>{% endif %}
+            {% if product.condition == 'new' %}<span class="badge badge-new">✨ Brand New</span>{% elif product.condition == 'like_new' %}<span class="badge badge-success">🔄 Pre-owned (Like New)</span>{% elif product.condition == 'good' %}<span class="badge badge-success">🔄 Pre-owned (Good)</span>{% elif product.condition == 'fair' %}<span class="badge badge-warning">🔄 Pre-owned (Fair)</span>{% else %}<span class="badge badge-error">🔧 Pre-owned (Poor)</span>{% endif %}
             {% if product.is_sold %}<span class="badge badge-error">SOLD</span>{% endif %}
             {% if product.is_featured %}<span class="badge badge-gold">Featured</span>{% endif %}
           </div>

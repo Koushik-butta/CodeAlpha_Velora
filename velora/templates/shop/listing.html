@@ -4,8 +4,24 @@
 {% block title %}{% if query %}{{ query }} — {% endif %}{% if selected_category %}{{ selected_category }} — {% endif %}Browse Products — Velora{% endblock %}
 
 {% block content %}
-<div style="background:var(--bg); min-height:85vh; padding:32px 0;">
+<div style="background:transparent; min-height:85vh; padding:32px 0;">
   <div class="container">
+    
+    <!-- Mobile Filter & Sort Toggle Bar -->
+    <div class="mobile-filter-bar" style="display:none; gap:12px; margin-bottom:20px;">
+      <button type="button" class="btn btn-outline" id="mobileFilterToggle" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; font-weight:700; padding:12px 16px; font-size:0.9rem; border-radius:var(--radius); background:var(--surface); border-color:var(--border); color:var(--text-1); cursor:pointer;">
+        <span>🔍</span> Filters
+      </button>
+      <div style="flex:1; position:relative;">
+        <select class="form-input" style="width:100%; height:100%; font-size:.85rem; font-weight:700; background:var(--surface); border-color:var(--border); padding:0 12px; cursor:pointer; border-radius:var(--radius); min-height:44px; color:var(--text-1);" onchange="document.getElementById('filterForm').submit()" name="sort" form="filterForm">
+          <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Newest First</option>
+          <option value="price" {% if sort == 'price' %}selected{% endif %}>Price: Low to High</option>
+          <option value="-price" {% if sort == '-price' %}selected{% endif %}>Price: High to Low</option>
+          <option value="-views_count" {% if sort == '-views_count' %}selected{% endif %}>Most Popular</option>
+        </select>
+      </div>
+    </div>
+
     <div class="browse-layout">
 
       <!-- SIDEBAR FILTERS (Flipkart / Amazon Style) -->
@@ -171,6 +187,16 @@
                 <div class="pcard__title" style="margin-bottom:8px;">
                   <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; text-decoration:none; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.4;">{{ product.title }}</a>
                 </div>
+
+                <!-- Seller Info Row (Amazon / OLX dynamic style) -->
+                <div class="pcard__seller" style="font-size:0.75rem; color:var(--text-3); margin:-4px 0 8px; display:flex; align-items:center; gap:4px;">
+                  {% if product.condition == 'new' %}
+                    <span style="font-weight:700; color:var(--primary); display:inline-flex; align-items:center; gap:3px;">🏢 {{ product.brand|default:"Brand" }} Official Store</span>
+                  {% else %}
+                    <span style="display:inline-flex; align-items:center; gap:3px; color:var(--text-2);">👤 Seller: {{ product.seller.profile.full_name|default:product.seller.email|truncatechars:18 }}</span>
+                  {% endif %}
+                </div>
+
                 <div class="pcard__pricing" style="display:flex; align-items:baseline; gap:8px; margin-bottom:12px;">
                   <span class="pcard__price" style="font-weight:800; font-size:1.15rem; color:var(--primary);">₹{{ product.price|floatformat:0 }}</span>
                   {% if product.original_price and product.original_price > product.price %}
@@ -181,7 +207,21 @@
               </div>
               <div class="pcard__footer" style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:10px; font-size:0.78rem; color:var(--text-3);">
                 <span style="display:flex; align-items:center; gap:4px;">📍 {{ product.city }}</span>
-                <span class="badge" style="font-size:0.7rem; background:var(--surface-2); border:1.1px solid var(--border); color:var(--text-2);">{{ product.get_condition_display }}</span>
+                <span class="badge" style="font-size:0.7rem; background:var(--surface-2); border:1.1px solid var(--border); color:var(--text-2);">
+                  {% if product.condition == 'new' %}
+                    ✨ Brand New
+                  {% elif product.condition == 'like_new' %}
+                    🔄 Pre-owned (Like New)
+                  {% elif product.condition == 'good' %}
+                    🔄 Pre-owned (Good)
+                  {% elif product.condition == 'fair' %}
+                    🔄 Pre-owned (Fair)
+                  {% elif product.condition == 'poor' %}
+                    🔧 Pre-owned (Poor)
+                  {% else %}
+                    {{ product.get_condition_display }}
+                  {% endif %}
+                </span>
               </div>
             </div>
           </div>
@@ -253,15 +293,40 @@ document.addEventListener('DOMContentLoaded', function() {
       if (shimmer) shimmer.style.display = 'block';
     });
   }
+
+  // Mobile filters drawer toggle
+  const filterToggle = document.getElementById('mobileFilterToggle');
+  const filterAside = document.querySelector('.browse-layout aside');
+  if (filterToggle && filterAside) {
+    filterToggle.addEventListener('click', function() {
+      filterAside.classList.toggle('active');
+      if (filterAside.classList.contains('active')) {
+        filterToggle.innerHTML = '<span>✕</span> Close Filters';
+        filterToggle.style.background = 'var(--primary)';
+        filterToggle.style.color = '#fff';
+        filterToggle.style.borderColor = 'var(--primary)';
+      } else {
+        filterToggle.innerHTML = '<span>🔍</span> Filters';
+        filterToggle.style.background = 'var(--surface)';
+        filterToggle.style.color = 'var(--text-1)';
+        filterToggle.style.borderColor = 'var(--border)';
+      }
+    });
+  }
 });
 </script>
 
 <style>
-@media (max-width: 992px) {
-  .container > div {
-    grid-template-columns: 1fr !important;
+@media (max-width: 768px) {
+  .mobile-filter-bar {
+    display: flex !important;
   }
-  aside { position: static !important; }
+}
+@media (max-width: 992px) and (min-width: 769px) {
+  .browse-layout {
+    grid-template-columns: 240px 1fr !important;
+    gap: 16px !important;
+  }
 }
 </style>
 {% endblock %}

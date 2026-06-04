@@ -27,6 +27,16 @@
     <div class="pcard__title">
       <a href="{% url 'product_detail' product.slug %}" style="color:var(--text-1);text-decoration:none;">{{ product.title|truncatechars:55 }}</a>
     </div>
+    
+    <!-- Seller Info Row (Amazon / OLX dynamic style) -->
+    <div class="pcard__seller" style="font-size:0.75rem; color:var(--text-3); margin:4px 0 8px; display:flex; align-items:center; gap:4px;">
+      {% if product.condition == 'new' %}
+        <span style="font-weight:700; color:var(--primary); display:inline-flex; align-items:center; gap:3px;">🏢 {{ product.brand|default:"Brand" }} Official Store</span>
+      {% else %}
+        <span style="display:inline-flex; align-items:center; gap:3px; color:var(--text-2);">👤 Seller: {{ product.seller.profile.full_name|default:product.seller.email|truncatechars:18 }}</span>
+      {% endif %}
+    </div>
+
     <div class="pcard__price">
       {% if product.listing_type == 'exchange' and not product.price %}
         Exchange Only
@@ -39,7 +49,21 @@
     </div>
     <div class="pcard__footer">
       <span class="pcard__city">📍 {{ product.city }}</span>
-      <span class="pcard__condition">{{ product.get_condition_display }}</span>
+      <span class="pcard__condition" style="font-weight:600; font-size:0.72rem; padding:2px 6px; border-radius:4px; background:var(--surface-2); border:1px solid var(--border);">
+        {% if product.condition == 'new' %}
+          ✨ Brand New
+        {% elif product.condition == 'like_new' %}
+          🔄 Pre-owned (Like New)
+        {% elif product.condition == 'good' %}
+          🔄 Pre-owned (Good)
+        {% elif product.condition == 'fair' %}
+          🔄 Pre-owned (Fair)
+        {% elif product.condition == 'poor' %}
+          🔧 Pre-owned (Poor)
+        {% else %}
+          {{ product.get_condition_display }}
+        {% endif %}
+      </span>
     </div>
   </div>
 </div>
