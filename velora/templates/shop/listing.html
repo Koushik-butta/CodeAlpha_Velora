@@ -6,7 +6,7 @@
 {% block content %}
 <div style="background:var(--bg); min-height:85vh; padding:32px 0;">
   <div class="container">
-    <div style="display:grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start;">
+    <div class="browse-layout">
 
       <!-- SIDEBAR FILTERS (Flipkart / Amazon Style) -->
       <aside class="card-white" style="padding: 24px; position: sticky; top: calc(var(--nav-h) + 20px);">
@@ -126,7 +126,7 @@
 
         <div id="productGridContainer">
         {% if products %}
-        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px;">
+        <div class="browse-products-grid">
           {% for product in products %}
           <div class="pcard card-white{% if product.is_featured %} pcard--featured{% endif %}" style="height: 100%; display: flex; flex-direction: column;">
             <div class="pcard__media" style="position:relative; overflow:hidden; background:var(--surface-2); border-bottom:1px solid var(--border); padding-top: 80%; height: 0;">

@@ -295,8 +295,19 @@
 
         <!-- Seller Card -->
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;">
-          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin:0 0 16px;">Seller</h3>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin:0 0 16px;">
+            {% if product.condition == 'new' %}Merchant{% else %}Seller{% endif %}
+          </h3>
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+            {% if product.condition == 'new' %}
+            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--buy));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;color:#fff;flex-shrink:0;box-shadow:0 0 10px var(--primary-glow);">
+              🏢
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:800;color:var(--text-1);font-size:1rem;letter-spacing:-0.01em;">{{ product.brand|default:product.category.name|default:"Velora" }} Official Store</div>
+              <div style="font-size:.8rem;color:var(--text-3);margin-top:2px;">✔ Brand Official Store</div>
+            </div>
+            {% else %}
             <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--sell),var(--swap));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;flex-shrink:0;">
               {{ product.seller.email|first|upper }}
             </div>
@@ -307,7 +318,10 @@
             {% if product.seller.profile.is_verified %}
             <span class="badge badge-success" style="font-size:.68rem;">✔ Verified</span>
             {% endif %}
+            {% endif %}
           </div>
+          
+          {% if product.condition != 'new' %}
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
             <div style="background:var(--surface-2);border-radius:10px;padding:12px;text-align:center;">
               <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.2rem;font-weight:800;color:var(--gold);">{{ product.seller.profile.trade_score|default:0 }}</div>
@@ -319,6 +333,11 @@
             </div>
           </div>
           <a href="{% url 'seller_profile' user_id=product.seller.pk %}" class="btn btn-ghost btn-full btn-sm">View Seller Profile</a>
+          {% else %}
+          <div style="background:var(--surface-2);border-radius:12px;padding:14px;border:1px dashed var(--border-3);text-align:center;font-size:0.82rem;color:var(--text-2);line-height:1.4;">
+            📦 Sold directly by **{{ product.brand|default:product.category.name|default:"Velora" }}**. Covered under brand warranty and Velora buyer protection guarantee.
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>

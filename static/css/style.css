@@ -107,21 +107,21 @@
 
 /* 1. Saffron Obsidian (Default / Tricolor Accent) */
 [data-theme="sunset-saffron"], [data-theme="dark"] {
-  --bg: #0B0B0C;
-  --bg-2: #121214;
-  --bg-3: #1B1B1E;
-  --bg-4: #242428;
-  --surface: #141416;
-  --surface-2: #1D1D21;
-  --surface-3: #27272C;
+  --bg: #100E0D;
+  --bg-2: #161311;
+  --bg-3: #201C19;
+  --bg-4: #2A2522;
+  --surface: #171412;
+  --surface-2: #211D1A;
+  --surface-3: #2D2723;
   --text: #F3F4F6;
   --text-1: #F9FAFB;
   --text-2: #9CA3AF;
   --text-3: #6B7280;
-  --text-inv: #09090B;
-  --border: rgba(255,255,255,.06);
-  --border-2: rgba(255,255,255,.10);
-  --border-3: rgba(255,255,255,.16);
+  --text-inv: #100E0D;
+  --border: rgba(255,153,51,.08);
+  --border-2: rgba(255,153,51,.15);
+  --border-3: rgba(255,153,51,.25);
   --primary: #FF9933;
   --primary-dark: #D97706;
   --primary-light: #FDBA74;
@@ -141,26 +141,27 @@
   --logo-tagline-color: #10B981;
   --chakra-color: rgba(245, 158, 11, 0.45);
   --chakra-color-alpha: rgba(245, 158, 11, 0.15);
-  --nav-bg: rgba(11,11,12,.97);
+  --nav-bg: rgba(22,19,17,.97);
+  --bg-glow-opacity: 0.15;
 }
 
 /* 2. Royal Navy (Dark Deep Blue) */
 [data-theme="royal-ashoka"] {
-  --bg: #070B13;
-  --bg-2: #0B111E;
-  --bg-3: #131E33;
-  --bg-4: #1B2A47;
-  --surface: #0E1626;
-  --surface-2: #16223B;
-  --surface-3: #203154;
+  --bg: #090F1E;
+  --bg-2: #0F172E;
+  --bg-3: #1B294A;
+  --bg-4: #263864;
+  --surface: #121C38;
+  --surface-2: #1B294A;
+  --surface-3: #263864;
   --text: #F8FAFC;
   --text-1: #FFFFFF;
   --text-2: #94A3B8;
   --text-3: #64748B;
-  --text-inv: #070B13;
-  --border: rgba(255,255,255,.06);
-  --border-2: rgba(255,255,255,.11);
-  --border-3: rgba(255,255,255,.17);
+  --text-inv: #090F1E;
+  --border: rgba(59,130,246,.08);
+  --border-2: rgba(59,130,246,.15);
+  --border-3: rgba(59,130,246,.25);
   --primary: #3B82F6;
   --primary-dark: #1D4ED8;
   --primary-light: #60A5FA;
@@ -180,26 +181,27 @@
   --logo-tagline-color: #60A5FA;
   --chakra-color: rgba(245, 158, 11, 0.45);
   --chakra-color-alpha: rgba(245, 158, 11, 0.15);
-  --nav-bg: rgba(7,11,19,.97);
+  --nav-bg: rgba(15,23,46,.97);
+  --bg-glow-opacity: 0.18;
 }
 
 /* 3. Nordic Sage (Dark Sage Green) */
 [data-theme="vibrant-emerald"] {
-  --bg: #090F0D;
-  --bg-2: #0E1613;
-  --bg-3: #15221E;
-  --bg-4: #1F302A;
-  --surface: #101B17;
-  --surface-2: #182823;
-  --surface-3: #223B33;
+  --bg: #08110E;
+  --bg-2: #0E1A16;
+  --bg-3: #182C26;
+  --bg-4: #223F36;
+  --surface: #12221E;
+  --surface-2: #182C26;
+  --surface-3: #223F36;
   --text: #F0FDF4;
   --text-1: #FFFFFF;
   --text-2: #A7F3D0;
   --text-3: #34D399;
-  --text-inv: #040807;
-  --border: rgba(255,255,255,.06);
-  --border-2: rgba(255,255,255,.11);
-  --border-3: rgba(255,255,255,.18);
+  --text-inv: #08110E;
+  --border: rgba(16,185,129,.08);
+  --border-2: rgba(16,185,129,.15);
+  --border-3: rgba(16,185,129,.25);
   --primary: #10B981;
   --primary-dark: #047857;
   --primary-light: #34D399;
@@ -219,26 +221,27 @@
   --logo-tagline-color: #34D399;
   --chakra-color: rgba(251, 191, 36, 0.45);
   --chakra-color-alpha: rgba(251, 191, 36, 0.15);
-  --nav-bg: rgba(9,15,13,.97);
+  --nav-bg: rgba(14,26,22,.97);
+  --bg-glow-opacity: 0.16;
 }
 
 /* 4. Cosmic Lavender (Dark Indigo-Violet) */
 [data-theme="cosmic-lavender"] {
-  --bg: #08060C;
-  --bg-2: #0D0A14;
-  --bg-3: #161122;
-  --bg-4: #211933;
-  --surface: #0F0C17;
-  --surface-2: #181326;
-  --surface-3: #241D3B;
+  --bg: #0C071A;
+  --bg-2: #140C28;
+  --bg-3: #221542;
+  --bg-4: #301E5C;
+  --surface: #180F30;
+  --surface-2: #221542;
+  --surface-3: #301E5C;
   --text: #FAF5FF;
   --text-1: #FFFFFF;
   --text-2: #C084FC;
   --text-3: #A855F7;
-  --text-inv: #040306;
-  --border: rgba(255,255,255,.06);
-  --border-2: rgba(255,255,255,.11);
-  --border-3: rgba(255,255,255,.17);
+  --text-inv: #0C071A;
+  --border: rgba(157,78,221,.10);
+  --border-2: rgba(157,78,221,.18);
+  --border-3: rgba(157,78,221,.30);
   --primary: #9D4EDD;
   --primary-dark: #7B2CBF;
   --primary-light: #C77DFF;
@@ -258,7 +261,8 @@
   --logo-tagline-color: #C77DFF;
   --chakra-color: rgba(199, 125, 255, 0.45);
   --chakra-color-alpha: rgba(199, 125, 255, 0.15);
-  --nav-bg: rgba(8,6,12,.97);
+  --nav-bg: rgba(20,12,40,.97);
+  --bg-glow-opacity: 0.18;
 }
 
 /* 5. Classic Light (Identical Light Mode) */
@@ -301,6 +305,7 @@
   --logo-tagline-color: #128807;
   --chakra-color: rgba(0, 0, 128, 0.45);
   --chakra-color-alpha: rgba(0, 0, 128, 0.15);
+  --bg-glow-opacity: 0.05;
 }
 
 /* Theme active states & variables */
@@ -2557,4 +2562,75 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
     padding: 10px 12px !important;
     font-size: 0.88rem !important;
   }
+
+  /* Browse Products List Stacking Fix (Removes Mobile Empty Space) */
+  .browse-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .browse-layout aside {
+    position: relative !important;
+    top: 0 !important;
+    margin-bottom: 20px !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+  .browse-products-grid, .shimmer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+/* ---- BACKGROUND ANIMATING GLOW BLOBS ---- */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  width: 45vw;
+  height: 45vw;
+  min-width: 320px;
+  min-height: 320px;
+  border-radius: 50%;
+  background: var(--primary-glow);
+  filter: blur(140px);
+  z-index: -10;
+  pointer-events: none;
+  opacity: var(--bg-glow-opacity, 0.15);
+  transition: background 0.8s ease, filter 0.8s ease, opacity 0.8s ease;
+}
+
+body::before {
+  top: -15%;
+  left: -15%;
+  animation: float-blob-1 25s infinite alternate ease-in-out;
+}
+
+body::after {
+  bottom: -15%;
+  right: -15%;
+  background: var(--buy-glow);
+  animation: float-blob-2 30s infinite alternate ease-in-out;
+}
+
+@keyframes float-blob-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, 60px) scale(1.15); }
+  100% { transform: translate(-30px, 120px) scale(0.9); }
+}
+
+@keyframes float-blob-2 {
+  0% { transform: translate(0, 0) scale(1.1); }
+  50% { transform: translate(-80px, -90px) scale(0.85); }
+  100% { transform: translate(60px, 40px) scale(1.2); }
+}
+
+/* Browse Layout Grid */
+.browse-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.browse-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
