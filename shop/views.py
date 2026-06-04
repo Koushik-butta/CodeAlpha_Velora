@@ -109,7 +109,10 @@ def product_list_view(request):
         products_qs = products_qs.filter(condition=condition)
 
     if listing_type:
-        products_qs = products_qs.filter(listing_type=listing_type)
+        if listing_type == 'buy':
+            products_qs = products_qs.filter(listing_type__in=['buy', 'sell'])
+        else:
+            products_qs = products_qs.filter(listing_type=listing_type)
 
     if city:
         products_qs = products_qs.filter(city__icontains=city)
@@ -534,7 +537,10 @@ def search_view(request):
     if condition:
         products_qs = products_qs.filter(condition=condition)
     if listing_type:
-        products_qs = products_qs.filter(listing_type=listing_type)
+        if listing_type == 'buy':
+            products_qs = products_qs.filter(listing_type__in=['buy', 'sell'])
+        else:
+            products_qs = products_qs.filter(listing_type=listing_type)
     if city:
         products_qs = products_qs.filter(city__icontains=city)
     if category_slug:

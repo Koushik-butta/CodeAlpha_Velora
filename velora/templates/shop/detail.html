@@ -272,6 +272,25 @@
             <a href="{% url 'register' %}" class="btn btn-outline btn-full" style="text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:0.82rem; padding:8px 12px;">Create Free Account</a>
           </div>
           {% endif %}
+          
+          <!-- Share Product Section -->
+          <div style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 18px;">
+            <div style="font-size: 0.78rem; font-weight: 800; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Share this Product</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <!-- WhatsApp -->
+              <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20product%20on%20Velora%3A%20{{ product.title|urlencode }}%20at%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: #25D366; background: rgba(37, 211, 102, 0.06); font-size: 0.8rem; font-weight: 700; transition: background 0.2s; text-decoration: none;" onmouseenter="this.style.background='rgba(37, 211, 102, 0.12)'" onmouseleave="this.style.background='rgba(37, 211, 102, 0.06)'">
+                <span>💬</span> WhatsApp
+              </a>
+              <!-- Twitter / X -->
+              <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20product%20on%20Velora%3A%20{{ product.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-1); background: var(--surface-3); font-size: 0.8rem; font-weight: 700; transition: background 0.2s; text-decoration: none;" onmouseenter="this.style.background='var(--border)'" onmouseleave="this.style.background='var(--surface-3)'">
+                <span>🐦</span> X / Twitter
+              </a>
+              <!-- Copy Link -->
+              <button onclick="copyProductLink()" class="share-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--primary); background: var(--primary-dim); font-size: 0.8rem; font-weight: 700; transition: background 0.2s; cursor: pointer;" onmouseenter="this.style.background='var(--primary-glow)'" onmouseleave="this.style.background='var(--primary-dim)'">
+                <span>🔗</span> Copy Link
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Seller Card -->
@@ -362,6 +381,28 @@ function ajaxToggleWishlist(pk, btn) {
   }).then(r => r.json()).then(function(data) {
     btn.textContent = data.added ? '♥ Saved to Wishlist' : '♡ Add to Wishlist';
     btn.className = data.added ? 'btn btn-sell btn-full' : 'btn btn-outline btn-full';
+  });
+}
+
+function copyProductLink() {
+  const dummy = document.createElement('input');
+  const text = window.location.href;
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  document.body.removeChild(dummy);
+  
+  // Update button text to display confirmation state
+  const shareButtons = document.querySelectorAll('.share-btn');
+  shareButtons.forEach(btn => {
+    if (btn.textContent.includes('Copy Link')) {
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '<span>✅</span> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+      }, 2000);
+    }
   });
 }
 

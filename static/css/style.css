@@ -105,202 +105,163 @@
 
 /* ---- COLOR THEMES SYSTEM ---- */
 
-/* 1. Sunset Saffron (Default / Tricolor Accent) */
+/* 1. Saffron Obsidian (Default / Tricolor Accent) */
 [data-theme="sunset-saffron"], [data-theme="dark"] {
-  --bg: #121214;
-  --bg-2: #18181C;
-  --bg-3: #202025;
-  --bg-4: #28282D;
-  --surface: #1B1B1E;
-  --surface-2: #24242A;
-  --surface-3: #2D2D35;
+  --bg: #0B0B0C;
+  --bg-2: #121214;
+  --bg-3: #1B1B1E;
+  --bg-4: #242428;
+  --surface: #141416;
+  --surface-2: #1D1D21;
+  --surface-3: #27272C;
   --text: #F3F4F6;
-  --text-1: #F3F4F6;
+  --text-1: #F9FAFB;
   --text-2: #9CA3AF;
   --text-3: #6B7280;
-  --text-inv: #111827;
-  --border: rgba(255,255,255,.07);
-  --border-2: rgba(255,255,255,.11);
-  --border-3: rgba(255,255,255,.18);
+  --text-inv: #09090B;
+  --border: rgba(255,255,255,.06);
+  --border-2: rgba(255,255,255,.10);
+  --border-3: rgba(255,255,255,.16);
   --primary: #FF9933;
-  --primary-dark: #E07B12;
-  --primary-light: #FFAA55;
+  --primary-dark: #D97706;
+  --primary-light: #FDBA74;
   --primary-dim: rgba(255,153,51,.12);
   --primary-glow: rgba(255,153,51,.25);
-  --buy: #128807;
-  --buy-dark: #0E6E05;
-  --buy-dim: rgba(18,136,7,.12);
-  --buy-glow: rgba(18,136,7,.25);
+  --buy: #10B981;
+  --buy-dark: #059669;
+  --buy-dim: rgba(16,185,129,.12);
+  --buy-glow: rgba(16,185,129,.25);
   --sell: #FF9933;
   --sell-dim: rgba(255,153,51,.12);
   --sell-glow: rgba(255,153,51,.25);
   --swap: #F59E0B;
   --swap-dim: rgba(245,158,11,.12);
   --swap-glow: rgba(245,158,11,.25);
-  --logo-bg: linear-gradient(135deg, #FF9933 0%, #128807 100%);
-  --logo-tagline-color: #128807;
-  --chakra-color: rgba(0, 0, 128, 0.45);
-  --chakra-color-alpha: rgba(0, 0, 128, 0.15);
-  --nav-bg: rgba(15,15,15,.97);
+  --logo-bg: linear-gradient(135deg, #FF9933 0%, #10B981 100%);
+  --logo-tagline-color: #10B981;
+  --chakra-color: rgba(245, 158, 11, 0.45);
+  --chakra-color-alpha: rgba(245, 158, 11, 0.15);
+  --nav-bg: rgba(11,11,12,.97);
 }
 
-/* 2. Royal Ashoka Blue */
+/* 2. Royal Navy (Dark Deep Blue) */
 [data-theme="royal-ashoka"] {
-  --bg: #0A0F1D;
-  --bg-2: #0F172A;
-  --bg-3: #1E293B;
-  --bg-4: #334155;
-  --surface: #131E35;
-  --surface-2: #1E293B;
-  --surface-3: #334155;
+  --bg: #070B13;
+  --bg-2: #0B111E;
+  --bg-3: #131E33;
+  --bg-4: #1B2A47;
+  --surface: #0E1626;
+  --surface-2: #16223B;
+  --surface-3: #203154;
   --text: #F8FAFC;
-  --text-1: #F8FAFC;
+  --text-1: #FFFFFF;
   --text-2: #94A3B8;
   --text-3: #64748B;
-  --text-inv: #0F172A;
-  --border: rgba(255,255,255,.08);
-  --border-2: rgba(255,255,255,.14);
-  --border-3: rgba(255,255,255,.22);
+  --text-inv: #070B13;
+  --border: rgba(255,255,255,.06);
+  --border-2: rgba(255,255,255,.11);
+  --border-3: rgba(255,255,255,.17);
   --primary: #3B82F6;
   --primary-dark: #1D4ED8;
   --primary-light: #60A5FA;
-  --primary-dim: rgba(59,130,246,.15);
-  --primary-glow: rgba(59,130,246,.3);
+  --primary-dim: rgba(59,130,246,.12);
+  --primary-glow: rgba(59,130,246,.25);
   --buy: #F59E0B;
   --buy-dark: #D97706;
-  --buy-dim: rgba(245,158,11,.15);
-  --buy-glow: rgba(245,158,11,.3);
+  --buy-dim: rgba(245,158,11,.12);
+  --buy-glow: rgba(245,158,11,.25);
   --sell: #3B82F6;
-  --sell-dim: rgba(59,130,246,.15);
-  --sell-glow: rgba(59,130,246,.3);
+  --sell-dim: rgba(59,130,246,.12);
+  --sell-glow: rgba(59,130,246,.25);
   --swap: #10B981;
-  --swap-dim: rgba(16,185,129,.15);
-  --swap-glow: rgba(16,185,129,.3);
+  --swap-dim: rgba(16,185,129,.12);
+  --swap-glow: rgba(16,185,129,.25);
   --logo-bg: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
   --logo-tagline-color: #60A5FA;
-  --chakra-color: rgba(245, 158, 11, 0.6);
-  --chakra-color-alpha: rgba(245, 158, 11, 0.2);
-  --nav-bg: rgba(10,15,29,.97);
+  --chakra-color: rgba(245, 158, 11, 0.45);
+  --chakra-color-alpha: rgba(245, 158, 11, 0.15);
+  --nav-bg: rgba(7,11,19,.97);
 }
 
-/* 3. Lotus Pink / Rose */
-[data-theme="lotus-pink"] {
-  --bg: #140C1A;
-  --bg-2: #1D1126;
-  --bg-3: #2A1A36;
-  --bg-4: #372247;
-  --surface: #20132B;
-  --surface-2: #2A1A36;
-  --surface-3: #372247;
-  --text: #FDF2F8;
-  --text-1: #FDF2F8;
-  --text-2: #F472B6;
-  --text-3: #C084FC;
-  --text-inv: #1E1B4B;
-  --border: rgba(253,242,248,.08);
-  --border-2: rgba(253,242,248,.15);
-  --border-3: rgba(253,242,248,.25);
-  --primary: #EC4899;
-  --primary-dark: #BE185D;
-  --primary-light: #F472B6;
-  --primary-dim: rgba(236,72,153,.15);
-  --primary-glow: rgba(236,72,153,.3);
-  --buy: #FBBF24;
-  --buy-dark: #D97706;
-  --buy-dim: rgba(251,191,36,.15);
-  --buy-glow: rgba(251,191,36,.3);
-  --sell: #EC4899;
-  --sell-dim: rgba(236,72,153,.15);
-  --sell-glow: rgba(236,72,153,.3);
-  --swap: #A855F7;
-  --swap-dim: rgba(168,85,247,.15);
-  --swap-glow: rgba(168,85,247,.3);
-  --logo-bg: linear-gradient(135deg, #EC4899 0%, #A855F7 100%);
-  --logo-tagline-color: #F472B6;
-  --chakra-color: rgba(251, 191, 36, 0.6);
-  --chakra-color-alpha: rgba(251, 191, 36, 0.2);
-  --nav-bg: rgba(20,12,26,.97);
-}
-
-/* 4. Vibrant Emerald / Forest */
+/* 3. Nordic Sage (Dark Sage Green) */
 [data-theme="vibrant-emerald"] {
-  --bg: #051A14;
-  --bg-2: #09261E;
-  --bg-3: #11382D;
-  --bg-4: #194A3D;
-  --surface: #0E3027;
-  --surface-2: #11382D;
-  --surface-3: #194A3D;
-  --text: #ECFDF5;
-  --text-1: #ECFDF5;
+  --bg: #090F0D;
+  --bg-2: #0E1613;
+  --bg-3: #15221E;
+  --bg-4: #1F302A;
+  --surface: #101B17;
+  --surface-2: #182823;
+  --surface-3: #223B33;
+  --text: #F0FDF4;
+  --text-1: #FFFFFF;
   --text-2: #A7F3D0;
   --text-3: #34D399;
-  --text-inv: #064E3B;
-  --border: rgba(236,253,245,.08);
-  --border-2: rgba(236,253,245,.14);
-  --border-3: rgba(236,253,245,.22);
+  --text-inv: #040807;
+  --border: rgba(255,255,255,.06);
+  --border-2: rgba(255,255,255,.11);
+  --border-3: rgba(255,255,255,.18);
   --primary: #10B981;
   --primary-dark: #047857;
   --primary-light: #34D399;
-  --primary-dim: rgba(16,185,129,.15);
-  --primary-glow: rgba(16,185,129,.3);
+  --primary-dim: rgba(16,185,129,.12);
+  --primary-glow: rgba(16,185,129,.25);
   --buy: #FBBF24;
   --buy-dark: #D97706;
-  --buy-dim: rgba(251,191,36,.15);
-  --buy-glow: rgba(251,191,36,.3);
+  --buy-dim: rgba(251,191,36,.12);
+  --buy-glow: rgba(251,191,36,.25);
   --sell: #10B981;
-  --sell-dim: rgba(16,185,129,.15);
-  --sell-glow: rgba(16,185,129,.3);
+  --sell-dim: rgba(16,185,129,.12);
+  --sell-glow: rgba(16,185,129,.25);
   --swap: #3B82F6;
-  --swap-dim: rgba(59,130,246,.15);
-  --swap-glow: rgba(59,130,246,.3);
+  --swap-dim: rgba(59,130,246,.12);
+  --swap-glow: rgba(59,130,246,.25);
   --logo-bg: linear-gradient(135deg, #10B981 0%, #059669 100%);
   --logo-tagline-color: #34D399;
-  --chakra-color: rgba(251, 191, 36, 0.6);
-  --chakra-color-alpha: rgba(251, 191, 36, 0.2);
-  --nav-bg: rgba(5,26,20,.97);
+  --chakra-color: rgba(251, 191, 36, 0.45);
+  --chakra-color-alpha: rgba(251, 191, 36, 0.15);
+  --nav-bg: rgba(9,15,13,.97);
 }
 
-/* 5. Cyber Tricolor (Neon) */
-[data-theme="cyber-tricolor"] {
-  --bg: #050508;
-  --bg-2: #0A0A10;
-  --bg-3: #12121E;
-  --bg-4: #1B1B2C;
-  --surface: #0E0E16;
-  --surface-2: #12121E;
-  --surface-3: #1B1B2C;
-  --text: #E0E7FF;
+/* 4. Cosmic Lavender (Dark Indigo-Violet) */
+[data-theme="cosmic-lavender"] {
+  --bg: #08060C;
+  --bg-2: #0D0A14;
+  --bg-3: #161122;
+  --bg-4: #211933;
+  --surface: #0F0C17;
+  --surface-2: #181326;
+  --surface-3: #241D3B;
+  --text: #FAF5FF;
   --text-1: #FFFFFF;
-  --text-2: #818CF8;
-  --text-3: #4F46E5;
-  --text-inv: #000000;
-  --border: rgba(99,102,241,.15);
-  --border-2: rgba(99,102,241,.25);
-  --border-3: rgba(99,102,241,.4);
-  --primary: #FF5500;
-  --primary-dark: #CC3300;
-  --primary-light: #FF8844;
-  --primary-dim: rgba(255,85,0,.15);
-  --primary-glow: rgba(255,85,0,.45);
-  --buy: #00FF66;
-  --buy-dark: #00CC44;
-  --buy-dim: rgba(0,255,102,.15);
-  --buy-glow: rgba(0,255,102,.45);
-  --sell: #FF5500;
-  --sell-dim: rgba(255,85,0,.15);
-  --sell-glow: rgba(255,85,0,.45);
-  --swap: #00FFFF;
-  --swap-dim: rgba(0,255,255,.15);
-  --swap-glow: rgba(0,255,255,.45);
-  --logo-bg: linear-gradient(135deg, #FF5500 0%, #00FF66 100%);
-  --logo-tagline-color: #00FF66;
-  --chakra-color: rgba(0, 255, 255, 0.75);
-  --chakra-color-alpha: rgba(0, 255, 255, 0.25);
-  --nav-bg: rgba(5,5,8,.97);
+  --text-2: #C084FC;
+  --text-3: #A855F7;
+  --text-inv: #040306;
+  --border: rgba(255,255,255,.06);
+  --border-2: rgba(255,255,255,.11);
+  --border-3: rgba(255,255,255,.17);
+  --primary: #9D4EDD;
+  --primary-dark: #7B2CBF;
+  --primary-light: #C77DFF;
+  --primary-dim: rgba(157,78,221,.12);
+  --primary-glow: rgba(157,78,221,.25);
+  --buy: #FF007F;
+  --buy-dark: #D6006B;
+  --buy-dim: rgba(255,0,127,.12);
+  --buy-glow: rgba(255,0,127,.25);
+  --sell: #9D4EDD;
+  --sell-dim: rgba(157,78,221,.12);
+  --sell-glow: rgba(157,78,221,.25);
+  --swap: #390099;
+  --swap-dim: rgba(57,0,153,.12);
+  --swap-glow: rgba(57,0,153,.25);
+  --logo-bg: linear-gradient(135deg, #9D4EDD 0%, #FF007F 100%);
+  --logo-tagline-color: #C77DFF;
+  --chakra-color: rgba(199, 125, 255, 0.45);
+  --chakra-color-alpha: rgba(199, 125, 255, 0.15);
+  --nav-bg: rgba(8,6,12,.97);
 }
 
-/* 6. Classic Light */
+/* 5. Classic Light (Identical Light Mode) */
 [data-theme="classic-light"], [data-theme="light"] {
   --bg: #FFFFFF;
   --bg-2: #F8F9FA;
@@ -340,318 +301,6 @@
   --logo-tagline-color: #128807;
   --chakra-color: rgba(0, 0, 128, 0.45);
   --chakra-color-alpha: rgba(0, 0, 128, 0.15);
-}
-
-/* 7. Holi Festival (Colorful) */
-[data-theme="holi-festival"] {
-  --bg: #0C0F1D;
-  --bg-2: #14172E;
-  --bg-3: #22274A;
-  --bg-4: #303766;
-  --surface: #181C38;
-  --surface-2: #22274A;
-  --surface-3: #303766;
-  --text: #F0F3FF;
-  --text-1: #FFFFFF;
-  --text-2: #E879F9;
-  --text-3: #60A5FA;
-  --text-inv: #000000;
-  --border: rgba(232,121,249,.15);
-  --border-2: rgba(96,165,250,.25);
-  --border-3: rgba(244,63,94,.4);
-  --primary: #D946EF;
-  --primary-dark: #A21CAF;
-  --primary-light: #F472B6;
-  --primary-dim: rgba(217,70,239,.15);
-  --primary-glow: rgba(217,70,239,.4);
-  --buy: #10B981;
-  --buy-dark: #047857;
-  --buy-dim: rgba(16,185,129,.15);
-  --buy-glow: rgba(16,185,129,.3);
-  --sell: #F59E0B;
-  --sell-dim: rgba(245,158,11,.15);
-  --sell-glow: rgba(245,158,11,.3);
-  --swap: #3B82F6;
-  --swap-dim: rgba(59,130,246,.15);
-  --swap-glow: rgba(59,130,246,.3);
-  --logo-bg: linear-gradient(135deg, #EC4899 0%, #3B82F6 50%, #10B981 100%);
-  --logo-tagline-color: #F472B6;
-  --chakra-color: rgba(217, 70, 239, 0.7);
-  --chakra-color-alpha: rgba(217, 70, 239, 0.2);
-  --nav-bg: rgba(12,15,29,.97);
-}
-
-/* 8. Midnight Slate / Monochrome */
-[data-theme="midnight-slate"] {
-  --bg: #090A0F;
-  --bg-2: #12131A;
-  --bg-3: #1E202C;
-  --bg-4: #2D3042;
-  --surface: #181922;
-  --surface-2: #1E202C;
-  --surface-3: #2D3042;
-  --text: #E2E8F0;
-  --text-1: #F8FAFC;
-  --text-2: #94A3B8;
-  --text-3: #64748B;
-  --text-inv: #0F172A;
-  --border: rgba(148,163,184,.1);
-  --border-2: rgba(148,163,184,.18);
-  --border-3: rgba(148,163,184,.3);
-  --primary: #64748B;
-  --primary-dark: #475569;
-  --primary-light: #94A3B8;
-  --primary-dim: rgba(100,116,139,.12);
-  --primary-glow: rgba(100,116,139,.25);
-  --buy: #475569;
-  --buy-dark: #334155;
-  --buy-dim: rgba(71,85,105,.12);
-  --buy-glow: rgba(71,85,105,.25);
-  --sell: #64748B;
-  --sell-dim: rgba(100,116,139,.12);
-  --sell-glow: rgba(100,116,139,.25);
-  --swap: #94A3B8;
-  --swap-dim: rgba(148,163,184,.12);
-  --swap-glow: rgba(148,163,184,.25);
-  --logo-bg: linear-gradient(135deg, #64748B 0%, #334155 100%);
-  --logo-tagline-color: #94A3B8;
-  --chakra-color: rgba(148, 163, 184, 0.5);
-  --chakra-color-alpha: rgba(148, 163, 184, 0.15);
-  --nav-bg: rgba(9,10,15,.98);
-}
-
-/* 9. Sunset Magenta */
-[data-theme="sunset-magenta"] {
-  --bg: #140812;
-  --bg-2: #1E0C1C;
-  --bg-3: #2D142B;
-  --bg-4: #3C1C3A;
-  --surface: #240F22;
-  --surface-2: #2D142B;
-  --surface-3: #3C1C3A;
-  --text: #FAE8FF;
-  --text-1: #FDF4FF;
-  --text-2: #E879F9;
-  --text-3: #A21CAF;
-  --text-inv: #2E0827;
-  --border: rgba(232,121,249,.1);
-  --border-2: rgba(232,121,249,.18);
-  --border-3: rgba(232,121,249,.3);
-  --primary: #C026D3;
-  --primary-dark: #86198F;
-  --primary-light: #E879F9;
-  --primary-dim: rgba(192,38,211,.15);
-  --primary-glow: rgba(192,38,211,.3);
-  --buy: #F59E0B;
-  --buy-dark: #D97706;
-  --buy-dim: rgba(245,158,11,.15);
-  --buy-glow: rgba(245,158,11,.3);
-  --sell: #C026D3;
-  --sell-dim: rgba(192,38,211,.15);
-  --sell-glow: rgba(192,38,211,.3);
-  --swap: #EC4899;
-  --swap-dim: rgba(236,72,153,.15);
-  --swap-glow: rgba(236,72,153,.3);
-  --logo-bg: linear-gradient(135deg, #C026D3 0%, #F59E0B 100%);
-  --logo-tagline-color: #E879F9;
-  --chakra-color: rgba(245, 158, 11, 0.6);
-  --chakra-color-alpha: rgba(245, 158, 11, 0.2);
-  --nav-bg: rgba(20,8,18,.97);
-}
-
-/* 10. Ocean Turquoise */
-[data-theme="ocean-turquoise"] {
-  --bg: #061314;
-  --bg-2: #091D1E;
-  --bg-3: #112F30;
-  --bg-4: #194042;
-  --surface: #0F2729;
-  --surface-2: #112F30;
-  --surface-3: #194042;
-  --text: #E6F8F9;
-  --text-1: #F2FCFD;
-  --text-2: #2DD4BF;
-  --text-3: #0D9488;
-  --text-inv: #042F2E;
-  --border: rgba(45,212,191,.1);
-  --border-2: rgba(45,212,191,.18);
-  --border-3: rgba(45,212,191,.3);
-  --primary: #0D9488;
-  --primary-dark: #0F766E;
-  --primary-light: #2DD4BF;
-  --primary-dim: rgba(13,148,136,.15);
-  --primary-glow: rgba(13,148,136,.3);
-  --buy: #00F5D4;
-  --buy-dark: #00BB9C;
-  --buy-dim: rgba(0,245,212,.15);
-  --buy-glow: rgba(0,245,212,.3);
-  --sell: #0D9488;
-  --sell-dim: rgba(13,148,136,.15);
-  --sell-glow: rgba(13,148,136,.3);
-  --swap: #3B82F6;
-  --swap-dim: rgba(59,130,246,.15);
-  --swap-glow: rgba(59,130,246,.3);
-  --logo-bg: linear-gradient(135deg, #0D9488 0%, #3B82F6 100%);
-  --logo-tagline-color: #2DD4BF;
-  --chakra-color: rgba(0, 245, 212, 0.6);
-  --chakra-color-alpha: rgba(0, 245, 212, 0.2);
-  --nav-bg: rgba(6,19,20,.97);
-}
-
-/* 11. Sakura Blossom */
-[data-theme="sakura-blossom"] {
-  --bg: #130C16;
-  --bg-2: #1D1322;
-  --bg-3: #281B2E;
-  --bg-4: #35243C;
-  --surface: #1E1424;
-  --surface-2: #281B2E;
-  --surface-3: #35243C;
-  --text: #FDE8EF;
-  --text-1: #FFF0F5;
-  --text-2: #F472B6;
-  --text-3: #C084FC;
-  --text-inv: #1C0A15;
-  --border: rgba(244,114,182,.1);
-  --border-2: rgba(244,114,182,.18);
-  --border-3: rgba(244,114,182,.3);
-  --primary: #FF75A0;
-  --primary-dark: #D946EF;
-  --primary-light: #FFB3C6;
-  --primary-dim: rgba(255,117,160,.12);
-  --primary-glow: rgba(255,117,160,.25);
-  --buy: #FF5E7E;
-  --buy-dark: #D63350;
-  --buy-dim: rgba(255,94,126,.12);
-  --buy-glow: rgba(255,94,126,.25);
-  --sell: #FF75A0;
-  --sell-dim: rgba(255,117,160,.12);
-  --sell-glow: rgba(255,117,160,.25);
-  --swap: #D946EF;
-  --swap-dim: rgba(217,70,239,.12);
-  --swap-glow: rgba(217,70,239,.25);
-  --logo-bg: linear-gradient(135deg, #FF75A0 0%, #D946EF 100%);
-  --logo-tagline-color: #FFB3C6;
-  --chakra-color: rgba(255, 117, 160, 0.6);
-  --chakra-color-alpha: rgba(255, 117, 160, 0.2);
-  --nav-bg: rgba(19,12,22,.97);
-}
-
-/* 12. Cosmic Lavender */
-[data-theme="cosmic-lavender"] {
-  --bg: #090714;
-  --bg-2: #110E22;
-  --bg-3: #1B1735;
-  --bg-4: #27214B;
-  --surface: #141129;
-  --surface-2: #1B1735;
-  --surface-3: #27214B;
-  --text: #F3EEFF;
-  --text-1: #FAF5FF;
-  --text-2: #C084FC;
-  --text-3: #A855F7;
-  --text-inv: #090514;
-  --border: rgba(192,132,252,.12);
-  --border-2: rgba(192,132,252,.22);
-  --border-3: rgba(192,132,252,.35);
-  --primary: #9D4EDD;
-  --primary-dark: #7B2CBF;
-  --primary-light: #C77DFF;
-  --primary-dim: rgba(157,78,221,.15);
-  --primary-glow: rgba(157,78,221,.3);
-  --buy: #FF007F;
-  --buy-dark: #D6006B;
-  --buy-dim: rgba(255,0,127,.15);
-  --buy-glow: rgba(255,0,127,.3);
-  --sell: #9D4EDD;
-  --sell-dim: rgba(157,78,221,.15);
-  --sell-glow: rgba(157,78,221,.3);
-  --swap: #390099;
-  --swap-dim: rgba(57,0,153,.15);
-  --swap-glow: rgba(57,0,153,.3);
-  --logo-bg: linear-gradient(135deg, #9D4EDD 0%, #FF007F 100%);
-  --logo-tagline-color: #C77DFF;
-  --chakra-color: rgba(199, 125, 255, 0.6);
-  --chakra-color-alpha: rgba(199, 125, 255, 0.2);
-  --nav-bg: rgba(9,7,20,.97);
-}
-
-/* 13. Nordic Aurora */
-[data-theme="nordic-aurora"] {
-  --bg: #050E0F;
-  --bg-2: #09171A;
-  --bg-3: #11272C;
-  --bg-4: #1A383F;
-  --surface: #0E2024;
-  --surface-2: #11272C;
-  --surface-3: #1A383F;
-  --text: #EAF9F6;
-  --text-1: #F5FFFD;
-  --text-2: #2DD4BF;
-  --text-3: #34D399;
-  --text-inv: #020C0D;
-  --border: rgba(45,212,191,.1);
-  --border-2: rgba(45,212,191,.18);
-  --border-3: rgba(45,212,191,.3);
-  --primary: #00E575;
-  --primary-dark: #00B35B;
-  --primary-light: #52FFA4;
-  --primary-dim: rgba(0,229,117,.15);
-  --primary-glow: rgba(0,229,117,.3);
-  --buy: #00F5D4;
-  --buy-dark: #00C4AA;
-  --buy-dim: rgba(0,245,212,.15);
-  --buy-glow: rgba(0,245,212,.3);
-  --sell: #00E575;
-  --sell-dim: rgba(0,229,117,.15);
-  --sell-glow: rgba(0,229,117,.3);
-  --swap: #3B82F6;
-  --swap-dim: rgba(59,130,246,.15);
-  --swap-glow: rgba(59,130,246,.3);
-  --logo-bg: linear-gradient(135deg, #00E575 0%, #00F5D4 100%);
-  --logo-tagline-color: #52FFA4;
-  --chakra-color: rgba(0, 245, 212, 0.6);
-  --chakra-color-alpha: rgba(0, 245, 212, 0.2);
-  --nav-bg: rgba(5,14,15,.97);
-}
-
-/* 14. Desert Amber */
-[data-theme="desert-amber"] {
-  --bg: #150F0B;
-  --bg-2: #221711;
-  --bg-3: #32231A;
-  --bg-4: #453024;
-  --surface: #261B14;
-  --surface-2: #32231A;
-  --surface-3: #453024;
-  --text: #FFF8F2;
-  --text-1: #FFFBF7;
-  --text-2: #FDBA74;
-  --text-3: #F97316;
-  --text-inv: #1F1005;
-  --border: rgba(253,186,116,.1);
-  --border-2: rgba(253,186,116,.18);
-  --border-3: rgba(253,186,116,.3);
-  --primary: #F59E0B;
-  --primary-dark: #D97706;
-  --primary-light: #FBBF24;
-  --primary-dim: rgba(245,158,11,.15);
-  --primary-glow: rgba(245,158,11,.3);
-  --buy: #2DD4BF;
-  --buy-dark: #0D9488;
-  --buy-dim: rgba(45,212,191,.15);
-  --buy-glow: rgba(45,212,191,.3);
-  --sell: #F59E0B;
-  --sell-dim: rgba(245,158,11,.15);
-  --sell-glow: rgba(245,158,11,.3);
-  --swap: #F97316;
-  --swap-dim: rgba(249,115,22,.15);
-  --swap-glow: rgba(249,115,22,.3);
-  --logo-bg: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
-  --logo-tagline-color: #FDBA74;
-  --chakra-color: rgba(253, 186, 116, 0.6);
-  --chakra-color-alpha: rgba(253, 186, 116, 0.2);
-  --nav-bg: rgba(21,15,11,.97);
 }
 
 /* Theme active states & variables */
@@ -2773,4 +2422,139 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 8
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
   border-color: var(--primary) !important;
+}
+
+/* ============================================================
+   MOBILE BOTTOM NAVIGATION STYLES
+   ============================================================ */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-2);
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4px var(--gutter);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+.mobile-bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  text-decoration: none;
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex: 1;
+  transition: color 0.2s;
+  height: 100%;
+}
+.mobile-bottom-nav__item.active {
+  color: var(--primary);
+}
+.mobile-bottom-nav__icon {
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mobile-bottom-nav__badge {
+  position: absolute;
+  top: 4px;
+  right: 25%;
+  background: var(--error);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--surface);
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+  }
+  body {
+    padding-bottom: 58px !important;
+  }
+  
+  /* Compact Dashboard Spacing & Grids on Mobile */
+  .dashboard-main {
+    padding: 16px !important;
+  }
+  .welcome-banner {
+    padding: 18px !important;
+    margin-bottom: 16px !important;
+  }
+  .welcome-banner h1 {
+    font-size: 1.4rem !important;
+  }
+  .welcome-banner p {
+    font-size: 0.85rem !important;
+  }
+  .quick-action-btn {
+    padding: 12px 8px !important;
+    font-size: 0.78rem !important;
+  }
+  .quick-action-btn span:first-child {
+    font-size: 1.4rem !important;
+    margin-bottom: 4px !important;
+  }
+  .quick-action-btn span:nth-child(3) {
+    display: none !important;
+  }
+  
+  /* Horizontal Scrollable Category row on Mobile */
+  .category-tile-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding-bottom: 8px !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .category-tile-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .category-tile {
+    flex: 0 0 95px !important;
+    padding: 12px 8px !important;
+    scroll-snap-align: start;
+    border-radius: var(--radius) !important;
+  }
+  .category-tile__icon {
+    font-size: 1.6rem !important;
+    width: 42px !important;
+    height: 42px !important;
+    margin-bottom: 6px !important;
+  }
+  .category-tile__name {
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  /* Compact Dashboard Search Bar */
+  .search-btn-text {
+    display: none !important;
+  }
+  #dashboardSearchInput {
+    padding: 10px 12px !important;
+    font-size: 0.88rem !important;
+  }
 }

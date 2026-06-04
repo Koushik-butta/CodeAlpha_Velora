@@ -81,20 +81,11 @@ class Profile(models.Model):
     notify_swap_updates = models.BooleanField(default=True)
     notify_marketing = models.BooleanField(default=False)
     THEME_CHOICES = [
-        ('sunset-saffron', 'Sunset Saffron (Tricolor)'),
-        ('royal-ashoka', 'Royal Ashoka Blue'),
-        ('lotus-pink', 'Lotus Pink / Rose'),
-        ('vibrant-emerald', 'Vibrant Emerald'),
-        ('cyber-tricolor', 'Cyber Neon'),
-        ('classic-light', 'Classic Light Mode'),
-        ('holi-festival', 'Holi Festival (Colorful)'),
-        ('midnight-slate', 'Midnight Slate'),
-        ('sunset-magenta', 'Sunset Magenta'),
-        ('ocean-turquoise', 'Ocean Turquoise'),
-        ('sakura-blossom', 'Sakura Blossom (Pink & Plum)'),
-        ('cosmic-lavender', 'Cosmic Lavender (Violet Neon)'),
-        ('nordic-aurora', 'Nordic Aurora (Arctic Mint)'),
-        ('desert-amber', 'Desert Amber (Oasis Gold)'),
+        ('classic-light', 'Classic Light'),
+        ('sunset-saffron', 'Sunset Saffron (Charcoal & Amber)'),
+        ('royal-ashoka', 'Royal Ashoka Blue (Dark Deep Blue)'),
+        ('vibrant-emerald', 'Nordic Sage (Dark Sage Green)'),
+        ('cosmic-lavender', 'Cosmic Lavender (Dark Indigo-Violet)'),
     ]
     theme = models.CharField(max_length=30, choices=THEME_CHOICES, default='sunset-saffron')
     created_at = models.DateTimeField(auto_now_add=True)
