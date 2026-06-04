@@ -74,7 +74,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Experience iPhone 15 Pro. Forged in titanium and featuring the groundbreaking A17 Pro chip, a customizable Action button, and the most powerful iPhone camera system ever. Comes with 1 Year Apple India Warranty.',
-            'image_url': 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -104,7 +104,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Redefined flagship smartphone. Boasting the Snapdragon 8 Gen 3 CPU, 4th Gen Hasselblad Camera system, and 100W SUPERVOOC charging. Flowy Emerald color with marble texture design. Sealed in box.',
-            'image_url': 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -120,7 +120,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Selling my pristine iPhone 13. Blue color, 128GB capacity. Battery health is at 90%. Always used with a Spigen case and tempered glass. Zero scratches or dents. Comes with original box and unused charging cable.',
-            'image_url': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -135,7 +135,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Selling my OnePlus 11R Galactic Silver. Phone is 10 months old and performs beautifully. Snapdragon 8+ Gen 1, excellent gaming performance. 100W charging works perfectly (charger included). Minor scratches on the plastic frame.',
-            'image_url': 'https://images.unsplash.com/photo-1565849906660-af3494277573?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1621330396173-e41b1cafd17f?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -277,7 +277,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'AirPods Pro feature up to 2x more Active Noise Cancellation, plus Adaptive Audio and Transparency mode. Includes MagSafe Charging Case (USB-C) with speaker and lanyard loop. Under brand warranty.',
-            'image_url': 'https://images.unsplash.com/photo-1588449668365-d15e397f6787?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -582,8 +582,13 @@ def seed_products():
             prod.save()
             print(f"Verified/Synced existing product: {prod.title}")
             
-            # Make sure image exists
-            if not prod.images.exists():
+            # Sync image URL to ensure correct images are displayed
+            primary_img = prod.images.filter(is_primary=True).first() or prod.images.first()
+            if primary_img:
+                primary_img.image_url = img_url
+                primary_img.save()
+                print(f"Updated primary image for product: {prod.title}")
+            else:
                 ProductImage.objects.create(
                     product=prod,
                     image_url=img_url,
