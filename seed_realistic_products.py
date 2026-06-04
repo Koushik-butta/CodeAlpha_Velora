@@ -89,7 +89,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Welcome to the era of mobile AI. With Galaxy S24 Ultra in your hands, you can unleash whole new levels of creativity, productivity and possibility. 200MP main camera, S Pen included, Snapdragon 8 Gen 3.',
-            'image_url': 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1610945415295-d9bff067e59c?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'mobiles',
@@ -150,7 +150,7 @@ def seed_products():
             'city': 'Hyderabad',
             'state': 'Telangana',
             'description': 'Selling Galaxy S22 in Phantom Black. Screen has small scuffs but no cracks. Performance is excellent. Battery health is around 82% (lasts a work day). Device only, no charger or box.',
-            'image_url': 'https://images.unsplash.com/photo-1573148195900-7845dcb9b127?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1610792516307-ea5acd9c3b00?w=600&auto=format&fit=crop&q=80',
         },
 
         # === 2. LAPTOPS ===
@@ -262,7 +262,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Industry-leading noise cancelling wireless over-ear headphones with auto NC optimizer, crystal clear hands-free calling, and 30 hours battery backup. Brand new sealed item with bill and warranty card.',
-            'image_url': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -292,7 +292,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Galaxy Watch6 features cellular LTE connectivity, sleep coaching, detailed body composition analyzer, heart rate tracker, and a bigger display. Graphite aluminum case with matching band.',
-            'image_url': 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -308,7 +308,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'JBL Tune Beam 2 wireless bluetooth earbuds. Deep bass signature sound with fully working active noise cancelling. Used for just 1 week. Comes with box, charger, extra tips, and purchase invoice.',
-            'image_url': 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -323,7 +323,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'Selling my Fire-Boltt smartwatch. 1.9-inch HD display, bluetooth calling, voice assistant, heart tracking. 100% scratchless screen, looks completely brand new. Charging cable included.',
-            'image_url': 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1517502884422-41eaaced0168?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'electronics',
@@ -356,7 +356,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'The radiance lives on in the Nike Air Force 1 \'07, the basketball original that puts a fresh spin on what you know best: crisp leather, bold colors and the perfect amount of flash. 100% authentic, brand new in box.',
-            'image_url': 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'fashion',
@@ -371,7 +371,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Experience epic energy with the new Adidas Ultraboost Light, our lightest Ultraboost ever. The secret is the generation of Boost cushioning: Light Boost. Sealed pack in Adidas retail box.',
-            'image_url': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'fashion',
@@ -386,7 +386,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Close your eyes. Think "jeans." Now open. They were 501s, right? They are literally the blueprint for every pair of jeans in existence — burned into the world\'s collective cortex. Authentic Levi\'s jeans, brand new.',
-            'image_url': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -432,7 +432,7 @@ def seed_products():
             'city': 'Mumbai',
             'state': 'Maharashtra',
             'description': 'The famous "CasiOak" GA-2100 carbon core guard watch. All black tactical colorway. Resin strap showing minor signs of wear near the buckle. Glass is absolutely scratchless. Works perfectly.',
-            'image_url': 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=600&auto=format&fit=crop&q=80',
         },
 
         # === 5. FURNITURE ===
@@ -450,7 +450,7 @@ def seed_products():
             'city': 'Bengaluru',
             'state': 'Karnataka',
             'description': 'Support your posture with the Wakefit ergonomic high-back mesh office chair. Features synchro-tilt mechanism, adjustable armrests, lumbar support and class 4 gas lift. Box packed with manual.',
-            'image_url': 'https://images.unsplash.com/photo-1505797149-43b0069ec26b?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'furniture',
@@ -480,7 +480,7 @@ def seed_products():
             'city': 'Delhi',
             'state': 'Delhi NCR',
             'description': 'Solid Sheesham wood coffee table in warm teak finish. Elegant, simple box-frame styling with two under-drawers for storage. Perfect centerpiece for your premium living room. Covered under brand warranty.',
-            'image_url': 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1532372320978-9b4d7a92b24d?w=600&auto=format&fit=crop&q=80',
         },
         # --- Second Hand / Pre-owned ---
         {
@@ -496,7 +496,7 @@ def seed_products():
             'city': 'Pune',
             'state': 'Maharashtra',
             'description': 'Selling my white IKEA study desk. It has a built-in drawer, computer cable outlet, and adjustable shelving unit. Condition is excellent, very clean surface. Minor tape residue on the back edge.',
-            'image_url': 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=600&auto=format&fit=crop&q=80',
+            'image_url': 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&auto=format&fit=crop&q=80',
         },
         {
             'category_slug': 'furniture',
