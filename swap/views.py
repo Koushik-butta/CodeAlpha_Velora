@@ -234,8 +234,9 @@ def reject_exchange_view(request, pk):
 
 @login_required
 def cancel_exchange_view(request, pk):
-    """Requester cancels their own pending exchange request."""
-    exchange = get_object_or_404(ExchangeRequest, pk=pk, requester=request.user)
+    """Requester or target user cancels their pending/accepted exchange request."""
+    from django.db.models import Q
+    exchange = get_object_or_404(ExchangeRequest, Q(requester=request.user) | Q(target_user=request.user), pk=pk)
 
     if exchange.status not in ('pending', 'accepted'):
         messages.error(request, f'Cannot cancel an exchange with status "{exchange.get_status_display()}".')
@@ -251,13 +252,14 @@ def cancel_exchange_view(request, pk):
         created_by=request.user,
     )
 
-    # Notify the target user
+    # Notify the other user
+    other_user = exchange.target_user if request.user == exchange.requester else exchange.requester
     Notification.create_for_user(
-        user=exchange.target_user,
+        user=other_user,
         notification_type='exchange',
         title='Exchange Request Cancelled',
         message=(
-            f'{request.user.email} has cancelled their exchange request for '
+            f'{request.user.email} has cancelled the exchange request for '
             f'"{exchange.target_product.title}".'
         ),
         link=f'/exchange/{exchange.pk}/',

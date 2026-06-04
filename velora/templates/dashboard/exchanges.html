@@ -68,6 +68,12 @@
               </form>
               {% else %}
               <span class="badge {% if exc.status == 'accepted' %}badge-success{% elif exc.status == 'rejected' %}badge-error{% else %}badge-offer{% endif %}">{{ exc.get_status_display }}</span>
+              {% if exc.status == 'accepted' %}
+              <form method="post" action="{% url 'cancel_exchange' exc.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.12);color:var(--error);border:1px solid rgba(239,68,68,.2);">Cancel</button>
+              </form>
+              {% endif %}
               {% endif %}
               <a href="{% url 'exchange_detail' exc.pk %}" class="btn btn-ghost btn-sm">Details</a>
             </div>
@@ -117,7 +123,7 @@
             <span style="font-size:.75rem;color:var(--text-3);">{{ exc.created_at|timesince }} ago</span>
             <div style="display:flex;align-items:center;gap:8px;">
               <span class="badge {% if exc.status == 'accepted' %}badge-success{% elif exc.status == 'rejected' %}badge-error{% elif exc.status == 'cancelled' %}badge-error{% else %}badge-offer{% endif %}">{{ exc.get_status_display }}</span>
-              {% if exc.status == 'pending' %}
+              {% if exc.status == 'pending' or exc.status == 'accepted' %}
               <form method="post" action="{% url 'cancel_exchange' exc.pk %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.12);color:var(--error);border:1px solid rgba(239,68,68,.2);">Cancel</button>

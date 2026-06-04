@@ -751,16 +751,16 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchCartItems();
   });
   
-  // Intercept standard Add to Cart forms and submit via AJAX instead
   document.addEventListener('submit', function(e) {
     if (e.target && e.target.action && e.target.action.includes('/cart/add/')) {
       e.preventDefault();
       const form = e.target;
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
       fetch(form.action, {
         method: 'POST',
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRFToken': '{{ csrf_token }}'
+          'X-CSRFToken': csrfToken
         },
         body: new FormData(form)
       })

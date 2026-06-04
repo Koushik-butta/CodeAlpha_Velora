@@ -106,10 +106,14 @@
         </form>
       </div>
       {% elif exchange.status == 'accepted' %}
-      <div style="padding:24px;text-align:center;background:var(--buy-dim);border-top:1px solid rgba(5,150,105,.2);">
+      <div style="padding:24px;text-align:center;background:var(--buy-dim);border-top:1px solid rgba(5,150,105,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;">
         <div style="font-size:1.5rem;margin-bottom:8px;">🎉</div>
         <div style="font-weight:800;color:var(--buy);margin-bottom:4px;">Exchange Accepted!</div>
-        <p style="font-size:.85rem;color:var(--text-2);">Both parties should now coordinate the exchange. Contact each other to complete the deal.</p>
+        <p style="font-size:.85rem;color:var(--text-2);margin-bottom:16px;">Both parties should now coordinate the exchange. Contact each other to complete the deal.</p>
+        <form method="post" action="{% url 'cancel_exchange' exchange.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-ghost" style="color:var(--error);" onclick="return confirm('Cancel this exchange request?')">Cancel Exchange</button>
+        </form>
       </div>
       {% elif exchange.status == 'rejected' %}
       <div style="padding:24px;text-align:center;background:rgba(239,68,68,.05);border-top:1px solid rgba(239,68,68,.1);">
