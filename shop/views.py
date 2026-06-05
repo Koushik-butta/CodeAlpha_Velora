@@ -275,6 +275,9 @@ def sell_product_view(request):
                 return redirect('dashboard_my_products')
             else:
                 messages.success(request, f'"{product.title}" listed successfully!')
+                next_url = request.GET.get('next', '')
+                if next_url:
+                    return redirect(next_url)
                 return redirect('product_detail', slug=product.slug)
         else:
             messages.error(request, 'Please correct the errors below.')
