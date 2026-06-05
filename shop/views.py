@@ -89,7 +89,7 @@ def product_list_view(request):
     min_price = request.GET.get('min_price', '').strip()
     max_price = request.GET.get('max_price', '').strip()
     city = request.GET.get('city', '').strip()
-    sort = request.GET.get('sort', 'newest').strip()
+    sort = request.GET.get('sort', 'featured').strip()
 
     if query:
         products_qs = products_qs.filter(
@@ -127,18 +127,20 @@ def product_list_view(request):
 
     # ── Sorting ────────────────────────────────────────────────
     sort_map = {
-        'newest': '-created_at',
-        '-created_at': '-created_at',
-        'oldest': 'created_at',
-        'created_at': 'created_at',
-        'price_asc': 'price',
-        'price': 'price',
-        'price_desc': '-price',
-        '-price': '-price',
-        'most_viewed': '-views_count',
-        '-views_count': '-views_count',
+        'featured': ('-is_featured', '-created_at'),
+        'newest': ('-created_at',),
+        '-created_at': ('-created_at',),
+        'oldest': ('created_at',),
+        'created_at': ('created_at',),
+        'price_asc': ('price',),
+        'price': ('price',),
+        'price_desc': ('-price',),
+        '-price': ('-price',),
+        'most_viewed': ('-views_count',),
+        '-views_count': ('-views_count',),
     }
-    products_qs = products_qs.order_by(sort_map.get(sort, '-created_at'))
+    ordering = sort_map.get(sort, ('-is_featured', '-created_at'))
+    products_qs = products_qs.order_by(*ordering)
 
     # ── Pagination ─────────────────────────────────────────────
     paginator = Paginator(products_qs, 12)
