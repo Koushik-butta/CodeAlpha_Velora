@@ -128,10 +128,15 @@ def product_list_view(request):
     # ── Sorting ────────────────────────────────────────────────
     sort_map = {
         'newest': '-created_at',
+        '-created_at': '-created_at',
         'oldest': 'created_at',
+        'created_at': 'created_at',
         'price_asc': 'price',
+        'price': 'price',
         'price_desc': '-price',
+        '-price': '-price',
         'most_viewed': '-views_count',
+        '-views_count': '-views_count',
     }
     products_qs = products_qs.order_by(sort_map.get(sort, '-created_at'))
 
