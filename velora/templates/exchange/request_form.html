@@ -16,10 +16,57 @@
       <span style="color:var(--text-1);">Request Exchange</span>
     </div>
 
-    <div style="display:grid;grid-template-columns:380px 1fr;gap:32px;align-items:start;">
+    <style>
+      .exchange-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+      .target-preview-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 24px;
+        position: sticky;
+        top: calc(var(--nav-h) + 16px);
+      }
+      .proposal-form-container {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 28px;
+      }
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 820px) {
+        .exchange-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .target-preview-card {
+          position: static;
+          padding: 20px;
+        }
+        .proposal-form-container {
+          padding: 20px;
+        }
+      }
+      @media (max-width: 480px) {
+        .options-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+      }
+    </style>
+
+    <div class="exchange-grid">
 
       <!-- Left Side: Target Product Preview -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;position:sticky;top:calc(var(--nav-h) + 16px);">
+      <div class="target-preview-card">
         <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin:0 0 16px;">Product You Want</h3>
         
         <div style="background:var(--surface-2);border-radius:12px;overflow:hidden;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
@@ -44,7 +91,7 @@
       </div>
 
       <!-- Right Side: Proposal Form -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;">
+      <div class="proposal-form-container">
         <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text-1);margin:0 0 8px;">Create Exchange Proposal</h2>
         <p style="color:var(--text-3);font-size:.88rem;margin:0 0 24px;">Propose a swap with one of your listed items. You can also specify an optional cash adjustment.</p>
 
@@ -53,7 +100,7 @@
           <label class="form-label" style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; display: block; color: var(--text-1);">
             How would you like to exchange?
           </label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="options-grid">
             
             <!-- Option A: Existing Product -->
             <div id="option-existing" class="exchange-opt-card {% if form.fields.offered_product.queryset.exists %}active{% else %}disabled{% endif %}" 
